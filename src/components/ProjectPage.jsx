@@ -1,0 +1,78 @@
+import React from 'react'
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import apiService from '../services/apiService';
+import BasicTableSub from './BasicTableSub';
+import TicketCard from './TicketCard';
+import { Box } from '@mui/material';
+import TicketModal from './TicketModal';
+
+const ProjectPage = ({ project, handleClick }) => {
+  console.log(project,"pro")
+  const [tickets, setTickets] = React.useState([]) 
+  
+  const loadProject = async () => {
+    const result = await apiService.getTickets(project)
+    setTickets(result)
+  }
+
+  const [openTicket, setOpenTicket] = React.useState({open: false, id: null})
+
+  const handleOpenTicket = (id = null) => {
+    setOpenTicket({
+      open: true,
+      id: id,
+    })
+  }
+
+  React.useEffect(() => {
+    loadProject()
+  }, [])
+
+  const reloadProject = () => {
+    loadProject()
+  }
+
+  return(
+    <Box  sx={{ mt: '-1rem'  }}>
+      <Button variant='outlined' size='small' 
+        onClick={handleClick} 
+      >
+        Go back
+      </Button>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        mt: '1rem'
+      }}>
+        <Box>
+          <Typography variant="h5" component="div">
+            {project.title}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            {project.description}
+          </Typography>
+        </Box>
+        <TicketModal 
+          projectTitle={project.title}
+          reload={reloadProject}
+        >
+          New
+        </TicketModal>
+      </Box>
+
+      <BasicTableSub rows={tickets} handleClick={handleOpenTicket} />
+      {
+        openTicket.open
+        ? <TicketCard 
+            projectTitle={project.title} 
+            ticketId={openTicket.id} 
+            reloadProject={reloadProject}
+          />
+        : null
+      }
+    </Box>
+  )
+}
+
+export default ProjectPage
