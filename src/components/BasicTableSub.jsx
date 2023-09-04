@@ -76,7 +76,7 @@ export default function BasicTableSub({
         </TableHead>
 
         <TableBody>
-          {row
+          {row.length ? row
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               const originalDateString = row.estimate_date;
@@ -138,7 +138,9 @@ export default function BasicTableSub({
                   <TableCell align="right">{row?.type}</TableCell>
                 </TableRow>
               );
-            })}
+            }):
+            <Typography variant="h6" color="initial">No Records Found</Typography>
+            }
         </TableBody>
       </Table>
       <TablePagination

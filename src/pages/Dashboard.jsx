@@ -32,8 +32,8 @@ const Dashboard = () => {
   const location = useLocation();
 
   const [myBugs, setMyBugs] = useState([]);
-  const [open, setOpen] = useState([]);
-  const [close, setClose] = useState([]);
+  const [open, setOpen] = useState(0);
+  const [close, setClose] = useState(0);
   const [assignedValue, setAssignedvalue] = useState([]);
 
   const token = localStorage.getItem("token");
@@ -53,11 +53,11 @@ const Dashboard = () => {
     setMyBugs(data);
     // console.log(myBugs);
     const setOpened = data.filter((datas) => {
-      return datas.status.statusname === "Verified";
+      return datas.status === "Opened";
     }).length;
     setOpen(setOpened);
     const setClosed = data.filter((datas) => {
-      return datas.status.statusname === "Testing";
+      return datas.status === "Closed";
     }).length;
     setClose(setClosed);
   };
@@ -217,7 +217,7 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody >
-                                  {assignedValue.map((data) => {
+                                  {assignedValue.length && assignedValue.map((data) => {
                                     const originalDateString = data.createdAt;
                                     const formattedDate = formatDate(originalDateString);
                                     return (

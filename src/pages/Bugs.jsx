@@ -29,6 +29,15 @@ export default function Bugs() {
     bugDisplay();
   }, []);
 
+  const handleStatus = async(event,id) => {
+    let obj = {
+      status:event.target.value,
+      _id:id
+    }
+    setSelectedStatus(event.target.value)
+    const statusData = await apiService.putStatus(obj);
+    console.log(statusData);
+  }
 
   return (
     <>
@@ -68,10 +77,15 @@ export default function Bugs() {
                 <TableCell>{databug?.estimate_date}</TableCell>
                 <TableCell>{databug?.createdby.username}</TableCell>
                 <TableCell>
-                  <Select >
-                  {selectedStatus.map((statusdatas)=>(
-                    <MenuItem key={statusdatas._id}value={statusdatas._id}>{statusdatas?.statusname}</MenuItem>
-                    ))}
+                <Select defaultValue={databug?.status} onChange={(e)=>{handleStatus(e,databug._id);}}>
+                    <MenuItem value="Opened">Opened</MenuItem>
+                    <MenuItem value="Assigned">Assigned</MenuItem>
+                    <MenuItem value="InProgress">InProgress</MenuItem>
+                    <MenuItem value="Resolved">Resolved</MenuItem>
+                    <MenuItem value="Testing">Testing</MenuItem>
+                    <MenuItem value="Verified">Verified</MenuItem>
+                    <MenuItem value="Closed">Closed</MenuItem>
+                    <MenuItem value="Hold">Hold</MenuItem>
                   </Select>
                 </TableCell>
               </TableRow>
