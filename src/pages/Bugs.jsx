@@ -66,7 +66,7 @@ export default function Bugs() {
                 <TableCell>{databug?.sprint}</TableCell>
                 <TableCell>{databug?.customerfound? "Yes" : "No"}</TableCell>
                 <TableCell>{databug?.estimate_date}</TableCell>
-                <TableCell>{databug?.createdby}</TableCell>
+                <TableCell>{databug?.createdby.username}</TableCell>
                 <TableCell>
                   <Select >
                   {selectedStatus.map((statusdatas)=>(
