@@ -253,6 +253,13 @@ const createBugs = async (record) => {
 };
 
 
+const generateBug = async (id) => {
+  const response = await fetch(`${baseUrl}/issuetracker/${id}`);
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
+
 const apiService = {
   createUser,
   login,
@@ -272,6 +279,7 @@ const apiService = {
   getPStatus,
   createModule,
   deleteModule,
+  generateBug,
   editModuledata,
   getStatus,
   putStatus,

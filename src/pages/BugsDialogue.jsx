@@ -27,7 +27,7 @@ export default function BugsDialogue() {
   const [report, setReport] = useState([]);
   const [createby, setCreatedby] = useState([]);
   const [date, setDate] = useState("");
-  const [bugData, setBugData] = useState({
+  let initialValues = {
     bug_description: "",
     bug_type: "",
     severity: "",
@@ -40,7 +40,10 @@ export default function BugsDialogue() {
     status: "",
     estimate_date: "",
     customerfound: "",
-  });
+    bug_id: "",
+  };
+  const [bugData, setBugData] = useState(initialValues);
+
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -76,6 +79,7 @@ export default function BugsDialogue() {
 
   const handleCreateBug = async () => {
     console.log(date, "date");
+
     let data = {
       ...bugData,
       estimate_date: date,
@@ -83,11 +87,19 @@ export default function BugsDialogue() {
     try {
       const result = await apiService.createBugs(data);
       console.log(result);
-      
+
       setOpen(false);
     } catch (error) {
       console.error("Error creating bug:", error);
     }
+  };
+  const secondApi = async (data) => {
+    const res = await apiService.generateBug(data);
+    setBugData({ ...bugData, bug_id: res, projectId: data });
+    console.log(res);
+  };
+  const handleReset = () => {
+    setBugData(initialValues);
   };
 
   useEffect(() => {
@@ -101,7 +113,7 @@ export default function BugsDialogue() {
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Create Bugs</DialogTitle>
         <DialogContent>
-          <Grid container style={{marginTop:'5px'}} spacing={2}>
+          <Grid container style={{ marginTop: "5px" }} spacing={2}>
             {/* project name dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -109,9 +121,9 @@ export default function BugsDialogue() {
                 <Select
                   label="Project Name"
                   value={bugData.projectId}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, projectId: event.target.value })
-                  }
+                  onChange={(event) => {
+                    secondApi(event.target.value);
+                  }}
                 >
                   {projectName.map((projectdata) => (
                     <MenuItem key={projectdata._id} value={projectdata._id}>
@@ -134,7 +146,6 @@ export default function BugsDialogue() {
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_id: event.target.value })
                   }
-                  
                 />
               </FormControl>
             </Grid>
@@ -377,7 +388,13 @@ export default function BugsDialogue() {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+              handleReset();
+            }}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button onClick={handleCreateBug} color="primary">
