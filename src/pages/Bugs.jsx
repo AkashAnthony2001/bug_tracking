@@ -21,7 +21,7 @@ export default function Bugs() {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
-    console.log(data, "res");
+    // console.log(data, "res");
     const statusData = await apiService.getStatus();
     setSelectedStatus (statusData)
   };
