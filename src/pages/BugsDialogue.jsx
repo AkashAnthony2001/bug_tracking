@@ -89,7 +89,6 @@ export default function BugsDialogue() {
       console.error("Error creating bug:", error);
     }
   };
-  bugDisplay();
 
   useEffect(() => {
     bugDisplay();
@@ -135,6 +134,7 @@ export default function BugsDialogue() {
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_id: event.target.value })
                   }
+                  
                 />
               </FormControl>
             </Grid>

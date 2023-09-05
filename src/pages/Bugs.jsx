@@ -25,7 +25,7 @@ export default function Bugs() {
     const statusData = await apiService.getStatus();
     setSelectedStatus (statusData)
   };
-
+ 
   useEffect(() => {
     bugDisplay();
   }, []);
@@ -36,10 +36,8 @@ export default function Bugs() {
       _id:id
     }
     setSelectedStatus(event.target.value)
-    bugDisplay();
     const statusData = await apiService.putStatus(obj);
     console.log(statusData);
-    
   }
 
   return (
