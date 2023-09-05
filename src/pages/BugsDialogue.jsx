@@ -52,7 +52,7 @@ export default function BugsDialogue() {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     // setBugData(data);
-    console.log(data, "res");
+    // console.log(data, "res");
     const statusData = await apiService.getStatus();
     setSelectedStatus(statusData);
     const record = await apiService.getProjects();

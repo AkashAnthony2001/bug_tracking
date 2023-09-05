@@ -23,7 +23,7 @@ const Assigned = () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
     setAssignedvalue(data);
-    console.log(data, "res");
+    // console.log(data, "res");
   };
 
   useEffect(() => {
