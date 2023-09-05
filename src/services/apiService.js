@@ -131,6 +131,8 @@ const deleteProject = async (id) => {
   const response = await fetch(`${baseUrl}/projects/${id}`, {
     method: "DELETE",
   });
+  const parsedResponse = await response.json();
+  return parsedResponse;
 };
 
 const editProject = async (record) => {

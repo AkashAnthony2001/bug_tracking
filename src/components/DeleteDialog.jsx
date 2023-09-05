@@ -2,16 +2,19 @@ import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 import apiService from "../services/apiService";
 
+
 function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect }) {
   
+  const [err,setErr] = useState([]);
   const handleDelete = async () => {
     let res = await apiService.deleteProject(item._id);
-
+    setErr(res.message)
     setCorrect((prev) => !prev);
   };
   const handleClose = () => {
     setOpenDelete(false);
   };
+
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
