@@ -27,7 +27,7 @@ export default function BugsDialogue() {
   const [report, setReport] = useState([]);
   const [createby, setCreatedby] = useState([]);
   const [date, setDate] = useState("");
-  const [bugData, setBugData] = useState({
+  let initialValues = {
     bug_description: "",
     bug_type: "",
     severity: "",
@@ -41,7 +41,9 @@ export default function BugsDialogue() {
     estimate_date: "",
     customerfound: "",
     bug_id: "",
-  });
+  };
+  const [bugData, setBugData] = useState(initialValues);
+
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -77,6 +79,7 @@ export default function BugsDialogue() {
 
   const handleCreateBug = async () => {
     console.log(date, "date");
+
     let data = {
       ...bugData,
       estimate_date: date,
@@ -90,9 +93,13 @@ export default function BugsDialogue() {
       console.error("Error creating bug:", error);
     }
   };
-  const secondApi = async () => {
-    const res = await apiService.generateBug(bugData._id);
+  const secondApi = async (data) => {
+    const res = await apiService.generateBug(data);
+    setBugData({ ...bugData, bug_id: res, projectId: data });
     console.log(res);
+  };
+  const handleReset = () => {
+    setBugData(initialValues);
   };
 
   useEffect(() => {
@@ -114,12 +121,9 @@ export default function BugsDialogue() {
                 <Select
                   label="Project Name"
                   value={bugData.projectId}
-                  onChange={(event) =>
-                    setBugData(
-                      { ...bugData, projectId: event.target.value },
-                      () => secondApi(event.target.value)
-                    )
-                  }
+                  onChange={(event) => {
+                    secondApi(event.target.value);
+                  }}
                 >
                   {projectName.map((projectdata) => (
                     <MenuItem key={projectdata._id} value={projectdata._id}>
@@ -384,7 +388,13 @@ export default function BugsDialogue() {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+              handleReset();
+            }}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button onClick={handleCreateBug} color="primary">
