@@ -26,7 +26,7 @@ export default function BugsDialogue() {
   // const [bug, setBug] = useState([]);
   const [report, setReport] = useState([]);
   const [createby, setCreatedby] = useState([]);
-  const [date,setDate]= useState("")
+  const [date, setDate] = useState("");
   const [bugData, setBugData] = useState({
     bug_description: "",
     bug_type: "",
@@ -75,19 +75,21 @@ export default function BugsDialogue() {
   };
 
   const handleCreateBug = async () => {
-    console.log(date,"date")
+    console.log(date, "date");
     let data = {
       ...bugData,
-      estimate_date:date
-    }
+      estimate_date: date,
+    };
     try {
       const result = await apiService.createBugs(data);
       console.log(result);
+      
       setOpen(false);
     } catch (error) {
       console.error("Error creating bug:", error);
     }
   };
+  bugDisplay();
 
   useEffect(() => {
     bugDisplay();
@@ -100,7 +102,44 @@ export default function BugsDialogue() {
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Create Bugs</DialogTitle>
         <DialogContent>
-          <Grid container spacing={2}>
+          <Grid container style={{marginTop:'5px'}} spacing={2}>
+            {/* project name dialogbox */}
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="project-name-label">Project name</InputLabel>
+                <Select
+                  label="Project Name"
+                  value={bugData.projectId}
+                  onChange={(event) =>
+                    setBugData({ ...bugData, projectId: event.target.value })
+                  }
+                >
+                  {projectName.map((projectdata) => (
+                    <MenuItem key={projectdata._id} value={projectdata._id}>
+                      {projectdata.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <br />
+            <br />
+            {/* bug id dialogue */}
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <TextField
+                  type="text"
+                  label="Bug Id"
+                  variant="outlined"
+                  value={bugData.bug_id}
+                  onChange={(event) =>
+                    setBugData({ ...bugData, bug_id: event.target.value })
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <br />
+            <br />
             {/* bug_description dialogbox */}
             <Grid item xs={12}>
               <TextField
@@ -124,19 +163,7 @@ export default function BugsDialogue() {
             </Grid>
             <br />
             <br />
-            <Grid item xs={6}>
-            <FormControl fullWidth>
-                <TextField
-                  type="text"
-                  label="Bug Id"
-                  variant="outlined"
-                  value={bugData.bug_id}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, bug_id: event.target.value })
-                  }
-                />
-              </FormControl>
-            </Grid>
+
             {/* Bug Type dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -157,27 +184,6 @@ export default function BugsDialogue() {
             <br />
             <br />
 
-            {/* project name dialogbox */}
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="project-name-label">Project name</InputLabel>
-                <Select
-                  label="Project Name"
-                  value={bugData.projectId}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, projectId: event.target.value })
-                  }
-                >
-                  {projectName.map((projectdata) => (
-                    <MenuItem key={projectdata._id} value={projectdata._id}>
-                      {projectdata.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <br />
-            <br />
             {/* module name dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -257,10 +263,7 @@ export default function BugsDialogue() {
                   }
                 >
                   {createby.map((createdatas) => (
-                    <MenuItem
-                      key={createdatas._id}
-                      value={createdatas._id}
-                    >
+                    <MenuItem key={createdatas._id} value={createdatas._id}>
                       {createdatas.username}
                     </MenuItem>
                   ))}
@@ -322,15 +325,12 @@ export default function BugsDialogue() {
                   <DemoContainer components={["DatePicker"]}>
                     <DatePicker
                       label="estimate_date"
-                      value={date||null}
-                      onChange={(value) =>
-                        {
-                          console.log(value.$d
-                            )
-                          console.log(value.$d.toLocaleDateString('en-CA'))
-                          setDate(value.$d.toLocaleDateString('en-CA'))
-                        }
-                      }
+                      value={date || null}
+                      onChange={(value) => {
+                        console.log(value.$d);
+                        console.log(value.$d.toLocaleDateString("en-CA"));
+                        setDate(value.$d.toLocaleDateString("en-CA"));
+                      }}
                     />
                   </DemoContainer>
                 </LocalizationProvider>
@@ -348,13 +348,13 @@ export default function BugsDialogue() {
                   }
                 >
                   <MenuItem value="Opened">Opened</MenuItem>
-                    <MenuItem value="Assigned">Assigned</MenuItem>
-                    <MenuItem value="InProgress">InProgress</MenuItem>
-                    <MenuItem value="Resolved">Resolved</MenuItem>
-                    <MenuItem value="Testing">Testing</MenuItem>
-                    <MenuItem value="Verified">Verified</MenuItem>
-                    <MenuItem value="Closed">Closed</MenuItem>
-                    <MenuItem value="Hold">Hold</MenuItem>
+                  <MenuItem value="Assigned">Assigned</MenuItem>
+                  <MenuItem value="InProgress">InProgress</MenuItem>
+                  <MenuItem value="Resolved">Resolved</MenuItem>
+                  <MenuItem value="Testing">Testing</MenuItem>
+                  <MenuItem value="Verified">Verified</MenuItem>
+                  <MenuItem value="Closed">Closed</MenuItem>
+                  <MenuItem value="Hold">Hold</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

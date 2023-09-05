@@ -3,6 +3,10 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import HomeIcon from '@mui/icons-material/Home';
+import PestControlIcon from '@mui/icons-material/PestControl';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+
+
 
 const navbarItems = [
   {
@@ -34,12 +38,12 @@ const navbarItems = [
   },{
     id: 5,
     text: 'Modules',
-    icon: <PeopleAltOutlinedIcon />,
+    icon: <ViewModuleIcon />,
     link: '/dashboard/module'
   },{
     id: 6,
     text: 'Bugs',
-    icon: <PeopleAltOutlinedIcon />,
+    icon: <PestControlIcon />,
     link: '/dashboard/bugs'
   }
 ]
