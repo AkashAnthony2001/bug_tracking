@@ -40,6 +40,7 @@ export default function BugsDialogue() {
     status: "",
     estimate_date: "",
     customerfound: "",
+    bug_id: "",
   });
 
   const handleOpenDialog = () => {
@@ -83,11 +84,15 @@ export default function BugsDialogue() {
     try {
       const result = await apiService.createBugs(data);
       console.log(result);
-      
+
       setOpen(false);
     } catch (error) {
       console.error("Error creating bug:", error);
     }
+  };
+  const secondApi = async () => {
+    const res = await apiService.generateBug(bugData._id);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -101,7 +106,7 @@ export default function BugsDialogue() {
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Create Bugs</DialogTitle>
         <DialogContent>
-          <Grid container style={{marginTop:'5px'}} spacing={2}>
+          <Grid container style={{ marginTop: "5px" }} spacing={2}>
             {/* project name dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -110,7 +115,10 @@ export default function BugsDialogue() {
                   label="Project Name"
                   value={bugData.projectId}
                   onChange={(event) =>
-                    setBugData({ ...bugData, projectId: event.target.value })
+                    setBugData(
+                      { ...bugData, projectId: event.target.value },
+                      () => secondApi(event.target.value)
+                    )
                   }
                 >
                   {projectName.map((projectdata) => (
@@ -134,7 +142,6 @@ export default function BugsDialogue() {
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_id: event.target.value })
                   }
-                  
                 />
               </FormControl>
             </Grid>
