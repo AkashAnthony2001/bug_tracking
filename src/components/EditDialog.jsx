@@ -6,8 +6,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 
 function EditDialog({ item, open, setOpen,load }) {
+  const [editErr, setEditErr] = useState([]);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
   // const [close , setClose] = useState(false)
@@ -27,9 +29,9 @@ function EditDialog({ item, open, setOpen,load }) {
       id: item._id,
     };
 
-    const result = await apiService.editProject(projectObj);
-    console.log(result);
-    if (result) {
+    let res = await apiService.editProject(projectObj);
+    setEditErr(res);
+    if (res) {
       load()
       setOpen(false);
     }
@@ -42,7 +44,13 @@ function EditDialog({ item, open, setOpen,load }) {
     setOpen(false);
   };
 
-  //  console.log(item, "trem");
+  if (editErr.error) {
+    return (
+      <>
+        <CustomizedSnackbars error={editErr.error} message={editErr.message} />
+      </>
+    );
+  }
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -70,6 +78,9 @@ function EditDialog({ item, open, setOpen,load }) {
             onChange={(e) => setEditedDescription(e.target.value)}
           />
           <DialogActions>
+          <Button size="small" onClick={handleClose}>
+            Cancel
+          </Button>
           <Button size="small" onClick={handleSubmit}>
             Save Change
           </Button>
