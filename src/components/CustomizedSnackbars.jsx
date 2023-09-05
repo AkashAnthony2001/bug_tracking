@@ -9,14 +9,16 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function CustomizedSnackbars({ error = false, message = "" }) {
-  const [open, setOpen] = React.useState(error);
+  const [open, setOpen] = React.useState(false);
 
   //   const handleClick = () => {
   //     setOpen(true);
   //   };
   React.useEffect(() => {
-    setOpen(true);
-  }, [error]);
+    if (message) {
+      setOpen(true);
+    }
+  }, [message]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -34,8 +36,12 @@ export default function CustomizedSnackbars({ error = false, message = "" }) {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {message}
+        <Alert
+          onClose={handleClose}
+          severity={error ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
+          {message ? message : null}
         </Alert>
       </Snackbar>
     </Stack>

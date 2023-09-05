@@ -12,34 +12,42 @@ import {
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
 import BugsDialogue from "./BugsDialogue";
+import CustomizedSnackbars from "../components/CustomizedSnackbars";
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
-    const [selectedStatus, setSelectedStatus] = React.useState('');
-
+  const [selectedStatus, setSelectedStatus] = React.useState("");
+  const [changemsg, setChangemsg] = useState({});
 
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
     // console.log(data, "res");
-    const statusData = await apiService.getStatus();
-    setSelectedStatus (statusData)
   };
- 
+
   useEffect(() => {
     bugDisplay();
   }, []);
 
-  const handleStatus = async(event,id) => {
+  const handleStatus = async (event, id) => {
     let obj = {
-      status:event.target.value,
-      _id:id
-    }
-    setSelectedStatus(event.target.value)
+      status: event.target.value,
+      _id: id,
+    };
+    setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData);
-  }
+    setChangemsg(statusData);
+  };
+  function formatDate(isoDateString) {
+    const date = new Date(isoDateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
 
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  }
   return (
     <>
       <BugsDialogue />
@@ -63,7 +71,10 @@ export default function Bugs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bugData?.map((databug) => ( 
+            {bugData?.map((databug) => {
+              const originalDateString = databug.estimate_date;
+              const formattedDate = formatDate(originalDateString);
+              return (
               <TableRow>
                 <TableCell>{databug?.bug_id}</TableCell>
                 <TableCell>{databug?.bug_description}</TableCell>
@@ -74,11 +85,16 @@ export default function Bugs() {
                 <TableCell>{databug?.reportedBy?.username}</TableCell>
                 <TableCell>{databug?.severity}</TableCell>
                 <TableCell>{databug?.sprint}</TableCell>
-                <TableCell>{databug?.customerfound? "Yes" : "No"}</TableCell>
-                <TableCell>{databug?.estimate_date}</TableCell>
+                <TableCell>{databug?.customerfound ? "Yes" : "No"}</TableCell>
+                <TableCell>{formattedDate}</TableCell>
                 <TableCell>{databug?.createdby.username}</TableCell>
                 <TableCell>
-                <Select defaultValue={databug?.status} onChange={(e)=>{handleStatus(e,databug._id);}}>
+                  <Select
+                    defaultValue={databug?.status}
+                    onChange={(e) => {
+                      handleStatus(e, databug._id);
+                    }}
+                  >
                     <MenuItem value="Opened">Opened</MenuItem>
                     <MenuItem value="Assigned">Assigned</MenuItem>
                     <MenuItem value="InProgress">InProgress</MenuItem>
@@ -88,12 +104,16 @@ export default function Bugs() {
                     <MenuItem value="Closed">Closed</MenuItem>
                     <MenuItem value="Hold">Hold</MenuItem>
                   </Select>
-                  </TableCell>
+                </TableCell>
               </TableRow>
-            ))}
+            )})}
           </TableBody>
         </Table>
       </TableContainer>
+      <CustomizedSnackbars
+        error={changemsg.error}
+        message={changemsg.message}
+      />
     </>
   );
 }
