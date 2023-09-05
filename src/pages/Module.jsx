@@ -85,7 +85,7 @@ export default function Module() {
                   <TableCell>
                     <Button
                       onClick={() => handleEditClick(moduledata)}
-                      variant="outlined"
+                      // variant="outlined"
                       startIcon={<EditIcon />}
                     >
                       Edit
@@ -93,7 +93,7 @@ export default function Module() {
 
                     <Button
                       onClick={() => handleDeleteClick(moduledata._id)}
-                      variant="outlined"
+                      // variant="outlined"
                       startIcon={<DeleteIcon />}
                     >
                       Delete

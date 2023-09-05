@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { MenuItem, Select, Typography } from "@mui/material";
 import apiService from "../services/apiService";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 
 export default function BasicTableSub({
   row,
@@ -46,25 +47,23 @@ export default function BasicTableSub({
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
+    const month = date.getMonth() + 1; 
     const year = date.getFullYear();
-
-    // Ensure day and month have two digits
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
 
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
 
-  const handleStatus = async(event,id) => {
+  const handleStatus = async (event, id) => {
     let obj = {
-      status:event.target.value,
-      _id:id
-    }
-    setSelectedStatus(event.target.value)
+      status: event.target.value,
+      _id: id,
+    };
+    setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
     console.log(statusData);
-  }
+  };
 
   return (
     <TableContainer component={Paper} sx={{ width: "100%" }}>
@@ -76,71 +75,80 @@ export default function BasicTableSub({
         </TableHead>
 
         <TableBody>
-          {row.length ? row
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => {
-              const originalDateString = row.estimate_date;
-              const formattedDate = formatDate(originalDateString);
-              const isoDateString = row.createdAt;
-              const isoformattedDate = formatDate(isoDateString);
-              return (
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    handleClick(row.id);
-                  }}
-                  tabIndex={-1}
-                >
-                  <TableCell component="th" scope="row">
-                    {row?.projectId?.title}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.moduleId?.module_name}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.assignedTo?.username}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.reportedBy?.username}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.sprint}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.customerfound ? "Yes" : "No yet"}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {formattedDate}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row?.createdby?.username}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {isoformattedDate}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                  <Select defaultValue={row?.status} onChange={(e)=>{handleStatus(e,row._id);}}>
-                    <MenuItem value="Opened">Opened</MenuItem>
-                    <MenuItem value="Assigned">Assigned</MenuItem>
-                    <MenuItem value="InProgress">InProgress</MenuItem>
-                    <MenuItem value="Resolved">Resolved</MenuItem>
-                    <MenuItem value="Testing">Testing</MenuItem>
-                    <MenuItem value="Verified">Verified</MenuItem>
-                    <MenuItem value="Closed">Closed</MenuItem>
-                    <MenuItem value="Hold">Hold</MenuItem>
-                  </Select>
-                  </TableCell>
+          {row.length ? (
+            row
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                const originalDateString = row.estimate_date;
+                const formattedDate = formatDate(originalDateString);
+                const isoDateString = row.createdAt;
+                const isoformattedDate = formatDate(isoDateString);
+                return (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handleClick(row.id);
+                    }}
+                    tabIndex={-1}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row?.projectId?.title}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.moduleId?.module_name}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.assignedTo?.username}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.reportedBy?.username}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.sprint}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.customerfound ? "Yes" : "No yet"}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {formattedDate}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {row?.createdby?.username}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {isoformattedDate}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Select
+                        defaultValue={row?.status}
+                        onChange={(e) => {
+                          handleStatus(e, row._id);
+                        }}
+                      >
+                        <MenuItem value="Opened">Opened</MenuItem>
+                        <MenuItem value="Assigned">Assigned</MenuItem>
+                        <MenuItem value="InProgress">InProgress</MenuItem>
+                        <MenuItem value="Resolved">Resolved</MenuItem>
+                        <MenuItem value="Testing">Testing</MenuItem>
+                        <MenuItem value="Verified">Verified</MenuItem>
+                        <MenuItem value="Closed">Closed</MenuItem>
+                        <MenuItem value="Hold">Hold</MenuItem>
+                      </Select>
+                    </TableCell>
 
-                  <TableCell align="right">{row?.type}</TableCell>
-                </TableRow>
-              );
-            }):
-            <Typography variant="h6" color="initial">No Records Found</Typography>
-            }
+                    <TableCell align="right">{row?.type}</TableCell>
+                  </TableRow>
+                );
+              })
+          ) : (
+            <Typography variant="h6" color="initial">
+              No Records Found
+            </Typography>
+          )}
         </TableBody>
       </Table>
       <TablePagination
