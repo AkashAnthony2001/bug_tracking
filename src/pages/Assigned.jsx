@@ -1,18 +1,6 @@
 import { useState, useEffect } from "react";
 import BasicTable from "../components/BasicTable";
-import TicketCard from "../components/TicketCard";
 import apiService from "../services/apiService";
-import {
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 
 const Assigned = () => {
   const [tickets, setTickets] = useState([]);
@@ -30,7 +18,7 @@ const Assigned = () => {
     Assigneddisplay();
   }, []);
 
-  console.log(assignedValue);
+  // console.log(assignedValue);
 
 
 
@@ -56,15 +44,6 @@ const heading= ["project_Name","moduleId", "assignedTo","reportedBy","sprint","c
   return (
     <>
       <BasicTable rows={assignedValue} heading={heading} handleClick={handleOpenTicket} />
-      {/* {openTicket.open ? (
-        <TicketCard
-          ticketId={openTicket.id}
-          projectTitle={
-            tickets.find((ticket) => ticket.id === openTicket.id).route
-          }
-        />
-      ) : null} */}
-
     </>
   );
 };

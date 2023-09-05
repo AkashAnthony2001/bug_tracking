@@ -49,7 +49,7 @@ const Dashboard = () => {
 
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
-    const data = await apiService.getSubmissions(username);
+    const data = await apiService.getAssignments(username);
     setMyBugs(data);
     // console.log(myBugs);
     const setOpened = data.filter((datas) => {
