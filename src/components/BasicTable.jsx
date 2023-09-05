@@ -89,7 +89,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
                 </TableCell>
               </TableRow>
             )) :
-            <TableRow>No Records Found</TableRow>
+            <Typography variant="h6" color="initial">No Records Found</Typography>
           }
         </TableBody>
       </Table>

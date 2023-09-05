@@ -25,6 +25,11 @@ export default function Bugs() {
     const statusData = await apiService.getStatus();
     setSelectedStatus (statusData)
   };
+ 
+  useEffect(() => {
+    bugDisplay();
+  }, []);
+
   const handleStatus = async(event,id) => {
     let obj = {
       status:event.target.value,
@@ -34,10 +39,6 @@ export default function Bugs() {
     const statusData = await apiService.putStatus(obj);
     console.log(statusData);
   }
-  useEffect(() => {
-    bugDisplay();
-  }, []);
-
 
   return (
     <>
@@ -75,9 +76,9 @@ export default function Bugs() {
                 <TableCell>{databug?.sprint}</TableCell>
                 <TableCell>{databug?.customerfound? "Yes" : "No"}</TableCell>
                 <TableCell>{databug?.estimate_date}</TableCell>
-                <TableCell>{databug?.createdby}</TableCell>
-                <TableCell component="th" scope="row">
-                  <Select defaultValue={databug?.status} onChange={(e)=>{handleStatus(e,databug._id);}}>
+                <TableCell>{databug?.createdby.username}</TableCell>
+                <TableCell>
+                <Select defaultValue={databug?.status} onChange={(e)=>{handleStatus(e,databug._id);}}>
                     <MenuItem value="Opened">Opened</MenuItem>
                     <MenuItem value="Assigned">Assigned</MenuItem>
                     <MenuItem value="InProgress">InProgress</MenuItem>
