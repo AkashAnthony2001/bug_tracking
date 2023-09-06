@@ -1,4 +1,4 @@
-import { React,  useState } from "react";
+import { React, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,12 +6,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 
-
-export default function FormDialog({setCorrect}) {
+export default function FormDialog({ setCorrect }) {
   const [title, setTitle] = useState("");
   const [description, setDescriptin] = useState("");
   const [open, setOpen] = useState(false);
+  const [create, setCreate] = useState({});
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,14 +26,15 @@ export default function FormDialog({setCorrect}) {
       description: description,
     };
     const result = await apiService.createProject(projectObj);
-    console.log(result);
-    if(result){
+    setCreate(result);
+    if (result) {
       setOpen(false);
-      setCorrect((prev)=>(!prev))
-      setDescriptin("")
-      setTitle("")
+      setCorrect((prev) => !prev);
+      setDescriptin("");
+      setTitle("");
     }
   };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -64,9 +66,11 @@ export default function FormDialog({setCorrect}) {
           />
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
+      <CustomizedSnackbars error={create?.error} message={create?.message} setChangemsg={setCreate}/>
     </div>
   );
 }

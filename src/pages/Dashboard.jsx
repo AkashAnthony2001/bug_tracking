@@ -34,9 +34,11 @@ const Dashboard = () => {
   const [myBugs, setMyBugs] = useState([]);
   const [open, setOpen] = useState(0);
   const [close, setClose] = useState(0);
-  const [inProcess , setInProcess] = useState(0);
-  const [assignedValue, setAssignedvalue] = useState([]);
+  const [inProcess, setInProcess] = useState(0);
+  const [hold, setHold] = useState(0);
 
+  const [assignedValue, setAssignedvalue] = useState([]);
+  const [filterData,setFilterData]=useState([]);
   const token = localStorage.getItem("token");
 
   const checkAuth = async () => {
@@ -62,9 +64,14 @@ const Dashboard = () => {
     }).length;
     setClose(setClosed);
     const setIdProcessed = data.filter((datas) => {
-      return datas.status === "InProgress"
+      return datas.status === "InProgress";
     }).length;
-    setInProcess(setIdProcessed)
+    setInProcess(setIdProcessed);
+
+    const setHolded = data.filter((datas) => {
+      return datas.status === "Hold";
+    }).length;
+    setHold(setHolded);
   };
 
   useEffect(() => {
@@ -84,6 +91,10 @@ const Dashboard = () => {
   useEffect(() => {
     displayBugs();
     Assigneddisplay();
+    const filterArr = assignedValue && 
+    assignedValue.filter((val)=>val.createdAt.includes(formattedNewDate))
+    setFilterData(filterArr)
+
   }, []);
 
   // console.log(assignedValue);
@@ -97,8 +108,15 @@ const Dashboard = () => {
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
 
-    return `${formattedDay}-${formattedMonth}-${year}`;
+    return `${year}-${formattedMonth}-${formattedDay}`;
   }
+  const d = new Date();
+ 
+  // console.log(d.toISOString())
+  const formattedNewDate =formatDate(d)
+
+  
+ 
 
   return (
     <div>
@@ -196,10 +214,10 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            0
+                            {hold}
                           </Typography>
                           <Typography variant="h7" color="black">
-                            Closed Bugs
+                            Hold
                           </Typography>
                         </CardContent>
                       </CardActionArea>
@@ -207,31 +225,41 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="bigCards">
-                  <Grid container spacing={2} >
-                    <Grid item xs={6} >
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
                       <div>
-                        <Card >
+                        <Card>
                           <CardContent>
                             <h2>{<BugReportIcon />} My Bugs</h2>
-                            <TableContainer  sx={{maxHeight:"500px",overflowY:'scroll'}}>
-                              <Table >
-                                <TableHead sx={{position:'sticky',top:0,bgcolor:'white'}}>
+                            <TableContainer
+                              sx={{ maxHeight: "500px", overflowY: "scroll" }}
+                            >
+                              <Table>
+                                <TableHead
+                                  sx={{
+                                    position: "sticky",
+                                    top: 0,
+                                    bgcolor: "white",
+                                  }}
+                                >
                                   <TableRow>
                                     <TableCell>Bug</TableCell>
                                     <TableCell>Date</TableCell>
                                   </TableRow>
                                 </TableHead>
-                                <TableBody >
-                                  {assignedValue.length && assignedValue.map((data) => {
-                                    const originalDateString = data.createdAt;
-                                    const formattedDate = formatDate(originalDateString);
-                                    return (
-                                      <TableRow key={data._id}>
-                                        <TableCell>{data.bug_id}</TableCell>
-                                        <TableCell>{formattedDate}</TableCell>
-                                      </TableRow>
-                                    );
-                                  })}
+                                <TableBody>
+                                  {assignedValue.length ?
+                                    assignedValue.map((data) => {
+                                      const originalDateString = data.createdAt;
+                                      const formattedDate =
+                                        formatDate(originalDateString);
+                                      return (
+                                        <TableRow>
+                                          <TableCell>{data.bug_id}</TableCell>
+                                          <TableCell>{formattedDate}</TableCell>
+                                        </TableRow>
+                                      );
+                                    }):"No Records Found"}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -248,16 +276,23 @@ const Dashboard = () => {
                               <Table>
                                 <TableHead>
                                   <TableRow>
-                                    <TableCell>Header 1</TableCell>
-                                    <TableCell>Header 2</TableCell>
+                                    <TableCell>Bug</TableCell>
+                                    <TableCell>Date</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  <TableRow>
-                                    <TableCell>Data 1</TableCell>
-                                    <TableCell>Data 2</TableCell>
-                                  </TableRow>
-                                  {/* Add more rows as needed */}
+                                  
+                                    {filterData.length ?filterData.map((val)=>{
+                                      return (
+                                        <TableRow>
+                                        <TableCell>{val.bug_id}</TableCell>
+                                        <TableCell>{formatDate(val.createdAt)}</TableCell>
+                                      </TableRow>
+                                      )
+                                    }
+                                       
+                                  ):"No Records Found"}
+                                
                                 </TableBody>
                               </Table>
                             </TableContainer>

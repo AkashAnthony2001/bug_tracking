@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
-function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect }) {
+function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
   const [err, setErr] = useState([]);
   const handleDelete = async () => {
     let res = await apiService.deleteProject(item._id);
@@ -14,6 +14,8 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect }) {
     }
   };
   const handleClose = () => {
+    setOpenDelete(false);
+    load()
     setOpenDelete(false);
   };
   if (err.error) {

@@ -40,7 +40,7 @@ const Assigned = () => {
       id: id,
     });
   };
-const heading= ["project_Name","moduleId", "assignedTo","reportedBy","sprint","customerfound", "estimate_date", "status"]
+const heading= ["Project Name","ModuleId", "AssignedTo","ReportedBy","Sprint","Customerfound", "Estimate_date", "Status"]
   return (
     <>
       <BasicTable rows={assignedValue} heading={heading} handleClick={handleOpenTicket} />
