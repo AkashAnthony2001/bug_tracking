@@ -36,6 +36,7 @@ export default function Bugs() {
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
+    console.log(statusData,"nr")
     setChangemsg(statusData);
   };
   function formatDate(isoDateString) {
@@ -113,6 +114,7 @@ export default function Bugs() {
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}
+        setChangemsg={setChangemsg}
       />
     </>
   );

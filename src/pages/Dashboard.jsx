@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [myBugs, setMyBugs] = useState([]);
   const [open, setOpen] = useState(0);
   const [close, setClose] = useState(0);
+  const [inProcess , setInProcess] = useState(0);
   const [assignedValue, setAssignedvalue] = useState([]);
 
   const token = localStorage.getItem("token");
@@ -60,6 +61,10 @@ const Dashboard = () => {
       return datas.status === "Closed";
     }).length;
     setClose(setClosed);
+    const setIdProcessed = data.filter((datas) => {
+      return datas.status === "InProgress"
+    }).length;
+    setInProcess(setIdProcessed)
   };
 
   useEffect(() => {
@@ -177,10 +182,10 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            0
+                            {inProcess}
                           </Typography>
                           <Typography variant="h7" color="black">
-                            Closed Bugs
+                            In Progress
                           </Typography>
                         </CardContent>
                       </CardActionArea>

@@ -30,21 +30,21 @@ const navbarItems = [
     text: 'Submitted by me',
     icon: <BugReportIcon />,
     link: '/dashboard/submitted'
-  }, {
-    id: 4,
-    text: 'Users',
-    icon: <PeopleAltOutlinedIcon />,
-    link: '/dashboard/users'
   },{
-    id: 5,
+    id: 4,
     text: 'Modules',
     icon: <ViewModuleIcon />,
     link: '/dashboard/module'
   },{
-    id: 6,
+    id: 5,
     text: 'Bugs',
     icon: <PestControlIcon />,
     link: '/dashboard/bugs'
+  },{
+    id: 6,
+    text: 'Bugs Status',
+    icon: <PestControlIcon />,
+    link: '/dashboard/bugstatus'
   }
 ]
 

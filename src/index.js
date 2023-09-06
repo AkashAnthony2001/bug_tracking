@@ -8,9 +8,9 @@ import Dashboard from './pages/Dashboard';
 import Assigned from './pages/Assigned';
 import Projects from './pages/Projects';
 import Submitted from './pages/Submitted';
-import Users from './pages/Users';
 import Module from './pages/Module';
 import Bugs from './pages/Bugs';
+import BugStatus from './pages/BugStatus';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,9 +23,9 @@ root.render(
           <Route path='/dashboard/projects' element={<Projects />} />
           <Route path='/dashboard/assigned' element={<Assigned />} />
           <Route path='/dashboard/submitted' element={<Submitted />} />
-          <Route path='/dashboard/users' element={<Users />} />
           <Route path='/dashboard/module' element={<Module />} />
           <Route path='/dashboard/bugs' element={<Bugs />} />
+          <Route path='/dashboard/bugstatus' element={<BugStatus />} />
 
         </Route>
       </ Route>
