@@ -23,7 +23,6 @@ root.render(
           <Route path='/dashboard/projects' element={<Projects />} />
           <Route path='/dashboard/assigned' element={<Assigned />} />
           <Route path='/dashboard/submitted' element={<Submitted />} />
-          <Route path='/dashboard/users' element={<Users />} />
           <Route path='/dashboard/module' element={<Module />} />
           <Route path='/dashboard/bugs' element={<Bugs />} />
 
