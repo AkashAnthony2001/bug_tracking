@@ -26,8 +26,8 @@ export default function CustomizedSnackbars({ error = false, message = "",setCha
     }
 
     setOpen(false);
-    setChangemsg({})
-    // setCreate({})
+    setChangemsg("")
+
   };
 
   return (
