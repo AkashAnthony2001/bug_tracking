@@ -1,8 +1,18 @@
+import React from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+const DeleteConfirmationDialog = ({
+  open,
+  onClose,
+  onDeleteConfirm
+}) => {
 
-const DeleteConfirmationDialog = ({ open, onClose, onDeleteConfirm }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm Delete</DialogTitle>

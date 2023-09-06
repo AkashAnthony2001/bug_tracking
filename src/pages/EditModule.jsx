@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import apiService from "../services/apiService";
 
 export default function EditModule({
   open,
   onClose,
   editData,
   setEditData,
-  onSubmit
+  onSubmit,
+  
 }) {
 
 
@@ -23,6 +22,7 @@ export default function EditModule({
       ...prevValues,
       [event.target.name]: event.target.value,
     }));
+ 
   };
 
   return (
@@ -55,6 +55,7 @@ export default function EditModule({
           />
         </DialogContent>
         <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
           <Button onClick={onSubmit}>Update</Button>
         </DialogActions>
       </Dialog>

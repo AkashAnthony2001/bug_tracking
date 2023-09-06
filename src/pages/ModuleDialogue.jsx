@@ -7,10 +7,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
 
-export default function ModuleDialogue({loadData}) {
+export default function ModuleDialogue({ loadData }) {
   const [moduleTitle, setModuleTitle] = useState();
   const [moduleDesc, setModuledesc] = useState();
   const [open, setOpen] = useState(false);
+  const [titleError, setTitleError] = useState("");
+  const [descError, setDescError] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,26 +20,45 @@ export default function ModuleDialogue({loadData}) {
 
   const handleClose = () => {
     setOpen(false);
+    setTitleError("");
+    setDescError("");
   };
-  
+
   const handleSubmit = async () => {
-    const moduledata = {
-      module_name: moduleTitle,
-      module_description: moduleDesc,
-    };
-    const result = await apiService.createModule(moduledata);
-    console.log(result);
-    if (result) {
-      setOpen(false);
-      loadData();
-      setModuleTitle('');
-      setModuledesc('');
+    const isTitleValid = validateTitle(moduleTitle);
+    const isDescValid = validateDescription(moduleDesc);
+
+    if (isTitleValid && isDescValid) {
+      const moduledata = {
+        module_name: moduleTitle,
+        module_description: moduleDesc,
+      };
+      const result = await apiService.createModule(moduledata);
+      console.log(result);
+      if (result) {
+        setOpen(false);
+        loadData();
+        setModuleTitle("");
+        setModuledesc("");
+      }
     }
-
   };
-
-
-
+  const validateTitle = (title) => {
+    if (!title.trim()) {
+      setTitleError("Module Title is required");
+      return false;
+    }
+    setTitleError("");
+    return true;
+  };
+  const validateDescription = (desc) => {
+    if (!desc.trim()) {
+      setDescError("Module Description is required");
+      return false;
+    }
+    setDescError("");
+    return true;
+  };
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -49,31 +70,31 @@ export default function ModuleDialogue({loadData}) {
           <TextField
             autoFocus
             margin="dense"
-            id="name" 
+            id="moduleTitle"
             label="Module Title"
-            type="title"
             fullWidth
             variant="standard"
             value={moduleTitle}
             onChange={(e) => setModuleTitle(e.target.value)}
+            error={!!titleError}
+            helperText={titleError}
           />
           <TextField
-            
             margin="dense"
-            id="name"
+            id="moduleDesc"
             label="Module Description"
-            type="description"
             fullWidth
             variant="standard"
             value={moduleDesc}
             onChange={(e) => setModuledesc(e.target.value)}
+            error={!!descError}
+            helperText={descError}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>create</Button>
         </DialogActions>
       </Dialog>
-      
     </div>
   );
 }

@@ -19,67 +19,76 @@ import DeleteConfirmationDialog from "./DeleteDialogue";
 import CustomizedSnackbars from "../components/CustomizedSnackbars";
 
 export default function Module() {
-  const [Mtitle, setMtitle] = useState([]);
+  const [moduleData, setModuleData] = useState([]);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-  const [id, setId] = useState("");
+  const [moduleIdDelete, setModuleIdToDelete] = useState("");
   const [deleteErr, setDeleteErr] = useState("");
   const [editedErr, setEditedErr] = useState("");
+  const loadModules = async () => {
+    const data = await apiService.getModule();
+    setModuleData(data);
+    console.log(data, "res");
+  };
 
-  const Moduledisplay = async () => {
-    try {
-      const data = await apiService.getModule();
-      setMtitle(data);
-      console.log(data, "res");
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  const handleDelete = async () => {
-    const delmodule = await apiService.deleteModule(id);
-    setDeleteErr(delmodule);
-    console.log(deleteErr);
-    setMtitle(delmodule);
-    setDeleteDialogOpen(false);
-    console.log(delmodule, "res");
-  };
-  const handleUpdate = async () => {
-    const result = await apiService.editModuledata(editData._id, editData);
-    setEditedErr(result);
-    console.log(editedErr);
-    console.log(editData);
-    if (result) {
-      setEditDialogOpen(false);
-    }
-  };
-  const handleEditClick = (value) => {
-    setEditData(value);
-    setEditDialogOpen(true);
-  };
-  const handleDeleteClick = (value) => {
-    setDeleteDialogOpen(true);
-    setId(value);
-  };
   useEffect(() => {
-    Moduledisplay();
+    loadModules();
   }, []);
+  const handleDelete = async () => {
+    const deletedModule = await apiService.deleteModule(moduleIdDelete);
+    if (deletedModule.error) {
+      setDeleteErr(deletedModule);
+    } else {
+      setDeleteDialogOpen(false);
+    }
+  };
 
-  if (editedErr.error || deleteErr.error) {
+  if (deleteErr.error) {
     return (
       <>
         <CustomizedSnackbars
-          error={editedErr.error || deleteErr.error}
-          message={editedErr.error || deleteErr.message}
+          error={deleteErr.error}
+          message={deleteErr.message}
+          setChangemsg={setDeleteErr}
         />
       </>
     );
   }
 
+  const handleUpdate = async () => {
+    const result = await apiService.editModuledata(editData._id, editData);
+    if (result.error) {
+      setEditedErr(result);
+    } else {
+      setEditDialogOpen(false);
+    }
+  };
+
+  if (editedErr.error) {
+    return (
+      <>
+        <CustomizedSnackbars
+          error={editedErr.error}
+          message={editedErr.message}
+          setChangemsg={setEditedErr}
+        />
+      </>
+    );
+  }
+
+  const handleEditClick = (value) => {
+    setEditData(value);
+    setEditDialogOpen(true);
+  };
+  const handleDeleteClick = (moduleId) => {
+    setDeleteDialogOpen(true);
+    setModuleIdToDelete(moduleId);
+  };
   return (
     <>
       <div>
-        <ModuleDialogue loadData={() => Moduledisplay()} />
+        <ModuleDialogue loadData={() => loadModules()} />
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -90,13 +99,13 @@ export default function Module() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Mtitle?.map((moduledata) => (
-                <TableRow key={moduledata._id}>
-                  <TableCell>{moduledata.module_name}</TableCell>
-                  <TableCell>{moduledata.module_description}</TableCell>
+              {moduleData?.map((module) => (
+                <TableRow key={module._id}>
+                  <TableCell>{module.module_name}</TableCell>
+                  <TableCell>{module.module_description}</TableCell>
                   <TableCell>
                     <Button
-                      onClick={() => handleEditClick(moduledata)}
+                      onClick={() => handleEditClick(module)}
                       // variant="outlined"
                       startIcon={<EditIcon />}
                     >
@@ -104,7 +113,7 @@ export default function Module() {
                     </Button>
 
                     <Button
-                      onClick={() => handleDeleteClick(moduledata._id)}
+                      onClick={() => handleDeleteClick(module._id)}
                       // variant="outlined"
                       startIcon={<DeleteIcon />}
                     >
@@ -119,7 +128,7 @@ export default function Module() {
         <EditModule
           open={editDialogOpen}
           onClose={() => setEditDialogOpen(false)}
-          setOpen={setEditDialogOpen}
+          // setOpen={setEditDialogOpen}
           editData={editData}
           setEditData={setEditData}
           onSubmit={handleUpdate}
