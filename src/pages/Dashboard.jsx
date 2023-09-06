@@ -221,7 +221,7 @@ const Dashboard = () => {
                                     const originalDateString = data.createdAt;
                                     const formattedDate = formatDate(originalDateString);
                                     return (
-                                      <TableRow>
+                                      <TableRow key={data._id}>
                                         <TableCell>{data.bug_id}</TableCell>
                                         <TableCell>{formattedDate}</TableCell>
                                       </TableRow>

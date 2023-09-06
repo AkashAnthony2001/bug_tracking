@@ -16,6 +16,7 @@ import ModuleDialogue from "./ModuleDialogue";
 import apiService from "../services/apiService";
 import EditModule from "./EditModule";
 import DeleteConfirmationDialog from "./DeleteDialogue";
+import CustomizedSnackbars from "../components/CustomizedSnackbars";
 
 export default function Module() {
   const [Mtitle, setMtitle] = useState([]);
@@ -23,47 +24,58 @@ export default function Module() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [id, setId] = useState("");
+  const [deleteErr, setDeleteErr] = useState("");
+  const [editedErr, setEditedErr] = useState("");
+
   const Moduledisplay = async () => {
-    const data = await apiService.getModule();
-    setMtitle(data);
-    console.log(data, "res");
+    try {
+      const data = await apiService.getModule();
+      setMtitle(data);
+      console.log(data, "res");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
-
-  useEffect(() => {
-    Moduledisplay();
-  }, []);
-
-  console.log(Mtitle);
-
   const handleDelete = async () => {
     const delmodule = await apiService.deleteModule(id);
+    setDeleteErr(delmodule);
+    console.log(deleteErr);
     setMtitle(delmodule);
-    // if(delmodule){
     setDeleteDialogOpen(false);
-    // }
-
     console.log(delmodule, "res");
-    Moduledisplay();
   };
-
   const handleUpdate = async () => {
     const result = await apiService.editModuledata(editData._id, editData);
+    setEditedErr(result);
+    console.log(editedErr);
     console.log(editData);
     if (result) {
       setEditDialogOpen(false);
     }
-    Moduledisplay();
   };
-
   const handleEditClick = (value) => {
     setEditData(value);
     setEditDialogOpen(true);
   };
-
   const handleDeleteClick = (value) => {
     setDeleteDialogOpen(true);
     setId(value);
   };
+  useEffect(() => {
+    Moduledisplay();
+  }, []);
+
+  if (editedErr.error || deleteErr.error) {
+    return (
+      <>
+        <CustomizedSnackbars
+          error={editedErr.error || deleteErr.error}
+          message={editedErr.error || deleteErr.message}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <div>
