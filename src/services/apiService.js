@@ -252,7 +252,6 @@ const createBugs = async (record) => {
 
 };
 
-
 const generateBug = async (id) => {
   const response = await fetch(`${baseUrl}/issuetracker/${id}`);
   const parsedResponse = await response.json();
@@ -260,6 +259,13 @@ const generateBug = async (id) => {
   return parsedResponse;
 };
 
+
+const bugStatus = async () => {
+  const response = await fetch(`${baseUrl}/issuestatus/`);
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+}
 const apiService = {
   createUser,
   login,
@@ -285,7 +291,8 @@ const apiService = {
   putStatus,
   getBugs,
   getModule,
-  createBugs
+  createBugs,
+  bugStatus
   
 };
 
