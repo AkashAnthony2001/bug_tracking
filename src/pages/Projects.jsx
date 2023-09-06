@@ -10,7 +10,7 @@ import DeleteProject from "../components/ActionComponent";
 const ProjectList = ({ projects, handleClick, setCorrect,load }) => {
   return (
     <>
-      {projects.map((project) => (
+      {projects.length ? projects.map((project) => (
         <ProjectCard
           key={project._id}
           project={project}
@@ -18,7 +18,7 @@ const ProjectList = ({ projects, handleClick, setCorrect,load }) => {
           setCorrect={setCorrect}
           load={load}
         />
-      ))}
+      )):"No Projects Found"}
     </>
   );
 };

@@ -28,7 +28,7 @@ function EditDialog({ item, open, setOpen,load }) {
       description: editedDescription,
       id: item._id,
     };
-
+      load()
     let res = await apiService.editProject(projectObj);
     setEditErr(res);
     if (res) {
