@@ -48,15 +48,16 @@ export default function ModuleDialogue({ loadData }) {
       setTitleError("Module Title is required");
       return false;
     }
-    setTitleError("");
+    setTitleError(""); 
     return true;
   };
+  
   const validateDescription = (desc) => {
     if (!desc.trim()) {
       setDescError("Module Description is required");
       return false;
     }
-    setDescError(" ");
+    setDescError("");
     return true;
   };
   return (

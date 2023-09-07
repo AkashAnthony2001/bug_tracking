@@ -43,6 +43,8 @@ export default function BugsDialogue({loadBug}) {
     bug_id: "",
   };
   const [bugData, setBugData] = useState(initialValues);
+  const [id, setId] = useState()
+
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -53,8 +55,6 @@ export default function BugsDialogue({loadBug}) {
   };
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
-    // setBugData(data);
-    // console.log(data, "res");
     const statusData = await apiService.getStatus();
     setSelectedStatus(statusData);
     const record = await apiService.getProjects();
@@ -62,9 +62,6 @@ export default function BugsDialogue({loadBug}) {
     const moduledata = await apiService.getModule();
     setModule(moduledata);
     const assignedData = await apiService.getUsers();
-    setAssigned(assignedData);
-    // const bugData = await apiService.getBugs();
-    // setBug(bugData);
     const reportdata = await apiService.getUsers();
     setReport(reportdata);
     const createdata = await apiService.getUsers();
@@ -103,11 +100,20 @@ export default function BugsDialogue({loadBug}) {
       console.error("Error creating bug:", error);
     }
   };
-  const secondApi = async (data) => {
-    const res = await apiService.generateBug(data);
-    setBugData({ ...bugData, bug_id: res, projectId: data });
-    console.log(res);
+  // const secondApi = async (data) => {
+  //   const res = await apiService.generateBug(data);
+  //   setBugData({ ...bugData, bug_id: res, projectId: data });
+  //   console.log(res);
+  // };
+
+
+
+  const moduleApi = async (data) => {
+    const response = await apiService.generateBug(data);
+    setBugData({ ...bugData,bug_id: response,  moduleId: data });
+    console.log(response);
   };
+
   const handleReset = () => {
     setBugData(initialValues);
   };
@@ -131,8 +137,7 @@ export default function BugsDialogue({loadBug}) {
                   label="Project Name"
                   value={bugData.projectId}
                   onChange={(event) => {
-                    secondApi(event.target.value);
-                  }}
+                    setBugData({ ...bugData, projectId: event.target.value })                  }}
                 >
                   {projectName.map((projectdata) => (
                     <MenuItem key={projectdata._id} value={projectdata._id}>
@@ -155,6 +160,7 @@ export default function BugsDialogue({loadBug}) {
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_id: event.target.value })
                   }
+                  disabled={true}
                 />
               </FormControl>
             </Grid>
@@ -212,7 +218,7 @@ export default function BugsDialogue({loadBug}) {
                   label="Project Name"
                   value={bugData.moduleId}
                   onChange={(event) =>
-                    setBugData({ ...bugData, moduleId: event.target.value })
+                    moduleApi(event.target.value )
                   }
                 >
                   {module.map((moduledatas) => (
