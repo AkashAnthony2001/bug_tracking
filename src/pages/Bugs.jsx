@@ -25,7 +25,9 @@ export default function Bugs() {
     // console.log(data, "res");
   };
 
-
+  useEffect(() => {
+    bugDisplay();
+  }, []);
 
   const handleStatus = async (event, id) => {
     let obj = {
@@ -47,12 +49,9 @@ export default function Bugs() {
 
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
-  useEffect(() => {
-    bugDisplay();
-  }, []);
   return (
     <>
-      <BugsDialogue loadBug={() => bugDisplay()}/>
+      <BugsDialogue />
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
