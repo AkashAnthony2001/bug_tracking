@@ -15,7 +15,6 @@ export default function BasicTableSub({
   row,
   headers,
   handleClick,
-  statusvalue,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -32,10 +31,7 @@ export default function BasicTableSub({
     setRowsPerPage(event.target.value);
     setPage(0);
   };
-  const getPStatus = async (event, rowid) => {
-    await apiService.putPStatus(event.target.value, rowid);
-    console.log(event.target.value, rowid, "hello");
-  };
+  
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };

@@ -56,8 +56,7 @@ export default function BugsDialogue() {
   };
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
-    const statusData = await apiService.getStatus();
-    setSelectedStatus(statusData);
+  
     const record = await apiService.getProjects();
     setprojectName(record);
     const moduledata = await apiService.getModule();
@@ -68,11 +67,7 @@ export default function BugsDialogue() {
     const createdata = await apiService.getUsers();
     setCreatedby(createdata);
   };
-  const getStatus = async (event, rowid) => {
-    console.log(event.target.value, rowid);
 
-    await apiService.putStatus(event, rowid);
-  };
 
   const handleCreateBug = async () => {
     console.log(date, "date");

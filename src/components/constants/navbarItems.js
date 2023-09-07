@@ -40,11 +40,6 @@ const navbarItems = [
     text: 'Bugs',
     icon: <PestControlIcon />,
     link: '/dashboard/bugs'
-  },{
-    id: 6,
-    text: 'Bugs Status',
-    icon: <PestControlIcon />,
-    link: '/dashboard/bugstatus'
   }
 ]
 
