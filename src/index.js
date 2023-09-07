@@ -10,7 +10,7 @@ import Projects from './pages/Projects';
 import Submitted from './pages/Submitted';
 import Module from './pages/Module';
 import Bugs from './pages/Bugs';
-import BugStatus from './pages/BugStatus';
+
 import Users from './pages/Users'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
