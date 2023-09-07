@@ -193,9 +193,6 @@ const deleteModule = async (_id) => {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
-  const parsedResponse = await response.json();
-
-  return parsedResponse;
 };
 const editModuledata = async (_id, record) => {
   const response = await fetch(`${baseUrl}/modules/${_id}`, {
