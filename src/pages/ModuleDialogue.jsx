@@ -7,12 +7,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
 
-export default function ModuleDialogue({ loadData }) {
+export default function ModuleDialogue({loadData}) {
   const [moduleTitle, setModuleTitle] = useState();
   const [moduleDesc, setModuledesc] = useState();
   const [open, setOpen] = useState(false);
-  const [titleError, setTitleError] = useState("");
-  const [descError, setDescError] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,10 +18,8 @@ export default function ModuleDialogue({ loadData }) {
 
   const handleClose = () => {
     setOpen(false);
-    setTitleError("");
-    setDescError("");
   };
-
+  
   const handleSubmit = async () => {
     const isTitleValid = validateTitle(moduleTitle);
     const isDescValid = validateDescription(moduleDesc);
@@ -59,7 +55,11 @@ export default function ModuleDialogue({ loadData }) {
     }
     setDescError("");
     return true;
+
   };
+
+
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -71,25 +71,24 @@ export default function ModuleDialogue({ loadData }) {
           <TextField
             autoFocus
             margin="dense"
-            id="moduleTitle"
+            id="name" 
             label="Module Title"
+            type="title"
             fullWidth
             variant="standard"
             value={moduleTitle}
             onChange={(e) => setModuleTitle(e.target.value)}
-            error={!!titleError}
-            helperText={titleError}
           />
           <TextField
+            
             margin="dense"
-            id="moduleDesc"
+            id="name"
             label="Module Description"
+            type="description"
             fullWidth
             variant="standard"
             value={moduleDesc}
             onChange={(e) => setModuledesc(e.target.value)}
-            error={!!descError}
-            helperText={descError}
           />
         </DialogContent>
         <DialogActions>

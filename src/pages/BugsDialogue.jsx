@@ -17,7 +17,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue({loadBug}) {
+export default function BugsDialogue() {
   const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState([]);
   const [projectName, setprojectName] = useState([]);
@@ -46,6 +46,7 @@ export default function BugsDialogue({loadBug}) {
   const [id, setId] = useState()
 
 
+
   const handleOpenDialog = () => {
     setOpen(true);
   };
@@ -66,7 +67,6 @@ export default function BugsDialogue({loadBug}) {
     setReport(reportdata);
     const createdata = await apiService.getUsers();
     setCreatedby(createdata);
-    
   };
   const getStatus = async (event, rowid) => {
     console.log(event.target.value, rowid);
@@ -75,27 +75,17 @@ export default function BugsDialogue({loadBug}) {
   };
 
   const handleCreateBug = async () => {
-    if (
-      !bugData.projectId ||
-      !bugData.bug_id ||
-      !bugData.bug_description ||
-      !bugData.bug_type
-    ) {
-      alert("Please fill all  fields.");
-      return;
-    }
+    console.log(date, "date");
 
     let data = {
       ...bugData,
       estimate_date: date,
     };
-
     try {
       const result = await apiService.createBugs(data);
       console.log(result);
-      setOpen(false);
-      loadBug();
 
+      setOpen(false);
     } catch (error) {
       console.error("Error creating bug:", error);
     }
@@ -117,6 +107,7 @@ export default function BugsDialogue({loadBug}) {
   const handleReset = () => {
     setBugData(initialValues);
   };
+
   useEffect(() => {
     bugDisplay();
   }, []);
@@ -301,7 +292,7 @@ export default function BugsDialogue({loadBug}) {
             {/* Serviertiy dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="bug-type-label">Severity</InputLabel>
+                <InputLabel id="bug-type-label">Serviertiy</InputLabel>
                 <Select
                   label="Status"
                   value={bugData.severity}
@@ -350,7 +341,7 @@ export default function BugsDialogue({loadBug}) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DatePicker"]}>
                     <DatePicker
-                      label="Estimate Date"
+                      label="estimate_date"
                       value={date || null}
                       onChange={(value) => {
                         console.log(value.$d);
