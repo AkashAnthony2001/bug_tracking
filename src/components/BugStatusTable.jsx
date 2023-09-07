@@ -34,13 +34,13 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
         </TableHead>
         <TableBody>
           {bugStatusData.length ? bugStatusData?.map((statusData) => {
-            const originalDateString = statusData.createdAt;
+            const originalDateString = statusData?.createdAt;
             const formattedDate = formatDate(originalDateString);
             return (
-              <TableRow key={statusData.bug_id}>
-                <TableCell>{statusData.bug_id}</TableCell>
-                <TableCell>{statusData.status}</TableCell>
-                <TableCell>{statusData.createdby.username}</TableCell>
+              <TableRow key={statusData?.bug_id}>
+                <TableCell>{statusData?.bug_id}</TableCell>
+                <TableCell>{statusData?.status}</TableCell>
+                <TableCell>{statusData?.createdby?.username}</TableCell>
                 <TableCell>{formattedDate}</TableCell>
               </TableRow>
             );

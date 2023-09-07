@@ -116,7 +116,7 @@ export default function Bugs() {
                     <TableCell>{databug?.sprint}</TableCell>
                     <TableCell>{databug?.customerfound ? "Yes" : "No"}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
-                    <TableCell>{databug?.createdby.username}</TableCell>
+                    <TableCell>{databug?.createdby?.username}</TableCell>
                     <TableCell>
                       <Select
                         defaultValue={databug?.status}
