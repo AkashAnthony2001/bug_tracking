@@ -56,7 +56,7 @@ export default function ModuleDialogue({ loadData }) {
       setDescError("Module Description is required");
       return false;
     }
-    setDescError("");
+    setDescError(" ");
     return true;
   };
   return (
