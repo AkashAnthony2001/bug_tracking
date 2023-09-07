@@ -21,19 +21,39 @@ export default function ModuleDialogue({loadData}) {
   };
   
   const handleSubmit = async () => {
-    const moduledata = {
-      module_name: moduleTitle,
-      module_description: moduleDesc,
-    };
-    const result = await apiService.createModule(moduledata);
-    console.log(result);
-    if (result) {
-      setOpen(false);
-      loadData();
-      setModuleTitle('');
-      setModuledesc('');
+    const isTitleValid = validateTitle(moduleTitle);
+    const isDescValid = validateDescription(moduleDesc);
+
+    if (isTitleValid && isDescValid) {
+      const moduledata = {
+        module_name: moduleTitle,
+        module_description: moduleDesc,
+      };
+      const result = await apiService.createModule(moduledata);
+      console.log(result);
+      if (result) {
+        setOpen(false);
+        loadData();
+        setModuleTitle("");
+        setModuledesc("");
+      }
     }
-    setDescError(" ");
+  };
+  const validateTitle = (title) => {
+    if (!title.trim()) {
+      setTitleError("Module Title is required");
+      return false;
+    }
+    setTitleError(""); 
+    return true;
+  };
+  
+  const validateDescription = (desc) => {
+    if (!desc.trim()) {
+      setDescError("Module Description is required");
+      return false;
+    }
+    setDescError("");
     return true;
 
   };
