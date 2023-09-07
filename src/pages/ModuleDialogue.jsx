@@ -11,6 +11,7 @@ export default function ModuleDialogue({loadData}) {
   const [moduleTitle, setModuleTitle] = useState();
   const [moduleDesc, setModuledesc] = useState();
   const [open, setOpen] = useState(false);
+  const [descError , setDescError] = useState("")
 
   const handleClickOpen = () => {
     setOpen(true);

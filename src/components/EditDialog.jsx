@@ -12,12 +12,7 @@ function EditDialog({ item, open, setOpen,load }) {
   const [editErr, setEditErr] = useState([]);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
-  // const [close , setClose] = useState(false)
 
-  // const handelChange = event => {
-  //   setEditedTitle(event.target.value);
-  //   setEditedDescription(event.target.value);
-  // };
   useEffect(() => {
     setEditedTitle(item.title);
     setEditedDescription(item.description);
@@ -39,7 +34,7 @@ function EditDialog({ item, open, setOpen,load }) {
     setEditedDescription(projectObj.description);
     console.log(projectObj);
   };
-  //  console.log(openEditDialog,"open");
+
   const handleClose = () => {
     setOpen(false);
   };

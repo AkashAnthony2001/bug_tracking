@@ -6,6 +6,7 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
   const [err, setErr] = useState([]);
   const handleDelete = async () => {
+    
     let res = await apiService.deleteProject(item._id);
     setErr(res);
     setCorrect((prev) => !prev);
@@ -29,7 +30,7 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure want to Delete this Project"}
+          {"Are you sure want to Delete this"}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

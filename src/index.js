@@ -11,6 +11,7 @@ import Submitted from './pages/Submitted';
 import Module from './pages/Module';
 import Bugs from './pages/Bugs';
 import BugStatus from './pages/BugStatus';
+import Users from './pages/Users'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,7 +26,7 @@ root.render(
           <Route path='/dashboard/submitted' element={<Submitted />} />
           <Route path='/dashboard/module' element={<Module />} />
           <Route path='/dashboard/bugs' element={<Bugs />} />
-          <Route path='/dashboard/bugstatus' element={<BugStatus />} />
+          <Route path='/dashboard/users' element={<Users />} />
 
         </Route>
       </ Route>

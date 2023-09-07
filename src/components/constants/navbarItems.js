@@ -42,10 +42,11 @@ const navbarItems = [
     link: '/dashboard/bugs'
   },{
     id: 6,
-    text: 'Bugs Status',
-    icon: <PestControlIcon />,
-    link: '/dashboard/bugstatus'
+    text: 'Users',
+    icon: <PeopleAltOutlinedIcon />,
+    link: '/dashboard/users'
   }
+
 ]
 
 export default navbarItems
