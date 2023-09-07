@@ -9,7 +9,10 @@ const Users = () => {
 
   const handleUsers = async () => {
     const result = await apiService.getUsers();
-    setUserData(result);
+    const uData = result.filter((data)=>{
+      return data.role === "developer" 
+    })
+    setUserData(uData);
   };
 
   useEffect(() => {
@@ -20,14 +23,15 @@ const Users = () => {
       <UserDialog load={handleUsers} />
       
       {userData.length
-        ? userData.map((userData) => (
+        ? userData.map((userDatas) => (
             <UserCard
-              userData={userData}
+              key={userDatas._id}
+              userData={userDatas}
               setCorrect={setCorrect}
               load={handleUsers}
             />
           ))
-        : "No Projects Found"}
+        : "No Users Found"}
     </>
   );
 };

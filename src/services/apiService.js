@@ -253,6 +253,13 @@ const bugStatus = async () => {
 
   return parsedResponse;
 }
+const deleteUser = async (id) => {
+  const response = await fetch(`${baseUrl}/users/${id}`, {
+    method: "DELETE",
+  });
+  const parsedResponse = await response.json();
+  return parsedResponse;
+};
 const apiService = {
   createUser,
   login,
@@ -277,7 +284,8 @@ const apiService = {
   getBugs,
   getModule,
   createBugs,
-  bugStatus
+  bugStatus,
+  deleteUser
   
 };
 
