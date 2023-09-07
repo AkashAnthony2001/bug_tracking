@@ -33,6 +33,8 @@ export default function ModuleDialogue({loadData}) {
       setModuleTitle('');
       setModuledesc('');
     }
+    setDescError(" ");
+    return true;
 
   };
 
