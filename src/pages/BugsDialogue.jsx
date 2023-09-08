@@ -132,7 +132,7 @@ export default function BugsDialogue() {
     };
     const response = await apiService.generateBug(payloadData);
     if (response) {
-      setBugData({ ...bugData, bug_id: response, moduleId: data });
+      setBugData({ ...bugData, bug_id: response.response, moduleId: data });
     }
     console.log(response);
   };
