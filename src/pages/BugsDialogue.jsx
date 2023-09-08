@@ -20,7 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function BugsDialogue() {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
@@ -44,7 +44,7 @@ export default function BugsDialogue() {
     bug_id: "",
   };
   const [bugData, setBugData] = useState(initialValues);
-  const [idData, setIDData] = useState({ projectId: "", moduleId: "" });
+  const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -113,6 +113,7 @@ export default function BugsDialogue() {
       let data = {
         ...bugData,
         estimate_date: date,
+        
       };
       try {
         const result = await apiService.createBugs(data);
@@ -124,20 +125,12 @@ export default function BugsDialogue() {
       }
     }
   };
-  // const secondApi = async (data) => {
-  //   const res = await apiService.generateBug(data);
-  //   setBugData({ ...bugData, bug_id: res, projectId: data });
-  //   console.log(res);
-  // };
   const moduleApi = async (data) => {
     let payloadData = {
       projectid: idData.projectId,
       moduleid: data,
     };
-    console.log(data, "vel");
-    console.log(idData, "sri");
     const response = await apiService.generateBug(payloadData);
-    console.log(response, "Baa");
     if (response) {
       setBugData({ ...bugData, bug_id: response, moduleId: data });
     }
@@ -149,7 +142,6 @@ export default function BugsDialogue() {
   useEffect(() => {
     bugDisplay();
   }, []);
-  console.log(idData);
 
   return (
     <>
