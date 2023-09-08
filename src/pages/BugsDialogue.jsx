@@ -18,7 +18,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue(loadBugData) {
+export default function BugsDialogue({loadData}) {
   const [open, setOpen] = useState(false);
   // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
@@ -47,11 +47,13 @@ export default function BugsDialogue(loadBugData) {
   const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
-    setBugData(prevData => {
-      return {
-        ...prevData,
-        createdby: userName
-      }
+    // setBugData((
+    //     ...prevData,
+    //     createdby: userName,
+    // );
+    setBugData({
+      ...bugData,
+      createdby: userName,
     })
     setOpen(true);
   };
@@ -106,6 +108,9 @@ export default function BugsDialogue(loadBugData) {
     if (!bugData.sprint) {
       newErrors.sprint = "Sprint is required.";
     }
+    if (!date) {
+      newErrors.estimate_date = "Estimate Date is required.";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -118,7 +123,9 @@ export default function BugsDialogue(loadBugData) {
       try {
         const result = await apiService.createBugs(data);
         console.log(result);
-
+        if(result){
+          loadData()
+        }
         setOpen(false);
       } catch (error) {
         console.error("Error creating bug:", error);
@@ -129,8 +136,7 @@ export default function BugsDialogue(loadBugData) {
     let payloadData = {
       projectid: idData.projectId,
       moduleid: data,
-      createdby :userName
-
+      createdby: userName,
     };
     const response = await apiService.generateBug(payloadData);
     if (response) {
@@ -138,13 +144,13 @@ export default function BugsDialogue(loadBugData) {
     }
     console.log(response);
   };
+
   const handleReset = () => {
     setBugData(initialValues);
   };
   useEffect(() => {
     bugDisplay();
     setUsername(localStorage.getItem("name"));
-
   }, []);
 
   return (
@@ -396,6 +402,9 @@ export default function BugsDialogue(loadBugData) {
                     />
                   </DemoContainer>
                 </LocalizationProvider>
+                {errors.estimate_date && (
+                  <FormHelperText error>{errors.estimate_date}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             {/* status dialogbox */}

@@ -77,7 +77,7 @@ export default function Bugs() {
 
    return (
     <>
-      <BugsDialogue  loadBugData={() => bugDisplay()}/>
+      <BugsDialogue loadData={bugDisplay}/>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
