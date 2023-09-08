@@ -55,7 +55,7 @@ export default function BugsDialogue() {
   };
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
-  
+
     const record = await apiService.getProjects();
     setprojectName(record);
     const moduledata = await apiService.getModule();
@@ -66,8 +66,8 @@ export default function BugsDialogue() {
     setReport(reportdata);
     const createdata = await apiService.getUsers();
     setCreatedby(createdata);
-  }
-  }
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -131,13 +131,13 @@ export default function BugsDialogue() {
   // };
   const moduleApi = async (data) => {
     let payloadData = {
-      projectid:idData.projectId,
-      moduleid:data
-    }
-    console.log(data,"vel")
-    console.log(idData,"sri")
+      projectid: idData.projectId,
+      moduleid: data,
+    };
+    console.log(data, "vel");
+    console.log(idData, "sri");
     const response = await apiService.generateBug(payloadData);
-    console.log(response,"Baa")
+    console.log(response, "Baa");
     if (response) {
       setBugData({ ...bugData, bug_id: response, moduleId: data });
     }
@@ -480,4 +480,4 @@ export default function BugsDialogue() {
       </Dialog>
     </>
   );
-          }
+}
