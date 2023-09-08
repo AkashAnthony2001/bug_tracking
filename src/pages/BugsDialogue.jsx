@@ -18,15 +18,15 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue() {
+export default function BugsDialogue({loadData}) {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState([]);
+  // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
   const [report, setReport] = useState([]);
-  const [createby, setCreatedby] = useState([]);
   const [errors, setErrors] = useState("");
+  const [userName, setUsername] = useState("");
   const [date, setDate] = useState("");
   let initialValues = {
     bug_description: "",
@@ -44,9 +44,17 @@ export default function BugsDialogue() {
     bug_id: "",
   };
   const [bugData, setBugData] = useState(initialValues);
-  const [idData, setIDData] = useState({ projectId: "", moduleId: "" });
+  const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
+    // setBugData((
+    //     ...prevData,
+    //     createdby: userName,
+    // );
+    setBugData({
+      ...bugData,
+      createdby: userName,
+    })
     setOpen(true);
   };
 
@@ -64,8 +72,6 @@ export default function BugsDialogue() {
     setAssigned(assignedData);
     const reportdata = await apiService.getUsers();
     setReport(reportdata);
-    const createdata = await apiService.getUsers();
-    setCreatedby(createdata);
   };
 
   const validateForm = () => {
@@ -90,13 +96,10 @@ export default function BugsDialogue() {
     if (!bugData.reportedBy) {
       newErrors.reportedBy = "Reported by is required.";
     }
-    if (!bugData.createdby) {
-      newErrors.createdby = "Created By is required.";
-    }
     if (!bugData.severity) {
       newErrors.severity = "Severity is required.";
     }
-    if (!bugData.customerfound) {
+    if (bugData.customerfound === "") {
       newErrors.customerfound = "Customer Found is required.";
     }
     if (!bugData.status) {
@@ -104,6 +107,9 @@ export default function BugsDialogue() {
     }
     if (!bugData.sprint) {
       newErrors.sprint = "Sprint is required.";
+    }
+    if (!date) {
+      newErrors.estimate_date = "Estimate Date is required.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -117,39 +123,35 @@ export default function BugsDialogue() {
       try {
         const result = await apiService.createBugs(data);
         console.log(result);
-
+        if(result){
+          loadData()
+        }
         setOpen(false);
       } catch (error) {
         console.error("Error creating bug:", error);
       }
     }
   };
-  // const secondApi = async (data) => {
-  //   const res = await apiService.generateBug(data);
-  //   setBugData({ ...bugData, bug_id: res, projectId: data });
-  //   console.log(res);
-  // };
   const moduleApi = async (data) => {
     let payloadData = {
       projectid: idData.projectId,
       moduleid: data,
+      createdby: userName,
     };
-    console.log(data, "vel");
-    console.log(idData, "sri");
     const response = await apiService.generateBug(payloadData);
-    console.log(response, "Baa");
     if (response) {
       setBugData({ ...bugData, bug_id: response.response, moduleId: data });
     }
     console.log(response);
   };
+
   const handleReset = () => {
     setBugData(initialValues);
   };
   useEffect(() => {
     bugDisplay();
+    setUsername(localStorage.getItem("name"));
   }, []);
-  console.log(idData);
 
   return (
     <>
@@ -198,7 +200,6 @@ export default function BugsDialogue() {
                       ...bugData,
                       moduleId: event.target.value,
                     });
-                    // setIDData({ ...idData, moduleId: event.target.value });
                     moduleApi(event.target.value);
                   }}
                 >
@@ -326,21 +327,14 @@ export default function BugsDialogue() {
             {/* created by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="created-by-label">Created By</InputLabel>
-                <Select
+                <TextField
+                  type="text"
                   label="Created By"
-                  value={bugData.createdby}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, createdby: event.target.value })
-                  }
-                >
-                  {createby.map((createdatas) => (
-                    <MenuItem key={createdatas._id} value={createdatas._id}>
-                      {createdatas.username}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText error>{errors.createdby}</FormHelperText>
+                  name="createdby"
+                  variant="outlined"
+                  value={userName}
+                  disabled
+                />
               </FormControl>
             </Grid>
             <br />
@@ -408,6 +402,9 @@ export default function BugsDialogue() {
                     />
                   </DemoContainer>
                 </LocalizationProvider>
+                {errors.estimate_date && (
+                  <FormHelperText error>{errors.estimate_date}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             {/* status dialogbox */}
