@@ -123,7 +123,7 @@ export default function BugsDialogue() {
                   label="Project Name"
                   value={bugData.projectId}
                   onChange={(event) => {
-                    setBugData({ ...bugData, projectId: event.target.value })                  }}
+                    setBugData({ ...bugData, projectId: event.target.value })}}
                 >
                   {projectName.map((projectdata) => (
                     <MenuItem key={projectdata._id} value={projectdata._id}>

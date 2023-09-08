@@ -44,7 +44,7 @@ export default function Bugs() {
   useEffect(() => {
     bugDisplay();
     bugStatusApi();
-  }, []);
+  }, [changemsg]);
 
   const handleStatus = async (event, id) => {
     let obj = {
@@ -121,7 +121,7 @@ export default function Bugs() {
                       <Select
                         defaultValue={databug?.status}
                         onChange={(e) => {
-                          handleStatus(e, databug._id);
+                          handleStatus(e, databug?._id);
                         }}
                       >
                         <MenuItem value="Opened">Opened</MenuItem>
