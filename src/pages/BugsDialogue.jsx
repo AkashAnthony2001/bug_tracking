@@ -7,6 +7,7 @@ import {
   MenuItem,
   TextField,
   Grid,
+  FormHelperText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
@@ -19,13 +20,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function BugsDialogue() {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = React.useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
-  // const [bug, setBug] = useState([]);
   const [report, setReport] = useState([]);
   const [createby, setCreatedby] = useState([]);
+  const [errors, setErrors] = useState("");
   const [date, setDate] = useState("");
   let initialValues = {
     bug_description: "",
@@ -43,9 +44,7 @@ export default function BugsDialogue() {
     bug_id: "",
   };
   const [bugData, setBugData] = useState(initialValues);
-  const [id, setId] = useState()
-
-
+  const [idData, setIDData] = useState({ projectId: "", moduleId: "" });
 
   const handleOpenDialog = () => {
     setOpen(true);
@@ -63,6 +62,7 @@ export default function BugsDialogue() {
     const moduledata = await apiService.getModule();
     setModule(moduledata);
     const assignedData = await apiService.getUsers();
+    setAssigned(assignedData);
     const reportdata = await apiService.getUsers();
     setReport(reportdata);
     const createdata = await apiService.getUsers();
@@ -73,21 +73,60 @@ export default function BugsDialogue() {
 
     await apiService.putStatus(event, rowid);
   };
+  const validateForm = () => {
+    const newErrors = {};
 
+    if (!bugData.projectId) {
+      newErrors.projectId = "Project name is required.";
+    }
+    if (!bugData.bug_description) {
+      newErrors.bug_description = "Bug description is required.";
+    }
+
+    if (!bugData.bug_type) {
+      newErrors.bug_type = "Bug type is required.";
+    }
+    if (!bugData.moduleId) {
+      newErrors.moduleId = "Module Name is required.";
+    }
+    if (!bugData.assignedTo) {
+      newErrors.assignedTo = "Assigned To is required.";
+    }
+    if (!bugData.reportedBy) {
+      newErrors.reportedBy = "Reported by is required.";
+    }
+    if (!bugData.createdby) {
+      newErrors.createdby = "Created By is required.";
+    }
+    if (!bugData.severity) {
+      newErrors.severity = "Severity is required.";
+    }
+    if (!bugData.customerfound) {
+      newErrors.customerfound = "Customer Found is required.";
+    }
+    if (!bugData.status) {
+      newErrors.status = "Status is required.";
+    }
+    if (!bugData.sprint) {
+      newErrors.sprint = "Sprint is required.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const handleCreateBug = async () => {
-    console.log(date, "date");
+    if (validateForm()) {
+      let data = {
+        ...bugData,
+        estimate_date: date,
+      };
+      try {
+        const result = await apiService.createBugs(data);
+        console.log(result);
 
-    let data = {
-      ...bugData,
-      estimate_date: date,
-    };
-    try {
-      const result = await apiService.createBugs(data);
-      console.log(result);
-
-      setOpen(false);
-    } catch (error) {
-      console.error("Error creating bug:", error);
+        setOpen(false);
+      } catch (error) {
+        console.error("Error creating bug:", error);
+      }
     }
   };
   // const secondApi = async (data) => {
@@ -95,22 +134,28 @@ export default function BugsDialogue() {
   //   setBugData({ ...bugData, bug_id: res, projectId: data });
   //   console.log(res);
   // };
-
-
-
   const moduleApi = async (data) => {
-    const response = await apiService.generateBug(data);
-    setBugData({ ...bugData,bug_id: response,  moduleId: data });
+    let payloadData = {
+      projectid:idData.projectId,
+      moduleid:data
+    }
+    console.log(data,"vel")
+    console.log(idData,"sri")
+    const response = await apiService.generateBug(payloadData);
+    console.log(response,"Baa")
+    if (response) {
+      setBugData({ ...bugData, bug_id: response, moduleId: data });
+    }
     console.log(response);
   };
-
   const handleReset = () => {
     setBugData(initialValues);
   };
-
   useEffect(() => {
     bugDisplay();
   }, []);
+  console.log(idData);
+
   return (
     <>
       <Button variant="outlined" onClick={handleOpenDialog}>
@@ -128,7 +173,9 @@ export default function BugsDialogue() {
                   label="Project Name"
                   value={bugData.projectId}
                   onChange={(event) => {
-                    setBugData({ ...bugData, projectId: event.target.value })                  }}
+                    setBugData({ ...bugData, projectId: event.target.value });
+                    setIDData({ projectId: event.target.value });
+                  }}
                 >
                   {projectName.map((projectdata) => (
                     <MenuItem key={projectdata._id} value={projectdata._id}>
@@ -136,16 +183,46 @@ export default function BugsDialogue() {
                     </MenuItem>
                   ))}
                 </Select>
+                {errors.projectId && (
+                  <FormHelperText error>{errors.projectId}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <br />
             <br />
+
+            {/* module name dialog box */}
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="module-name-label">Module name</InputLabel>
+                <Select
+                  label="Project Name"
+                  value={bugData.moduleId}
+                  onChange={(event) => {
+                    setBugData({
+                      ...bugData,
+                      moduleId: event.target.value,
+                    });
+                    // setIDData({ ...idData, moduleId: event.target.value });
+                    moduleApi(event.target.value);
+                  }}
+                >
+                  {module.map((moduledatas) => (
+                    <MenuItem key={moduledatas._id} value={moduledatas._id}>
+                      {moduledatas.module_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText error>{errors.moduleId}</FormHelperText>
+              </FormControl>
+            </Grid>
             {/* bug id dialogue */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <TextField
                   type="text"
                   label="Bug Id"
+                  name="bug_id"
                   variant="outlined"
                   value={bugData.bug_id}
                   onChange={(event) =>
@@ -153,6 +230,26 @@ export default function BugsDialogue() {
                   }
                   disabled={true}
                 />
+              </FormControl>
+            </Grid>
+            <br />
+            <br />
+
+            {/* Bug Type dialogbox */}
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="bug-type-label">Bug Type</InputLabel>
+                <Select
+                  label="Bug Type"
+                  value={bugData.bug_type}
+                  onChange={(event) =>
+                    setBugData({ ...bugData, bug_type: event.target.value })
+                  }
+                >
+                  <MenuItem value="Bug"> Bug</MenuItem>
+                  <MenuItem value="CR">CR</MenuItem>
+                </Select>
+                <FormHelperText error>{errors.bug_type}</FormHelperText>
               </FormControl>
             </Grid>
             <br />
@@ -177,49 +274,10 @@ export default function BugsDialogue() {
                   })
                 }
               />
+              <FormHelperText error>{errors.bug_description}</FormHelperText>
             </Grid>
             <br />
             <br />
-
-            {/* Bug Type dialogbox */}
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="bug-type-label">Bug Type</InputLabel>
-                <Select
-                  label="Bug Type"
-                  value={bugData.bug_type}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, bug_type: event.target.value })
-                  }
-                >
-                  <MenuItem value="Bug"> Bug</MenuItem>
-                  <MenuItem value="CR">CR</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <br />
-            <br />
-
-            {/* module name dialog box */}
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="module-name-label">Module name</InputLabel>
-                <Select
-                  label="Project Name"
-                  value={bugData.moduleId}
-                  onChange={(event) =>
-                    moduleApi(event.target.value )
-                  }
-                >
-                  {module.map((moduledatas) => (
-                    <MenuItem key={moduledatas._id} value={moduledatas._id}>
-                      {moduledatas.module_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
             <br />
             <br />
 
@@ -243,6 +301,7 @@ export default function BugsDialogue() {
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText error>{errors.assignedTo}</FormHelperText>
               </FormControl>
             </Grid>
             <br />
@@ -264,6 +323,7 @@ export default function BugsDialogue() {
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText error>{errors.reportedBy}</FormHelperText>
               </FormControl>
             </Grid>
             <br />
@@ -285,6 +345,7 @@ export default function BugsDialogue() {
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText error>{errors.createdby}</FormHelperText>
               </FormControl>
             </Grid>
             <br />
@@ -307,7 +368,8 @@ export default function BugsDialogue() {
                   <MenuItem value="Major">Major</MenuItem>
                   <MenuItem value="Medium">Medium</MenuItem>
                   <MenuItem value="Blocker"> Blocker</MenuItem>
-                </Select>
+                </Select>{" "}
+                <FormHelperText error>{errors.severity}</FormHelperText>
               </FormControl>
             </Grid>
 
@@ -330,9 +392,9 @@ export default function BugsDialogue() {
                   <MenuItem value={true}> Yes</MenuItem>
                   <MenuItem value={false}>No</MenuItem>
                 </Select>
+                <FormHelperText error>{errors.customerfound}</FormHelperText>
               </FormControl>
             </Grid>
-
             <br />
             <br />
             {/* estimate date dailog */}
@@ -341,7 +403,7 @@ export default function BugsDialogue() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DatePicker"]}>
                     <DatePicker
-                      label="estimate_date"
+                      label="Estimate Date"
                       value={date || null}
                       onChange={(value) => {
                         console.log(value.$d);
@@ -373,6 +435,7 @@ export default function BugsDialogue() {
                   <MenuItem value="Closed">Closed</MenuItem>
                   <MenuItem value="Hold">Hold</MenuItem>
                 </Select>
+                <FormHelperText error>{errors.status}</FormHelperText>
               </FormControl>
             </Grid>
             <br />
@@ -380,15 +443,27 @@ export default function BugsDialogue() {
             {/* Sprint dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <TextField
-                  type="number"
-                  label="Sprint"
-                  variant="outlined"
+                <InputLabel id="bug-type-label">Sprint</InputLabel>
+
+                <Select
+                  label="sprint"
                   value={bugData.sprint}
                   onChange={(event) =>
                     setBugData({ ...bugData, sprint: event.target.value })
                   }
-                />
+                >
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                  <MenuItem value="6">6</MenuItem>
+                  <MenuItem value="7">7</MenuItem>
+                  <MenuItem value="8">8</MenuItem>
+                  <MenuItem value="9">9</MenuItem>
+                  <MenuItem value="10">10</MenuItem>
+                </Select>
+                <FormHelperText error>{errors.sprint}</FormHelperText>
               </FormControl>
             </Grid>
           </Grid>
