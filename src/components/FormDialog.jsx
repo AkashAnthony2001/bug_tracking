@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -10,17 +10,37 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 
 export default function FormDialog({ setCorrect }) {
   const [title, setTitle] = useState("");
-  const [description, setDescriptin] = useState("");
+  const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
   const [create, setCreate] = useState({});
+  const [titleError, setTitleError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setTitle("");
+    setDescription("")
   };
+
   const handleSubmit = async () => {
+    // Reset previous error messages
+    setTitleError("");
+    setDescriptionError("");
+
+    // Check for empty fields
+    if (!title) {
+      setTitleError("Title is required");
+      return;
+    }
+    if (!description) {
+      setDescriptionError("Description is required");
+      return;
+    }
+
     const projectObj = {
       title: title,
       description: description,
@@ -30,7 +50,7 @@ export default function FormDialog({ setCorrect }) {
     if (result) {
       setOpen(false);
       setCorrect((prev) => !prev);
-      setDescriptin("");
+      setDescription("");
       setTitle("");
     }
   };
@@ -44,25 +64,28 @@ export default function FormDialog({ setCorrect }) {
         <DialogTitle>Create New Project</DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
             margin="dense"
-            id="name"
+            id="title"
             label="Enter Project Title"
             type="text"
             fullWidth
             variant="standard"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            error={!!titleError}
+            helperText={titleError}
           />
           <TextField
             margin="dense"
-            id="name"
+            id="description"
             label="Enter Project Description"
-            type="email"
+            type="text"
             fullWidth
             variant="standard"
             value={description}
-            onChange={(e) => setDescriptin(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
+            error={!!descriptionError}
+            helperText={descriptionError}
           />
         </DialogContent>
         <DialogActions>
@@ -70,7 +93,7 @@ export default function FormDialog({ setCorrect }) {
           <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
-      <CustomizedSnackbars error={create?.error} message={create?.message} setChangemsg={setCreate}/>
+      <CustomizedSnackbars error={create?.error} message={create?.message} setChangemsg={setCreate} />
     </div>
   );
 }

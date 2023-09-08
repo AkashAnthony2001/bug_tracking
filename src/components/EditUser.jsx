@@ -8,37 +8,40 @@ import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
-function EditDialog({ item, open, setOpen,load }) {
+function EditUser({ userData, load, open, setOpen}) {
   const [editErr, setEditErr] = useState([]);
-  const [editedTitle, setEditedTitle] = useState("");
-  const [editedDescription, setEditedDescription] = useState("");
+  const [editedName, setEditedName] = useState("");
+  const [editedUserName, setEditedUserName] = useState("");
+  const [editedRole, setEditedRole] = useState("");
 
   useEffect(() => {
-    setEditedTitle(item.title);
-    setEditedDescription(item.description);
+    setEditedName(userData.name);
+    setEditedUserName(userData.username);
+    setEditedRole(userData.role);
   }, []);
+
   const handleSubmit = async () => {
-    const projectObj = {
-      title: editedTitle,
-      description: editedDescription,
-      id: item._id,
+    const usersObj = {
+      name: editedName,
+      username: editedUserName,
+      role: editedRole,
+      id: userData._id,
     };
       load()
-    let res = await apiService.editProject(projectObj);
+    let res = await apiService.editUser(usersObj.id,usersObj);
     setEditErr(res);
     if (res) {
       load()
       setOpen(false);
     }
-    setEditedTitle(projectObj.title);
-    setEditedDescription(projectObj.description);
-    console.log(projectObj);
+    setEditedName(usersObj.name);
+    setEditedUserName(usersObj.username);
+    setEditedRole(usersObj.role);
+    console.log(usersObj);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   if (editErr.error) {
     return (
       <>
@@ -55,12 +58,12 @@ function EditDialog({ item, open, setOpen,load }) {
             autoFocus
             margin="dense"
             id="name"
-            label="Enter new Project Title"
+            label="Enter User Data"
             type="text"
             fullWidth
             variant="standard"
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
+            value={editedName}
+            onChange={(e) => setEditedName(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -69,8 +72,8 @@ function EditDialog({ item, open, setOpen,load }) {
             type="email"
             fullWidth
             variant="standard"
-            value={editedDescription}
-            onChange={(e) => setEditedDescription(e.target.value)}
+            value={editedUserName}
+            onChange={(e) => setEditedUserName(e.target.value)}
           />
           <DialogActions>
           <Button size="small" onClick={handleClose}>
@@ -83,6 +86,7 @@ function EditDialog({ item, open, setOpen,load }) {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
-export default EditDialog;
+
+export default EditUser

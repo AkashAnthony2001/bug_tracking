@@ -14,13 +14,15 @@
     "@testing-library/user-event": "^13.5.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
+    "formik": "^2.4.4",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-media": "^1.10.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,14 +1,14 @@
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
-function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
-  const [err, setErr] = useState([]);
+function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
+    const [usererr, setUserErr] = useState([]);
   const handleDelete = async () => {
     
-    let res = await apiService.deleteProject(item._id);
-    setErr(res);
+    let res = await apiService.deleteUser(userData._id);
+    setUserErr(res);
     setCorrect((prev) => !prev);
     if (res) {
       setOpenDelete(false);
@@ -19,10 +19,10 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
     load()
     setOpenDelete(false);
   };
-  if (err.error) {
+  if (usererr.error) {
     return (
       <>
-        <CustomizedSnackbars error={err.error} message={err.message} />
+        <CustomizedSnackbars error={usererr.error} message={usererr.message} />
       </>
     );
   }
@@ -30,7 +30,7 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure want to Delete this Project"}
+          {"Are you sure want to Delete this User"}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -38,7 +38,7 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default DeleteDialog;
+export default DeleteUser
