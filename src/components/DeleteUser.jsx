@@ -4,7 +4,7 @@ import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
 function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
-    const [usererr, setUserErr] = useState([]);
+  const [usererr, setUserErr] = useState([]);
   const handleDelete = async () => {
     
     let res = await apiService.deleteUser(userData._id);
@@ -19,6 +19,13 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
     load()
     setOpenDelete(false);
   };
+  if (usererr.error) {
+    return (
+      <>
+         <CustomizedSnackbars error={usererr.error} message={usererr.message} />
+      </>
+    );
+  }
 
   return (
     <div>
