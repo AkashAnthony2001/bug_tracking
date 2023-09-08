@@ -185,6 +185,9 @@ const deleteModule = async (_id) => {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
 };
 const editModuledata = async (_id, record) => {
   const response = await fetch(`${baseUrl}/modules/${_id}`, {
@@ -240,7 +243,13 @@ const createBugs = async (record) => {
 };
 
 const generateBug = async (id) => {
-  const response = await fetch(`${baseUrl}/issuetracker/${id}`);
+  const response = await fetch(`${baseUrl}/issuetracker/generateId`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(id),
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
