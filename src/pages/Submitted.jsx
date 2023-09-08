@@ -7,7 +7,6 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 const Submitted = () => {
   // const [tickets, setTickets] = useState([]);
   const [submitedValue, setSubmissions] = useState([]);
-  const [status, setStatus] = useState([]);
 
   const SubmitedDisplay = async () => {
     const username = localStorage.getItem('username')
@@ -16,8 +15,7 @@ const Submitted = () => {
     setSubmissions(data);
     // console.log(data, "res");
 
-    const statusData = await apiService.getPStatus();
-    setStatus(statusData)
+    
   };
   useEffect(() => {
     SubmitedDisplay();
@@ -46,7 +44,7 @@ const Submitted = () => {
 
   return (
     <>
-      <BasicTableSub row={submitedValue} headers={headers} statusvalue={status} handleClick={handleOpenTicket} />
+      <BasicTableSub row={submitedValue} headers={headers}  handleClick={handleOpenTicket} />
     </>
   );
 };

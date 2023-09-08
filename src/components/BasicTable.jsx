@@ -23,11 +23,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const Statusdisplay = async () => {
-    const statusData = await apiService.getStatus();
 
-    setSelectedStatus(statusData);
-  };
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
@@ -37,9 +33,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
     const statusData = await apiService.putStatus(obj);
     console.log(statusData);
   };
-  React.useEffect(() => {
-    Statusdisplay();
-  }, []);
+ 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();

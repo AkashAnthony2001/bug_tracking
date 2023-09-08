@@ -152,14 +152,6 @@ const editProject = async (record) => {
 
   return parsedResponse;
 };
-
-const getPStatus = async () => {
-  const response = await fetch(`${baseUrl}/status/`);
-  const parsedResponse = await response.json();
-
-  return parsedResponse;
-};
-
 const putPStatus = async ( statusid ,rowid ) => {
   const status ={
     statusid
@@ -228,12 +220,7 @@ const getBugs = async () => {
 
   return parsedResponse;
 };
-const getStatus = async () => {
-  const response = await fetch(`${baseUrl}/status`);
-  const parsedResponse = await response.json();
 
-  return parsedResponse;
-};
 
 const getModule = async () => {
   const response = await fetch(`${baseUrl}/modules/`);
@@ -291,12 +278,10 @@ const apiService = {
   deleteProject,
   editProject,
   putPStatus,
-  getPStatus,
   createModule,
   deleteModule,
   generateBug,
   editModuledata,
-  getStatus,
   putStatus,
   getBugs,
   getModule,
