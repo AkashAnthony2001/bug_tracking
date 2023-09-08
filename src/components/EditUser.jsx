@@ -9,25 +9,34 @@ import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
 function EditUser({ userData, load, open, setOpen}) {
+  const [name, setName] = useState([]);
+  const [username, setUserName] = useState([]);
   const [editErr, setEditErr] = useState([]);
   const [editedName, setEditedName] = useState("");
   const [editedUserName, setEditedUserName] = useState("");
-  const [editedRole, setEditedRole] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
 
   useEffect(() => {
     setEditedName(userData.name);
     setEditedUserName(userData.username);
-    setEditedRole(userData.role);
   }, []);
 
   const handleSubmit = async () => {
     const usersObj = {
       name: editedName,
       username: editedUserName,
-      role: editedRole,
-      id: userData._id,
+      id: userData._id
     };
       load()
+      if (!name) {
+        setNameError("Name is required");
+        return;
+      }
+      if (!username) {
+        setUsernameError("UserName is required");
+        return;
+      }
     let res = await apiService.editUser(usersObj.id,usersObj);
     setEditErr(res);
     if (res) {
@@ -36,43 +45,41 @@ function EditUser({ userData, load, open, setOpen}) {
     }
     setEditedName(usersObj.name);
     setEditedUserName(usersObj.username);
-    setEditedRole(usersObj.role);
     console.log(usersObj);
   };
   const handleClose = () => {
+    setName("");
+    setUserName("")
     setOpen(false);
   };
-  if (editErr.error) {
-    return (
-      <>
-        <CustomizedSnackbars error={editErr.error} message={editErr.message} />
-      </>
-    );
-  }
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Project</DialogTitle>
+        <DialogTitle>Edit User Data</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Enter User Data"
+            label="Enter new Name"
             type="text"
             fullWidth
             variant="standard"
             value={editedName}
+            error={!!nameError}
+            helperText={nameError}
             onChange={(e) => setEditedName(e.target.value)}
           />
           <TextField
             margin="dense"
             id="name"
-            label="Enter new Project Description"
+            label="Enter new UserName"
             type="email"
             fullWidth
             variant="standard"
             value={editedUserName}
+            error={!!usernameError}
+            helperText={usernameError}
             onChange={(e) => setEditedUserName(e.target.value)}
           />
           <DialogActions>
@@ -85,6 +92,7 @@ function EditUser({ userData, load, open, setOpen}) {
           </DialogActions>
         </DialogContent>
       </Dialog>
+      <CustomizedSnackbars error={editErr?.error} message={editErr?.message} setChangemsg={setEditErr}  />
     </div>
   )
 }

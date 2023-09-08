@@ -43,7 +43,6 @@ const UsersDialog = ({load}) => {
         password: values.password,
         role: values.role,
       };
-      console.log(userObj,"bala")
         const result = await apiService.createUser(userObj);
         if (result) {
           setOpen(false);
