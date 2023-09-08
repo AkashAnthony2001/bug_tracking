@@ -19,13 +19,7 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
     load()
     setOpenDelete(false);
   };
-  if (usererr.error) {
-    return (
-      <>
-        <CustomizedSnackbars error={usererr.error} message={usererr.message} />
-      </>
-    );
-  }
+
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
@@ -37,6 +31,7 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
           <Button onClick={handleDelete}>Delete</Button>
         </DialogActions>
       </Dialog>
+     
     </div>
   )
 }
