@@ -42,4 +42,3 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
 }
 
 export default DeleteUser
-// deleteUser

@@ -260,6 +260,19 @@ const deleteUser = async (id) => {
   const parsedResponse = await response.json();
   return parsedResponse;
 };
+const editUser = async (_id, record) => {
+  const response = await fetch(`${baseUrl}/users/${_id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(record),
+  });
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
+
 const apiService = {
   createUser,
   login,
@@ -285,7 +298,8 @@ const apiService = {
   getModule,
   createBugs,
   bugStatus,
-  deleteUser
+  deleteUser,
+  editUser
   
 };
 
