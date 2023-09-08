@@ -18,15 +18,15 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue() {
+export default function BugsDialogue(loadBugData) {
   const [open, setOpen] = useState(false);
   // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
   const [report, setReport] = useState([]);
-  const [createby, setCreatedby] = useState([]);
   const [errors, setErrors] = useState("");
+  const [userName, setUsername] = useState("");
   const [date, setDate] = useState("");
   let initialValues = {
     bug_description: "",
@@ -47,6 +47,12 @@ export default function BugsDialogue() {
   const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
+    setBugData(prevData => {
+      return {
+        ...prevData,
+        createdby: userName
+      }
+    })
     setOpen(true);
   };
 
@@ -64,8 +70,6 @@ export default function BugsDialogue() {
     setAssigned(assignedData);
     const reportdata = await apiService.getUsers();
     setReport(reportdata);
-    const createdata = await apiService.getUsers();
-    setCreatedby(createdata);
   };
 
   const validateForm = () => {
@@ -90,13 +94,10 @@ export default function BugsDialogue() {
     if (!bugData.reportedBy) {
       newErrors.reportedBy = "Reported by is required.";
     }
-    if (!bugData.createdby) {
-      newErrors.createdby = "Created By is required.";
-    }
     if (!bugData.severity) {
       newErrors.severity = "Severity is required.";
     }
-    if (!bugData.customerfound) {
+    if (bugData.customerfound === "") {
       newErrors.customerfound = "Customer Found is required.";
     }
     if (!bugData.status) {
@@ -113,7 +114,6 @@ export default function BugsDialogue() {
       let data = {
         ...bugData,
         estimate_date: date,
-        
       };
       try {
         const result = await apiService.createBugs(data);
@@ -129,6 +129,8 @@ export default function BugsDialogue() {
     let payloadData = {
       projectid: idData.projectId,
       moduleid: data,
+      createdby :userName
+
     };
     const response = await apiService.generateBug(payloadData);
     if (response) {
@@ -141,6 +143,8 @@ export default function BugsDialogue() {
   };
   useEffect(() => {
     bugDisplay();
+    setUsername(localStorage.getItem("name"));
+
   }, []);
 
   return (
@@ -190,7 +194,6 @@ export default function BugsDialogue() {
                       ...bugData,
                       moduleId: event.target.value,
                     });
-                    // setIDData({ ...idData, moduleId: event.target.value });
                     moduleApi(event.target.value);
                   }}
                 >
@@ -318,21 +321,14 @@ export default function BugsDialogue() {
             {/* created by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="created-by-label">Created By</InputLabel>
-                <Select
+                <TextField
+                  type="text"
                   label="Created By"
-                  value={bugData.createdby}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, createdby: event.target.value })
-                  }
-                >
-                  {createby.map((createdatas) => (
-                    <MenuItem key={createdatas._id} value={createdatas._id}>
-                      {createdatas.username}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText error>{errors.createdby}</FormHelperText>
+                  name="createdby"
+                  variant="outlined"
+                  value={userName}
+                  disabled
+                />
               </FormControl>
             </Grid>
             <br />

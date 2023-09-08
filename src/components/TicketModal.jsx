@@ -39,7 +39,7 @@ export default function TicketModal({ children, projectTitle, ticketId, reload }
   // Change some options based on if you are editing or creating tickets
   const [editing, setEditing] = useState(false)
 
-  // Get users to fill the autocomplete form
+  // rs to fill the autocomplete form
   const [availableUsers, setAvailableUsers] = useState([])
 
   const handleAvailableUsers = async () => {
