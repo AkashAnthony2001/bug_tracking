@@ -11,6 +11,8 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 function EditDialog({ item, open, setOpen,load }) {
   const [editErr, setEditErr] = useState([]);
   const [editedTitle, setEditedTitle] = useState("");
+  const [titleError, setTitleError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
   const [editedDescription, setEditedDescription] = useState("");
 
   useEffect(() => {
@@ -24,6 +26,20 @@ function EditDialog({ item, open, setOpen,load }) {
       id: item._id,
     };
       load()
+    
+      if (!editedTitle) {
+        setTitleError(true);
+        return;
+      } else {
+        setTitleError(false);
+      }
+      if (!editedDescription) {
+        setDescriptionError(true);
+        return;
+      } else {
+        setDescriptionError(false);
+      }
+
     let res = await apiService.editProject(projectObj);
     setEditErr(res);
     if (res) {
@@ -60,6 +76,8 @@ function EditDialog({ item, open, setOpen,load }) {
             fullWidth
             variant="standard"
             value={editedTitle}
+            error={titleError}
+            helperText={titleError ? "Title is required" : ""}
             onChange={(e) => setEditedTitle(e.target.value)}
           />
           <TextField
@@ -70,6 +88,8 @@ function EditDialog({ item, open, setOpen,load }) {
             fullWidth
             variant="standard"
             value={editedDescription}
+            error={descriptionError}
+            helperText={descriptionError ? "Description is required" : ""}
             onChange={(e) => setEditedDescription(e.target.value)}
           />
           <DialogActions>

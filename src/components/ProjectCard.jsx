@@ -7,23 +7,40 @@ import Typography from "@mui/material/Typography";
 import DeleteProject from "./ActionComponent";
 import ActionComponent from "./ActionComponent";
 
-export default function ProjectCard({ project, handleClick ,setCorrect,load}) {
-
+export default function ProjectCard({
+  project,
+  handleClick,
+  setCorrect,
+  load,
+}) {
   return (
     <Card sx={{ minWidth: 275, marginBottom: "1rem" }}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Project {project.id}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {project.title}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {project.description}
-        </Typography>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{ fontSize: 15, marginRight: "16px" }}
+            color="text.secondary"
+          >
+            Project Name :
+          </Typography>
+          <Typography variant="h6">{project.title}</Typography>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{ fontSize: 15, marginRight: "16px" }}
+            color="text.secondary"
+          >
+            Project Description :
+          </Typography>
+          <Typography variant="h6">{project.description}</Typography>
+        </div>
       </CardContent>
       <CardActions>
-        <ActionComponent project={project} setCorrect={setCorrect} load={load}/>
+        <ActionComponent
+          project={project}
+          setCorrect={setCorrect}
+          load={load}
+        />
       </CardActions>
     </Card>
   );

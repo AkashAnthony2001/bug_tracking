@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import ModuleDialogue from "./ModuleDialogue";
 import apiService from "../services/apiService";
 import EditModule from "./EditModule";
 import DeleteConfirmationDialog from "./DeleteDialogue";
 import ModuleCustomizedSnackbars from "./ModuleCustomized";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  Typography,
+  Button,
+} from "@mui/material";
+import ModuleDialogue from "./ModuleDialogue";
 
-export default function Module() {
+export default function ModuleDemo() {
   const [Mtitle, setMtitle] = useState([]);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-  const [id, setId] = useState("");
   const [editedError, setEditedError] = useState("");
   const [deleteError, setDeleteError] = useState("");
+  const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [id, setId] = useState("");
+  const [eid, setEid] = useState("");
 
   const Moduledisplay = async () => {
     try {
@@ -39,40 +37,13 @@ export default function Module() {
     Moduledisplay();
   }, []);
 
-  const handleDelete = async () => {
-    try {
-      const delmodule = await apiService.deleteModule(id);
-      if (delmodule.error) {
-        setDeleteError(delmodule); 
-      } else {
-        setDeleteDialogOpen(false);
-        Moduledisplay();
-      }
-    } catch (error) {
-      setDeleteError(error); 
-      
-    }
+  const handleEdit = (eid) => {
+    setOpen(true);
+    setEid(eid);
   };
-  
-  const handleUpdate = async () => {
-    try {
-      const result = await apiService.editModuledata(editData._id, editData);
-      if (result.error) {
-        setEditedError(result);
-      } else {
-        setEditDialogOpen(false);
-      }
-    } catch (error) {
-    }
-  };
-  const handleEditClick = (value) => {
-    setEditData(value);
-    setEditDialogOpen(true);
-  };
-
-  const handleDeleteClick = (value) => {
-    setDeleteDialogOpen(true);
-    setId(value);
+  const handleDelete = (mid) => {
+    setOpenDelete(true);
+    setId(mid);
   };
 
   if (editedError.error || deleteError.error) {
@@ -85,59 +56,64 @@ export default function Module() {
       </>
     );
   }
-  
+
   return (
     <>
       <div>
         <ModuleDialogue loadData={() => Moduledisplay()} />
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Module Title</TableCell>
-                <TableCell>Module Description</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Mtitle?.map((moduledata) => (
-                <TableRow key={moduledata._id}>
-                  <TableCell>{moduledata.module_name}</TableCell>
-                  <TableCell>{moduledata.module_description}</TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => handleEditClick(moduledata)}
-                      variant="outlined"
-                      startIcon={<EditIcon />}
-                    >
-                      Edit
-                    </Button>
 
-                    <Button
-                      onClick={() => handleDeleteClick(moduledata._id)}
-                      variant="outlined"
-                      startIcon={<DeleteIcon />}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {Mtitle?.map((moduledata) => (
+          <Card sx={{ minWidth: 275, marginBottom: "1rem", m: 2 }}>
+            <CardActionArea>
+              <CardContent>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Typography
+                    sx={{ fontSize: 15, marginRight: "16px" }}
+                    color="text.secondary"
+                  >
+                    Module Name :
+                  </Typography>
+                  <Typography variant="h6">{moduledata.module_name}</Typography>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Typography
+                    sx={{ fontSize: 15, marginRight: "16px" }}
+                    color="text.secondary"
+                  >
+                    Module Description :
+                  </Typography>
+                  <Typography variant="h6">
+                    {moduledata.module_description}
+                  </Typography>
+                </div>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => handleEdit(moduledata)}>
+                  Edit
+                </Button>
+
+                <Button
+                  size="small"
+                  onClick={() => handleDelete(moduledata._id)}
+                >
+                  Delete
+                </Button>
+              </CardActions>
+            </CardActionArea>
+          </Card>
+        ))}
+
         <EditModule
-          open={editDialogOpen}
-          onClose={() => setEditDialogOpen(false)}
-          setOpen={setEditDialogOpen}
-          editData={editData}
-          setEditData={setEditData}
-          onSubmit={handleUpdate}
+          setOpen={setOpen}
+          load={Moduledisplay}
+          open={open}
+          moduledata={eid}
         />
         <DeleteConfirmationDialog
-          open={deleteDialogOpen}
-          onClose={() => setDeleteDialogOpen(false)}
-          onDeleteConfirm={handleDelete}
+          load={Moduledisplay}
+          moduledata={id}
+          openDelete={openDelete}
+          setOpenDelete={setOpenDelete}
         />
       </div>
     </>
