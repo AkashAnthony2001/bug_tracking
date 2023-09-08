@@ -4,13 +4,15 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
 
 export default function ModuleDialogue({ loadData }) {
-  const [moduleTitle, setModuleTitle] = useState();
-  const [moduleDesc, setModuledesc] = useState();
+  const [moduleTitle, setModuleTitle] = useState("");
+  const [moduleDesc, setModuleDesc] = useState("");
   const [open, setOpen] = useState(false);
+  const [titleError, setTitleError] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,46 +20,31 @@ export default function ModuleDialogue({ loadData }) {
 
   const handleClose = () => {
     setOpen(false);
-    setTitleError("");
-    setDescError("");
   };
-
   const handleSubmit = async () => {
-    const isTitleValid = validateTitle(moduleTitle);
-    const isDescValid = validateDescription(moduleDesc);
-
-    if (isTitleValid && isDescValid) {
-      const moduledata = {
-        module_name: moduleTitle,
-        module_description: moduleDesc,
-      };
-      const result = await apiService.createModule(moduledata);
-      console.log(result);
-      if (result) {
-        setOpen(false);
-        loadData();
-        setModuleTitle("");
-        setModuledesc("");
-      }
-    }
-  };
-  const validateTitle = (title) => {
-    if (!title.trim()) {
+    setTitleError("");
+    let isValid = true;
+    if (!moduleTitle.trim()) {
       setTitleError("Module Title is required");
-      return false;
+      isValid = false;
     }
-    setTitleError(""); 
-    return true;
-  };
-  
-  const validateDescription = (desc) => {
-    if (!desc.trim()) {
-      setDescError("Module Description is required");
-      return false;
+    if (!isValid) {
+      return;
     }
-    setDescError("");
-    return true;
+    const moduledata = {
+      module_name: moduleTitle,
+      module_description: moduleDesc,
+    };
+    const result = await apiService.createModule(moduledata);
+    console.log(result);
+    if (result) {
+      setOpen(false);
+      loadData();
+      setModuleTitle("");
+      setModuleDesc("");
+    }
   };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -69,8 +56,9 @@ export default function ModuleDialogue({ loadData }) {
           <TextField
             autoFocus
             margin="dense"
-            id="moduleTitle"
+            id="name"
             label="Module Title"
+            type="title"
             fullWidth
             variant="standard"
             value={moduleTitle}
@@ -80,18 +68,17 @@ export default function ModuleDialogue({ loadData }) {
           />
           <TextField
             margin="dense"
-            id="moduleDesc"
+            id="name"
             label="Module Description"
+            type="description"
             fullWidth
             variant="standard"
             value={moduleDesc}
-            onChange={(e) => setModuledesc(e.target.value)}
-            error={!!descError}
-            helperText={descError}
+            onChange={(e) => setModuleDesc(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit}>create</Button>
+          <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
     </div>

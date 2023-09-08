@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -16,6 +15,7 @@ import ModuleDialogue from "./ModuleDialogue";
 import apiService from "../services/apiService";
 import EditModule from "./EditModule";
 import DeleteConfirmationDialog from "./DeleteDialogue";
+import ModuleCustomizedSnackbars from "./ModuleCustomized";
 
 export default function Module() {
   const [Mtitle, setMtitle] = useState([]);
@@ -23,38 +23,48 @@ export default function Module() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [id, setId] = useState("");
+  const [editedError, setEditedError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+
   const Moduledisplay = async () => {
-    const data = await apiService.getModule();
-    setMtitle(data);
-    console.log(data, "res");
+    try {
+      const data = await apiService.getModule();
+      setMtitle(data);
+    } catch (error) {
+      console.error("Error fetching module data:", error);
+    }
   };
 
   useEffect(() => {
     Moduledisplay();
   }, []);
 
-  console.log(Mtitle);
-
   const handleDelete = async () => {
-    const delmodule = await apiService.deleteModule(id);
-    setMtitle(delmodule);
-    // if(delmodule){
-    setDeleteDialogOpen(false);
-    // }
-
-    console.log(delmodule, "res");
-    Moduledisplay();
-  };
-
-  const handleUpdate = async () => {
-    const result = await apiService.editModuledata(editData._id, editData);
-    console.log(editData);
-    if (result) {
-      setEditDialogOpen(false);
+    try {
+      const delmodule = await apiService.deleteModule(id);
+      if (delmodule.error) {
+        setDeleteError(delmodule); 
+      } else {
+        setDeleteDialogOpen(false);
+        Moduledisplay();
+      }
+    } catch (error) {
+      setDeleteError(error); 
+      
     }
-    Moduledisplay();
   };
-
+  
+  const handleUpdate = async () => {
+    try {
+      const result = await apiService.editModuledata(editData._id, editData);
+      if (result.error) {
+        setEditedError(result);
+      } else {
+        setEditDialogOpen(false);
+      }
+    } catch (error) {
+    }
+  };
   const handleEditClick = (value) => {
     setEditData(value);
     setEditDialogOpen(true);
@@ -64,6 +74,18 @@ export default function Module() {
     setDeleteDialogOpen(true);
     setId(value);
   };
+
+  if (editedError.error || deleteError.error) {
+    return (
+      <>
+        <ModuleCustomizedSnackbars
+          error={editedError.error || deleteError.error}
+          message={editedError.message || deleteError.message}
+        />
+      </>
+    );
+  }
+  
   return (
     <>
       <div>
@@ -85,7 +107,7 @@ export default function Module() {
                   <TableCell>
                     <Button
                       onClick={() => handleEditClick(moduledata)}
-                      // variant="outlined"
+                      variant="outlined"
                       startIcon={<EditIcon />}
                     >
                       Edit
@@ -93,7 +115,7 @@ export default function Module() {
 
                     <Button
                       onClick={() => handleDeleteClick(moduledata._id)}
-                      // variant="outlined"
+                      variant="outlined"
                       startIcon={<DeleteIcon />}
                     >
                       Delete
