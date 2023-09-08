@@ -23,6 +23,9 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const isAdmin = localStorage.getItem("role") === 'admin'
+  const filterarr = !isAdmin? navbarItems?.filter((val) => val.text !== "Users"):navbarItems
+
   return (
     <Drawer
       sx={{
@@ -52,7 +55,7 @@ const Navbar = () => {
       </Box>
       <Divider />
       <List>
-        {navbarItems.map((item) => (
+        {filterarr && filterarr.map((item) => (
           <ListItem key={item.id} disablePadding>
             <ListItemButton
               sx={{ width: "239px", padding: "auto" }}
