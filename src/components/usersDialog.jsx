@@ -17,6 +17,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import apiService from "../services/apiService";
+import CustomizedSnackbars from "./CustomizedSnackbars";
 
 
 
@@ -28,6 +29,7 @@ const validationSchema = Yup.object().shape({
   });
 const UsersDialog = ({load}) => {
   const [open, setOpen] = useState(false);
+  const [create, setCreate] = useState({});
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -44,6 +46,7 @@ const UsersDialog = ({load}) => {
         role: values.role,
       };
         const result = await apiService.createUser(userObj);
+        setCreate(result);
         if (result) {
           setOpen(false);
           load()
@@ -58,7 +61,7 @@ const UsersDialog = ({load}) => {
   };
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Create User</Button>
+      <Button onClick={() => setOpen(true)} variant="outlined">Create User</Button>
       <Dialog open={open} onClose={handleClose}>
       <form onSubmit={formik.handleSubmit}>
         <DialogTitle>
@@ -129,6 +132,11 @@ const UsersDialog = ({load}) => {
         </DialogActions>
         </form>
       </Dialog>
+      <CustomizedSnackbars
+        error={create?.error}
+        message={create?.message}
+        setChangemsg={setCreate}
+      />
     </>
   );
 };

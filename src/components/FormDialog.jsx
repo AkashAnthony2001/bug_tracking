@@ -13,8 +13,8 @@ export default function FormDialog({ setCorrect }) {
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
   const [create, setCreate] = useState({});
-  const [titleError, setTitleError] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
+  const [titleError, setTitleError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,22 +23,21 @@ export default function FormDialog({ setCorrect }) {
   const handleClose = () => {
     setOpen(false);
     setTitle("");
-    setDescription("")
+    setDescription("");
   };
 
   const handleSubmit = async () => {
-    // Reset previous error messages
-    setTitleError("");
-    setDescriptionError("");
-
-    // Check for empty fields
     if (!title) {
-      setTitleError("Title is required");
+      setTitleError(true);
       return;
+    } else {
+      setTitleError(false);
     }
     if (!description) {
-      setDescriptionError("Description is required");
+      setDescriptionError(true);
       return;
+    } else {
+      setDescriptionError(false);
     }
 
     const projectObj = {
@@ -72,8 +71,8 @@ export default function FormDialog({ setCorrect }) {
             variant="standard"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            error={!!titleError}
-            helperText={titleError}
+            error={titleError}
+            helperText={titleError ? "Title is required" : ""}
           />
           <TextField
             margin="dense"
@@ -84,8 +83,8 @@ export default function FormDialog({ setCorrect }) {
             variant="standard"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            error={!!descriptionError}
-            helperText={descriptionError}
+            error={descriptionError}
+            helperText={descriptionError ? "Description is required" : ""}
           />
         </DialogContent>
         <DialogActions>
@@ -93,7 +92,11 @@ export default function FormDialog({ setCorrect }) {
           <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>
-      <CustomizedSnackbars error={create?.error} message={create?.message} setChangemsg={setCreate} />
+      <CustomizedSnackbars
+        error={create?.error}
+        message={create?.message}
+        setChangemsg={setCreate}
+      />
     </div>
   );
 }
