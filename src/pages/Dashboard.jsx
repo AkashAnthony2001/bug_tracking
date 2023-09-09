@@ -38,7 +38,7 @@ const Dashboard = () => {
   const [hold, setHold] = useState(0);
 
   const [assignedValue, setAssignedvalue] = useState([]);
-  const [filterData,setFilterData]=useState([]);
+  const [filterData, setFilterData] = useState([]);
   const token = localStorage.getItem("token");
 
   const checkAuth = async () => {
@@ -91,10 +91,10 @@ const Dashboard = () => {
   useEffect(() => {
     displayBugs();
     Assigneddisplay();
-    const filterArr = assignedValue && 
-    assignedValue.filter((val)=>val.createdAt.includes(formattedNewDate))
-    setFilterData(filterArr)
-
+    const filterArr =
+      assignedValue &&
+      assignedValue.filter((val) => val.createdAt.includes(formattedNewDate));
+    setFilterData(filterArr);
   }, []);
 
   // console.log(assignedValue);
@@ -111,12 +111,9 @@ const Dashboard = () => {
     return `${year}-${formattedMonth}-${formattedDay}`;
   }
   const d = new Date();
- 
-  // console.log(d.toISOString())
-  const formattedNewDate =formatDate(d)
 
-  
- 
+  // console.log(d.toISOString())
+  const formattedNewDate = formatDate(d);
 
   return (
     <div>
@@ -248,18 +245,22 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {assignedValue.length ?
-                                    assignedValue.map((data) => {
-                                      const originalDateString = data.createdAt;
-                                      const formattedDate =
-                                        formatDate(originalDateString);
-                                      return (
-                                        <TableRow key={data.bug_id}>
-                                          <TableCell>{data.bug_id}</TableCell>
-                                          <TableCell>{formattedDate}</TableCell>
-                                        </TableRow>
-                                      );
-                                    }):"No Records Found"}
+                                  {assignedValue.length
+                                    ? assignedValue.map((data) => {
+                                        const originalDateString =
+                                          data.createdAt;
+                                        const formattedDate =
+                                          formatDate(originalDateString);
+                                        return (
+                                          <TableRow key={data.bug_id}>
+                                            <TableCell>{data.bug_id}</TableCell>
+                                            <TableCell>
+                                              {formattedDate}
+                                            </TableCell>
+                                          </TableRow>
+                                        );
+                                      })
+                                    : "No Records Found"}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -281,18 +282,18 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  
-                                    {filterData.length ?filterData.map((val)=>{
-                                      return (
-                                        <TableRow>
-                                        <TableCell>{val.bug_id}</TableCell>
-                                        <TableCell>{formatDate(val.createdAt)}</TableCell>
-                                      </TableRow>
-                                      )
-                                    }
-                                       
-                                  ):"No Records Found"}
-                                
+                                  {filterData.length
+                                    ? filterData.map((val) => {
+                                        return (
+                                          <TableRow>
+                                            <TableCell>{val.bug_id}</TableCell>
+                                            <TableCell>
+                                              {formatDate(val.createdAt)}
+                                            </TableCell>
+                                          </TableRow>
+                                        );
+                                      })
+                                    : "No Records Found"}
                                 </TableBody>
                               </Table>
                             </TableContainer>

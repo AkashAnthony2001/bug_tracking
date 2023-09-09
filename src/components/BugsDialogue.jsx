@@ -9,6 +9,7 @@ import {
   Grid,
   FormHelperText,
 } from "@mui/material";
+import "./styles.css";
 import React, { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -18,7 +19,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue({loadData}) {
+export default function BugsDialogue({ loadData }) {
   const [open, setOpen] = useState(false);
   // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
@@ -54,7 +55,7 @@ export default function BugsDialogue({loadData}) {
     setBugData({
       ...bugData,
       createdby: userName,
-    })
+    });
     setOpen(true);
   };
 
@@ -63,7 +64,6 @@ export default function BugsDialogue({loadData}) {
   };
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
-
     const record = await apiService.getProjects();
     setprojectName(record);
     const moduledata = await apiService.getModule();
@@ -123,10 +123,11 @@ export default function BugsDialogue({loadData}) {
       try {
         const result = await apiService.createBugs(data);
         console.log(result);
-        if(result){
-          loadData()
+        if (result) {
+          loadData();
+          setOpen(false);
+          // setBugData(initialValues);
         }
-        setOpen(false);
       } catch (error) {
         console.error("Error creating bug:", error);
       }
@@ -155,20 +156,44 @@ export default function BugsDialogue({loadData}) {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog}>
+      <Button
+        variant="outlined"
+        onClick={handleOpenDialog}
+        style={{
+          marginBottom: "10px",
+          borderRadius: "10px",
+          padding: "10px 20px",
+          fontSize: "16px",
+        }}
+      >
         Create Bug
       </Button>
-      <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle>Create Bugs</DialogTitle>
+      <Dialog open={open}  onClose={handleCloseDialog} PaperProps={{sx:{borderRadius: "15px"}}}>
+        <DialogTitle
+          style={{
+            background: "#2196F3",
+            color: "#fff",
+            fontSize: "24px",
+            padding: "16px",
+          }}
+        >
+          Create Bugs
+        </DialogTitle>
         <DialogContent>
           <Grid container style={{ marginTop: "5px" }} spacing={2}>
             {/* project name dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="project-name-label">Project name</InputLabel>
+                <InputLabel
+                  id="project-name-label"
+                  style={{ fontSize: "16px" }}
+                >
+                  Project name
+                </InputLabel>{" "}
                 <Select
                   label="Project Name"
                   value={bugData.projectId}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) => {
                     setBugData({ ...bugData, projectId: event.target.value });
                     setIDData({ projectId: event.target.value });
@@ -185,8 +210,6 @@ export default function BugsDialogue({loadData}) {
                 )}
               </FormControl>
             </Grid>
-            <br />
-            <br />
 
             {/* module name dialog box */}
             <Grid item xs={6}>
@@ -195,6 +218,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Project Name"
                   value={bugData.moduleId}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) => {
                     setBugData({
                       ...bugData,
@@ -220,16 +244,16 @@ export default function BugsDialogue({loadData}) {
                   label="Bug Id"
                   name="bug_id"
                   variant="outlined"
+                  style={{ fontSize: "14px" }}
                   value={bugData.bug_id}
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_id: event.target.value })
                   }
                   disabled={true}
+                  // style={{ width: "100%", marginBottom: "16px" }}
                 />
               </FormControl>
             </Grid>
-            <br />
-            <br />
 
             {/* Bug Type dialogbox */}
             <Grid item xs={6}>
@@ -237,6 +261,7 @@ export default function BugsDialogue({loadData}) {
                 <InputLabel id="bug-type-label">Bug Type</InputLabel>
                 <Select
                   label="Bug Type"
+                  style={{ fontSize: "14px" }}
                   value={bugData.bug_type}
                   onChange={(event) =>
                     setBugData({ ...bugData, bug_type: event.target.value })
@@ -248,8 +273,7 @@ export default function BugsDialogue({loadData}) {
                 <FormHelperText error>{errors.bug_type}</FormHelperText>
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* bug_description dialogbox */}
             <Grid item xs={12}>
               <TextField
@@ -257,7 +281,7 @@ export default function BugsDialogue({loadData}) {
                 label="Bug Description"
                 multiline
                 fullWidth
-                style={{ marginTop: "10px" }}
+                style={{ fontSize: "14px" }}
                 size="small"
                 rows={2}
                 defaultValue=""
@@ -272,11 +296,6 @@ export default function BugsDialogue({loadData}) {
               />
               <FormHelperText error>{errors.bug_description}</FormHelperText>
             </Grid>
-            <br />
-            <br />
-            <br />
-            <br />
-
             {/* assigned name dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -284,6 +303,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Assigned To"
                   value={bugData.assignedTo}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) =>
                     setBugData({ ...bugData, assignedTo: event.target.value })
                   }
@@ -300,8 +320,7 @@ export default function BugsDialogue({loadData}) {
                 <FormHelperText error>{errors.assignedTo}</FormHelperText>
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* Reported by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -309,6 +328,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Reported By"
                   value={bugData.reportedBy}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) =>
                     setBugData({ ...bugData, reportedBy: event.target.value })
                   }
@@ -322,14 +342,14 @@ export default function BugsDialogue({loadData}) {
                 <FormHelperText error>{errors.reportedBy}</FormHelperText>
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* created by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <TextField
                   type="text"
                   label="Created By"
+                  style={{ fontSize: "14px" }}
                   name="createdby"
                   variant="outlined"
                   value={userName}
@@ -337,8 +357,7 @@ export default function BugsDialogue({loadData}) {
                 />
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* Serviertiy dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -346,6 +365,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Status"
                   value={bugData.severity}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) =>
                     setBugData({
                       ...bugData,
@@ -362,8 +382,6 @@ export default function BugsDialogue({loadData}) {
               </FormControl>
             </Grid>
 
-            <br />
-            <br />
             {/* customer found dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -371,6 +389,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Customer Found"
                   value={bugData.customerfound}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) =>
                     setBugData({
                       ...bugData,
@@ -384,8 +403,7 @@ export default function BugsDialogue({loadData}) {
                 <FormHelperText error>{errors.customerfound}</FormHelperText>
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* estimate date dailog */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -394,6 +412,7 @@ export default function BugsDialogue({loadData}) {
                     <DatePicker
                       label="Estimate Date"
                       value={date || null}
+                      style={{ fontSize: "14px" }}
                       onChange={(value) => {
                         console.log(value.$d);
                         console.log(value.$d.toLocaleDateString("en-CA"));
@@ -414,6 +433,7 @@ export default function BugsDialogue({loadData}) {
                 <Select
                   label="Status"
                   value={bugData.status}
+                  style={{ fontSize: "14px" }}
                   onChange={(event) =>
                     setBugData({ ...bugData, status: event.target.value })
                   }
@@ -430,8 +450,7 @@ export default function BugsDialogue({loadData}) {
                 <FormHelperText error>{errors.status}</FormHelperText>
               </FormControl>
             </Grid>
-            <br />
-            <br />
+
             {/* Sprint dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -439,6 +458,7 @@ export default function BugsDialogue({loadData}) {
 
                 <Select
                   label="sprint"
+                  style={{ fontSize: "14px" }}
                   value={bugData.sprint}
                   onChange={(event) =>
                     setBugData({ ...bugData, sprint: event.target.value })
@@ -467,10 +487,13 @@ export default function BugsDialogue({loadData}) {
               handleReset();
             }}
             color="primary"
+            style={{
+              marginRight: "8px",
+            }}
           >
             Cancel
           </Button>
-          <Button onClick={handleCreateBug} color="primary">
+          <Button onClick={handleCreateBug} variant="contained">
             Create
           </Button>
         </DialogActions>

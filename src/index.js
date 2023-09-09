@@ -9,7 +9,7 @@ import Assigned from './pages/Assigned';
 import Projects from './pages/Projects';
 import Submitted from './pages/Submitted';
 import Module from './pages/Module';
-import Bugs from './pages/Bugs';
+import Bugs from './components/Bugs';
 
 import Users from './pages/Users'
 
