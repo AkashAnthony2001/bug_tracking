@@ -28,7 +28,7 @@ export default function Bugs() {
   const [bugResponse, setBugResponse] = useState([]);
   const [filteredResponse , setFilteredResponse] = useState([])
 
-  const headers = ['Bug_id','Status','CreatedBy','CreatedOn']
+  const headers = ['Bug_id','Status','Updated By','Updated On']
 
   const bugStatusApi = async() => {
       const bugStatusResponse = await apiService.bugStatus()
@@ -46,9 +46,11 @@ export default function Bugs() {
     bugStatusApi();
   }, [changemsg]);
 
+
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
+      updatedby:localStorage.getItem('name'),
       _id: id,
     };
     setSelectedStatus(event.target.value);
@@ -73,7 +75,9 @@ export default function Bugs() {
       return data.bug_id === bugid
     })
     setFilteredResponse(filteredData)
+    console.log(expandedRow);
   }
+
 
    return (
     <>
@@ -116,12 +120,13 @@ export default function Bugs() {
                     <TableCell>{databug?.sprint}</TableCell>
                     <TableCell>{databug?.customerfound ? "Yes" : "No"}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
-                    <TableCell>{databug?.createdby?.username}</TableCell>
+                    <TableCell>{databug?.createdby}</TableCell>
                     <TableCell>
                       <Select
                         defaultValue={databug?.status}
                         onChange={(e) => {
                           handleStatus(e, databug?._id);
+                          setExpandedRow(null)
                         }}
                       >
                         <MenuItem value="Opened">Opened</MenuItem>

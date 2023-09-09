@@ -10,130 +10,137 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import apiService from '../services/apiService'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react';
 import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const theme = createTheme();
-
+const validationSchema = Yup.object({
+  username: Yup.string().required('Username is required'),
+  password: Yup.string().required('Password is required'),
+});
 export default function Login() {
-  const [usernameError, setNameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [invalidError, setInvalidError] = useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  // Redirect if someone is already logged in
-  const token = localStorage.getItem('token')
-  useEffect(() => {
-    if (token) {
-      return navigate('/dashboard')
-    }
-  }, [])
-
-  const validation = (userData) => {
-    let isValid = true;
-
-    if (userData.username.trim() === '') {
-      setNameError('Name is required')
-      isValid = false;
-    } else {
-      setNameError('')
-    }
-
-    if (userData.password.trim() === '') {
-      setPasswordError('Password is required')
-      isValid = false;
-    } else {
-      setPasswordError('')
-    }
-
-    return isValid;
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const userObj = {
-      username: data.get('username'),
-      password: data.get('password'),
-    }
-
-    if (validation(userObj)) {
-      const result = await apiService.login(userObj)
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const result = await apiService.login(values);
 
       if (result.error) {
-        // TODO: Add snackbar for printing the error
-        setInvalidError(result.error)
-        return
+        setInvalidError(result.error);
+        return;
       }
 
-      localStorage.setItem('token', result.token)
-      localStorage.setItem('name', result.name)
-      localStorage.setItem('username', result.username)
-      localStorage.setItem('role',result.role)
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('name', result.name);
+      localStorage.setItem('username', result.username);
+      localStorage.setItem('role', result.role);
 
-      navigate('/dashboard')
-    }
+      navigate('/dashboard');
+    },
+  });
 
+  const handleClickShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <CssBaseline />
+      <Container>
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'center',
             alignItems: 'center',
+            height: '100vh',
           }}
         >
-          <Typography component="h1" variant="h4">
-            Login
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  error={!!usernameError}
-                  autoComplete="given-name"
-                />
-                {usernameError && <Typography variant="caption" color="error">{usernameError}</Typography>}
+          <Box
+            sx={{
+              bgcolor: 'whitesmoke',
+              p: 5,
+              display: 'flex',
+              flexDirection: 'column',
+              borderRadius: 8,
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h3" variant="h5" sx={{pt:0,pb:3}}>
+              Sign In
+            </Typography>
+            <form onSubmit={formik.handleSubmit} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    name="username"
+                    label="Username"
+                    autoComplete="given-name"
+                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    helperText={formik.touched.username && formik.errors.username}
+                    {...formik.getFieldProps('username')}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    variant="outlined"
+                    id="password"
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
+                    {...formik.getFieldProps('password')}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  error={!!passwordError}
-                />
-                {passwordError && <Typography variant="caption" color="error">{passwordError}</Typography>}
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              {invalidError && <Typography variant="caption" color="error">{invalidError}</Typography>}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Typography variant="caption" color="error">
+                {invalidError}
+              </Typography>
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Login
               </Button>
-            </Grid>
+            </form>
+            <Typography variant="text" color="initial">
+              Don't have an account? <Link to="/signup" color="#3277D5">Sign Up</Link>
+            </Typography>
           </Box>
-          <Link to="/signup">Don't have an account? Click here to sign up</Link>
         </Box>
       </Container>
     </ThemeProvider>
