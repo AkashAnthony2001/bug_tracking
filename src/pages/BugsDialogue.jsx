@@ -27,7 +27,7 @@ export default function BugsDialogue({loadData}) {
   const [report, setReport] = useState([]);
   const [errors, setErrors] = useState("");
   const [userName, setUsername] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
   let initialValues = {
     bug_description: "",
     bug_type: "",
@@ -395,9 +395,8 @@ export default function BugsDialogue({loadData}) {
                       label="Estimate Date"
                       value={date || null}
                       onChange={(value) => {
-                        console.log(value.$d);
-                        console.log(value.$d.toLocaleDateString("en-CA"));
-                        setDate(value.$d.toLocaleDateString("en-CA"));
+          
+                        setDate( value?.$d?.toLocaleDateString("en-CA"));
                       }}
                     />
                   </DemoContainer>

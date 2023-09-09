@@ -24,7 +24,7 @@ const Navbar = () => {
   };
 
   const isAdmin = localStorage.getItem("role") === 'admin'
-  const filterarr = !isAdmin? navbarItems?.filter((val) => val.text !== "Users"):navbarItems
+  const filterarr = !isAdmin ? navbarItems?.filter((val) => val.text !== "Users" && val.text !== "Projects" && val.text !== "Modules") : navbarItems
 
   return (
     <Drawer
