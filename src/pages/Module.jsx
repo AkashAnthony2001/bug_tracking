@@ -56,6 +56,14 @@ export default function ModuleDemo() {
       </>
     );
   }
+  const cardStyle = {
+    marginTop: "10px",
+    minWidth: 275,
+    marginBottom: "1rem",
+    backgroundColor: "hsl(0, 0%, 97%)", 
+    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    borderRadius: "8px",
+  };
 
   return (
     <>
@@ -63,7 +71,7 @@ export default function ModuleDemo() {
         <ModuleDialogue loadData={() => Moduledisplay()} />
 
         {Mtitle?.map((moduledata) => (
-          <Card sx={{ minWidth: 275, marginBottom: "1rem", m: 2 }}>
+          <Card sx={cardStyle}>
             <CardActionArea>
               <CardContent>
                 <div style={{ display: "flex", alignItems: "center" }}>

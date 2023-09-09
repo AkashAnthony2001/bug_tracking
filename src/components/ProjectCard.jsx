@@ -13,8 +13,20 @@ export default function ProjectCard({
   setCorrect,
   load,
 }) {
+
+
+  const cardStyle = {
+    marginTop: "10px",
+    minWidth: 275,
+    marginBottom: "1rem",
+    backgroundColor: "hsl(0, 0%, 97%)", 
+    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    borderRadius: "8px",
+  };
+
+
   return (
-    <Card sx={{ minWidth: 275, marginBottom: "1rem" }}>
+    <Card sx={cardStyle}>
       <CardContent>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Typography
