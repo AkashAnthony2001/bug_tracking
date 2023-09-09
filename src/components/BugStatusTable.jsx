@@ -13,13 +13,9 @@ import {
 const BugStatusTable = ({ bugStatusData, headers }) => {
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
+    
 
-    return `${formattedDay}-${formattedMonth}-${year}`;
+    return `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()} ${date.getHours >= 12 ? "PM" : "AM"}`  ;
   }
 
   return (
@@ -40,7 +36,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
               <TableRow key={statusData?.bug_id}>
                 <TableCell>{statusData?.bug_id}</TableCell>
                 <TableCell>{statusData?.status}</TableCell>
-                <TableCell>{statusData?.createdby?.username}</TableCell>
+                <TableCell>{statusData?.updatedby}</TableCell>
                 <TableCell>{formattedDate}</TableCell>
               </TableRow>
             );

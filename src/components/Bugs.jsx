@@ -10,14 +10,15 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
 import apiService from "../services/apiService";
 import BugsDialogue from "./BugsDialogue";
-import CustomizedSnackbars from "./CustomizedSnackbars";
-import Collapse from "@mui/material/Collapse";
-import BugStatusTable from "./BugStatusTable";
-import Typography from "@mui/material/Typography";
+import CustomizedSnackbars from "../components/CustomizedSnackbars";
+import Collapse from '@mui/material/Collapse';
+import BugStatusTable from '../components/BugStatusTable';
+import Typography from '@mui/material/Typography'
 import Button from "@mui/material/Button";
+
+
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -25,14 +26,14 @@ export default function Bugs() {
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
-  const [filteredResponse, setFilteredResponse] = useState([]);
+  const [filteredResponse , setFilteredResponse] = useState([])
 
-  const headers = ["Bug_id", "Status", "CreatedBy", "CreatedOn"];
+  const headers = ['Bug_id','Status','CreatedBy','CreatedOn']
 
-  const bugStatusApi = async () => {
-    const bugStatusResponse = await apiService.bugStatus();
-    setBugResponse(bugStatusResponse);
-  };
+  const bugStatusApi = async() => {
+      const bugStatusResponse = await apiService.bugStatus()
+      setBugResponse(bugStatusResponse)
+  }
 
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
@@ -52,7 +53,7 @@ export default function Bugs() {
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData, "nr");
+    console.log(statusData, "nr")
     setChangemsg(statusData);
   };
   function formatDate(isoDateString) {
@@ -66,25 +67,22 @@ export default function Bugs() {
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
 
-  const collapseRow = (index, bugid) => {
-    setExpandedRow(index === expandedRow ? null : index);
-    const filteredData = bugResponse.response.filter((data) => {
-      return data.bug_id === bugid;
-    });
-    setFilteredResponse(filteredData);
-  };
+  const collapseRow = (index,bugid) => {
+    setExpandedRow(index === expandedRow ? null : index)
+    const filteredData = bugResponse.response.filter((data)=> {
+      return data.bug_id === bugid
+    })
+    setFilteredResponse(filteredData)
+  }
 
-  return (
+   return (
     <>
-      <BugsDialogue loadData={bugDisplay} />
-      <TableContainer
-        component={Paper}
-        sx={{ marginTop: "16px", padding: "16px" , background:"#F2F2F2"}}
-      >
+      <BugsDialogue loadData={bugDisplay}/>
+      <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className="centered-cell">BugId</TableCell>
+              <TableCell>BugId</TableCell>
               <TableCell>Bug Description</TableCell>
               <TableCell>Bug Type</TableCell>
               <TableCell>Project Name</TableCell>
@@ -100,33 +98,14 @@ export default function Bugs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bugData?.map((databug, index) => {
+            {bugData?.map((databug,index) => {
               const originalDateString = databug.estimate_date;
               const formattedDate = formatDate(originalDateString);
               const isRowExpanded = index === expandedRow;
               return (
                 <>
-                  <TableRow
-                    key={databug.bug_id}
-                    sx={{
-                      "& > *": { borderBottom: "unset" },
-                      backgroundColor: isRowExpanded ? "lightgray" : "white",
-                    }}
-                  >
-                    <TableCell>
-                      <Button
-                        variant="text"
-                        onClick={() => collapseRow(index, databug?.bug_id)}
-                        sx={{
-                          backgroundColor: "transparent",
-                          "&:hover": {
-                            backgroundColor: "	#dcdcdc		",
-                          },
-                        }}
-                      >
-                        {databug?.bug_id}
-                      </Button>
-                    </TableCell>
+                  <TableRow key={databug.bug_id} sx={{ '& > *': { borderBottom: 'unset' } }} >
+                    <TableCell><Button variant="text" onClick={() => collapseRow(index,databug?.bug_id)}>{databug?.bug_id}</Button></TableCell>
                     <TableCell>{databug?.bug_description}</TableCell>
                     <TableCell>{databug?.bug_type}</TableCell>
                     <TableCell>{databug?.projectId?.title}</TableCell>
@@ -135,9 +114,7 @@ export default function Bugs() {
                     <TableCell>{databug?.reportedBy?.username}</TableCell>
                     <TableCell>{databug?.severity}</TableCell>
                     <TableCell>{databug?.sprint}</TableCell>
-                    <TableCell>
-                      {databug?.customerfound ? "Yes" : "No"}
-                    </TableCell>
+                    <TableCell>{databug?.customerfound ? "Yes" : "No"}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
                     <TableCell>{databug?.createdby?.username}</TableCell>
                     <TableCell>
@@ -159,33 +136,15 @@ export default function Bugs() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={13}
-                    >
-                      <Collapse
-                        in={isRowExpanded}
-                        timeout="auto"
-                        unmountOnExit
-                        sx={{
-                          backgroundColor: "	#f5f5f5",
-                          padding: "16px",
-                          marginTop: "8px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        <Typography variant="h6" color="initial">
-                          Status History
-                        </Typography>
-                        <BugStatusTable
-                          bugStatusData={filteredResponse}
-                          headers={headers}
-                        />
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={13}>
+                      <Collapse  in={isRowExpanded} timeout="auto" unmountOnExit>
+                      <Typography variant="h6" color="initial">Status History</Typography>
+                      <BugStatusTable bugStatusData={filteredResponse}  headers={headers}/>
                       </Collapse>
                     </TableCell>
                   </TableRow>
                 </>
-              );
+              )
             })}
           </TableBody>
         </Table>
