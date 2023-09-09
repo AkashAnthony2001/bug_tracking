@@ -31,7 +31,7 @@ export default function BasicTableSub({
     setRowsPerPage(event.target.value);
     setPage(0);
   };
-  
+
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -43,7 +43,7 @@ export default function BasicTableSub({
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; 
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
@@ -141,9 +141,19 @@ export default function BasicTableSub({
                 );
               })
           ) : (
-            <Typography variant="h6" color="initial">
-              No Records Found
-            </Typography>
+            <TableRow>
+              <TableCell
+                colSpan={10}
+                sx={{ textAlign: "center" }}
+              >
+                <Typography
+                  variant="h6"
+                  color="initial"
+                >
+                  No Records Found
+                </Typography>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

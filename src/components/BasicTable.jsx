@@ -33,7 +33,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
     const statusData = await apiService.putStatus(obj);
     console.log(statusData);
   };
- 
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -62,48 +62,59 @@ export default function BasicTable({ rows, heading, handleClick }) {
               .map((row) => {
                 const originalDateString = row.estimate_date;
                 const formattedDate = formatDate(originalDateString);
-                return(
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    handleClick(row.id);
-                  }}
-                  tabIndex={-1}
-                >
-                  <TableCell>{row?.projectId?.title}</TableCell>
-                  <TableCell>{row?.moduleId?.module_name}</TableCell>
-                  <TableCell>{row?.assignedTo?.username}</TableCell>
-                  <TableCell>{row?.reportedBy?.name}</TableCell>
-                  <TableCell>{row?.sprint}</TableCell>
-                  <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
-                  <TableCell>{formattedDate}</TableCell>
-                  <TableCell>
-                    <Select
-                      defaultValue={row?.status}
-                      onChange={(e) => {
-                        handleStatus(e, row._id);
-                      }}
-                    >
-                      <MenuItem value="Opened">Opened</MenuItem>
-                      <MenuItem value="Assigned">Assigned</MenuItem>
-                      <MenuItem value="InProgress">InProgress</MenuItem>
-                      <MenuItem value="Resolved">Resolved</MenuItem>
-                      <MenuItem value="Testing">Testing</MenuItem>
-                      <MenuItem value="Verified">Verified</MenuItem>
-                      <MenuItem value="Closed">Closed</MenuItem>
-                      <MenuItem value="Hold">Hold</MenuItem>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              );})
+                return (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handleClick(row.id);
+                    }}
+                    tabIndex={-1}
+                  >
+                    <TableCell>{row?.projectId?.title}</TableCell>
+                    <TableCell>{row?.moduleId?.module_name}</TableCell>
+                    <TableCell>{row?.assignedTo?.username}</TableCell>
+                    <TableCell>{row?.reportedBy?.name}</TableCell>
+                    <TableCell>{row?.sprint}</TableCell>
+                    <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
+                    <TableCell>{formattedDate}</TableCell>
+                    <TableCell>
+                      <Select
+                        defaultValue={row?.status}
+                        onChange={(e) => {
+                          handleStatus(e, row._id);
+                        }}
+                      >
+                        <MenuItem value="Opened">Opened</MenuItem>
+                        <MenuItem value="Assigned">Assigned</MenuItem>
+                        <MenuItem value="InProgress">InProgress</MenuItem>
+                        <MenuItem value="Resolved">Resolved</MenuItem>
+                        <MenuItem value="Testing">Testing</MenuItem>
+                        <MenuItem value="Verified">Verified</MenuItem>
+                        <MenuItem value="Closed">Closed</MenuItem>
+                        <MenuItem value="Hold">Hold</MenuItem>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
           ) : (
-            <Typography variant="h6" color="initial">
-              No Records Found
-            </Typography>
+            <TableRow>
+              <TableCell
+                colSpan={8}
+                sx={{ textAlign: "center" }}
+              >
+                <Typography
+                  variant="h6"
+                  color="initial"
+                >
+                  No Records Found
+                </Typography>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>
