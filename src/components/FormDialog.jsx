@@ -56,11 +56,21 @@ export default function FormDialog({ setCorrect }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} size="small">
         Create Project
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create New Project</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "10px",
+          },
+        }}
+      >
+        <DialogTitle style={{ background: "rgb(25,118,210)", color: "white" }}>
+          Create New Project
+        </DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"

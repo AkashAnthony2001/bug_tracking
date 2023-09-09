@@ -47,11 +47,16 @@ export default function ModuleDialogue({ loadData }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add
+      <Button variant="outlined" onClick={handleClickOpen} size="small">
+        Add Module
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create Module</DialogTitle>
+      <Dialog open={open} onClose={handleClose} 
+      sx={{
+        "& .MuiDialog-paper": {
+          borderRadius: "10px",
+        },
+      }}>
+        <DialogTitle  style={{ background: "rgb(25,118,210)", color: "white" }}>Create Module</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -78,6 +83,7 @@ export default function ModuleDialogue({ loadData }) {
           />
         </DialogContent>
         <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>

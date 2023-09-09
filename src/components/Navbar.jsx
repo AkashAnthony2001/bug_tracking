@@ -72,7 +72,7 @@ const Navbar = () => {
         ))}
       </List>
       <Divider />
-      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "100%" }}>
+      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "80%", alignSelf: "auto"}}>
         Are you sure you want to log out?
       </BasicDialog>
     </Drawer>

@@ -38,7 +38,7 @@ const Dashboard = () => {
   const [hold, setHold] = useState(0);
 
   const [assignedValue, setAssignedvalue] = useState([]);
-  const [filterData,setFilterData]=useState([]);
+  const [filterData, setFilterData] = useState([]);
   const token = localStorage.getItem("token");
 
   const checkAuth = async () => {
@@ -49,6 +49,14 @@ const Dashboard = () => {
     }
     return;
   };
+  const cardStyle = {
+    minWidth: 275,
+    margin: "20px",
+    marginBottom: "1rem",
+    backgroundColor: "hsl(0, 0%, 97%)",
+    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    borderRadius: "8px",
+  };
 
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
@@ -56,7 +64,7 @@ const Dashboard = () => {
     setMyBugs(data);
     // console.log(myBugs);
     const setOpened = data.filter((datas) => {
-      return datas.status === "Opened";
+      return datas.status === "Assigned";
     }).length;
     setOpen(setOpened);
     const setClosed = data.filter((datas) => {
@@ -82,6 +90,7 @@ const Dashboard = () => {
     if (token) {
       checkAuth();
     }
+    Assigneddisplay();
   }, []);
   const Assigneddisplay = async () => {
     const username = localStorage.getItem("username");
@@ -90,14 +99,17 @@ const Dashboard = () => {
   };
   useEffect(() => {
     displayBugs();
-    Assigneddisplay();
-    const filterArr = assignedValue && 
-    assignedValue.filter((val)=>val.createdAt.includes(formattedNewDate))
-    setFilterData(filterArr)
+    if (assignedValue.length) {
+      const filterArr =
+        assignedValue &&
+        assignedValue?.filter((val) =>
+          val.createdAt.includes(formattedNewDate)
+        );
+      setFilterData(filterArr);
+    }
+  }, [assignedValue]);
 
-  }, []);
-
-  // console.log(assignedValue);
+  console.log(assignedValue);
 
   const username = localStorage.getItem("name");
   function formatDate(isoDateString) {
@@ -111,12 +123,9 @@ const Dashboard = () => {
     return `${year}-${formattedMonth}-${formattedDay}`;
   }
   const d = new Date();
- 
-  // console.log(d.toISOString())
-  const formattedNewDate =formatDate(d)
 
-  
- 
+  // console.log(d.toISOString())
+  const formattedNewDate = formatDate(d);
 
   return (
     <div>
@@ -166,23 +175,23 @@ const Dashboard = () => {
               <Projects />
             ) : location.pathname === "/dashboard" ? (
               <>
-                <div className="container">
-                  <div className="card">
-                    <Card>
+                <Grid container spacing={4}>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
                             {open}
                           </Typography>
                           <Typography variant="h7" color="black">
-                            Open Bugs
+                            Assigned Bugs
                           </Typography>
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -194,9 +203,9 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -208,9 +217,9 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -222,17 +231,17 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                </div>
+                  </Grid>
+                </Grid>
                 <div className="bigCards">
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <div>
-                        <Card>
+                        <Card style={cardStyle}>
                           <CardContent>
                             <h2>{<BugReportIcon />} My Bugs</h2>
                             <TableContainer
-                              sx={{ maxHeight: "500px", overflowY: "scroll" }}
+                              sx={{ minHeight: "500px", overflowY: "scroll" }}
                             >
                               <Table>
                                 <TableHead
@@ -248,7 +257,7 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {assignedValue.length ?
+                                  {assignedValue.length ? (
                                     assignedValue.map((data) => {
                                       const originalDateString = data.createdAt;
                                       const formattedDate =
@@ -259,7 +268,22 @@ const Dashboard = () => {
                                           <TableCell>{formattedDate}</TableCell>
                                         </TableRow>
                                       );
-                                    }):"No Records Found"}
+                                    })
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan={2}
+                                        sx={{ textAlign: "center" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          color="initial"
+                                        >
+                                          No Records Found
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -269,30 +293,52 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item xs={6}>
                       <div>
-                        <Card>
+                        <Card style={cardStyle}>
                           <CardContent>
                             <h2>{<WorkIcon />} My Work Items Due Today</h2>
-                            <TableContainer>
+                            <TableContainer
+                              sx={{ minHeight: "500px", overflowY: "scroll" }}
+                            >
                               <Table>
-                                <TableHead>
+                                <TableHead
+                                  sx={{
+                                    position: "sticky",
+                                    top: 0,
+                                    bgcolor: "white",
+                                  }}
+                                >
                                   <TableRow>
                                     <TableCell>Bug</TableCell>
                                     <TableCell>Date</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  
-                                    {filterData.length ?filterData.map((val)=>{
-                                      return (
-                                        <TableRow>
-                                        <TableCell>{val.bug_id}</TableCell>
-                                        <TableCell>{formatDate(val.createdAt)}</TableCell>
+                                  {filterData.length
+                                    ? filterData.map((val) => {
+                                        return (
+                                          <TableRow>
+                                            <TableCell>{val.bug_id}</TableCell>
+                                            <TableCell>
+                                              {formatDate(val.createdAt)}
+                                            </TableCell>
+                                          </TableRow>
+                                        );
+                                      })
+                                    :(
+                                      <TableRow>
+                                        <TableCell
+                                          colSpan={2}
+                                          sx={{ textAlign: "center" }}
+                                        >
+                                          <Typography
+                                            variant="h6"
+                                            color="initial"
+                                          >
+                                            No Records Found
+                                          </Typography>
+                                        </TableCell>
                                       </TableRow>
-                                      )
-                                    }
-                                       
-                                  ):"No Records Found"}
-                                
+                                    )}
                                 </TableBody>
                               </Table>
                             </TableContainer>
