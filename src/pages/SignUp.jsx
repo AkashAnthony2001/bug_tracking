@@ -94,7 +94,6 @@ export default function SignUp() {
                     id="name"
                     label="Name"
                     error={formik.touched.name && Boolean(formik.errors.name)}
-                    autoFocus
                     {...formik.getFieldProps('name')}
                   />
                   {formik.touched.name && formik.errors.name && (
