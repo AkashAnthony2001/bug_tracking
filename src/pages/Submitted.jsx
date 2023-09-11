@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import BasicTableSub from "../components/BasicTableSub";
-import TicketCard from "../components/TicketCard";
 import apiService from "../services/apiService";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 const Submitted = () => {
   // const [tickets, setTickets] = useState([]);
@@ -44,7 +42,7 @@ const Submitted = () => {
 
   return (
     <>
-      <BasicTableSub row={submitedValue} headers={headers}  handleClick={handleOpenTicket} />
+      <BasicTableSub row={submitedValue} headers={headers}  handleClick={handleOpenTicket} openTicket={openTicket}/>
     </>
   );
 };

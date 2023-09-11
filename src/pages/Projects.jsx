@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import apiService from "../services/apiService";
 import ProjectCard from "../components/ProjectCard";
 import ProjectPage from "../components/ProjectPage";
-import Button from "@mui/material/Button";
 import FormDialog from "../components/FormDialog";
-import DeleteProject from "../components/ActionComponent";
 
 const ProjectList = ({ projects, handleClick, setCorrect,load }) => {
   return (
