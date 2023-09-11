@@ -139,8 +139,8 @@ export default function Bugs() {
               bugData?.map((databug, index) => {
                 const rowStyles =
                   index % 2 === 0
-                    ? { backgroundColor: "#F0F0F0" }
-                    : { backgroundColor: "#FFFFFF" };
+                    ? { backgroundColor: "#FFFFFF" }
+                    : { backgroundColor: "#F0F0F0" };
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
