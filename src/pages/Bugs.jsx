@@ -1,4 +1,6 @@
 import {
+  FormControl,
+  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -20,7 +22,6 @@ import Button from "@mui/material/Button";
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
-  const [selectedStatus, setSelectedStatus] = React.useState("");
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
@@ -38,7 +39,16 @@ export default function Bugs() {
     setBugdata(data);
     // console.log(data, "res");
   };
-
+  const statusColors = {
+    Opened: "green",
+    Assigned: "blue",
+    InProgress: "brown",
+    Resolved: "purple",
+    Testing: "orange",
+    Verified: "green",
+    Closed: "red",
+    Hold: "gray",
+  };
   useEffect(() => {
     bugDisplay();
     bugStatusApi();
@@ -50,7 +60,6 @@ export default function Bugs() {
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
     console.log(statusData, "nr");
     setChangemsg(statusData);
@@ -77,8 +86,9 @@ export default function Bugs() {
 
   return (
     <>
-      <BugsDialogue loadData={bugDisplay} />
+      <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi}/>
       <TableContainer component={Paper}>
+        {" "}
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -98,76 +108,91 @@ export default function Bugs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bugData.length ? bugData?.map((databug,index) => {
-              const originalDateString = databug.estimate_date;
-              const formattedDate = formatDate(originalDateString);
-              const isRowExpanded = index === expandedRow;
-              console.log(bugData);
-              return (
-                <>
-                  <TableRow
-                    key={databug.bug_id}
-                    sx={{ "& > *": { borderBottom: "unset" } }}
-                  >
-                    <TableCell>
-                      <Button
-                        variant="text"
-                        onClick={() => collapseRow(index, databug?.bug_id)}
+            {bugData.length ? (
+              bugData?.map((databug, index) => {
+                const rowStyles = index % 2 === 0 ? { backgroundColor: '#F0F0F0' } : { backgroundColor: '#FFFFFF' };
+                const originalDateString = databug.estimate_date;
+                const formattedDate = formatDate(originalDateString);
+                const isRowExpanded = index === expandedRow;
+                console.log(bugData);
+                return (
+                  <>
+                    <TableRow
+                      key={databug.bug_id}
+                      sx={{ "& > *": { borderBottom: "unset" }, ...rowStyles }}                    >
+                      <TableCell>
+                        <Button
+                          variant="text"
+                          onClick={() => collapseRow(index, databug?.bug_id)}
+                          style={{ backgroundColor: "#596e79", color: "white" }}
+                        >
+                          {databug?.bug_id}
+                        </Button>
+                      </TableCell>
+                      <TableCell>{databug?.bug_description}</TableCell>
+                      <TableCell>{databug?.bug_type}</TableCell>
+                      <TableCell>{databug?.projectId?.title}</TableCell>
+                      <TableCell>{databug?.moduleId?.module_name}</TableCell>
+                      <TableCell>{databug?.assignedTo?.username}</TableCell>
+                      <TableCell>{databug?.reportedBy?.username}</TableCell>
+                      <TableCell>{databug?.severity}</TableCell>
+                      <TableCell>{databug?.sprint}</TableCell>
+                      <TableCell>
+                        {databug?.customerfound ? "Yes" : "No"}
+                      </TableCell>
+                      <TableCell>{formattedDate}</TableCell>
+                      <TableCell>{databug?.createdby}</TableCell>
+                      <FormControl sx={{ m: 2 }} size="small">
+                        <InputLabel ></InputLabel>
+                        <Select
+                          defaultValue={databug?.status}
+                          onChange={(e) => {
+                            handleStatus(e, databug?._id);
+                            setExpandedRow(null);
+                          }}
+                        >
+                          {Object.entries(statusColors).map(
+                            ([status, color]) => (
+                              <MenuItem key={status} value={status}>
+                                <span style={{ color }}>{status}</span>
+                              </MenuItem>
+                            )
+                          )}
+                        </Select>
+                      </FormControl>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                        style={{ paddingBottom: 0, paddingTop: 0 }}
+                        colSpan={13}
                       >
-                        {databug?.bug_id}
-                      </Button>
-                    </TableCell>
-                    <TableCell>{databug?.bug_description}</TableCell>
-                    <TableCell>{databug?.bug_type}</TableCell>
-                    <TableCell>{databug?.projectId?.title}</TableCell>
-                    <TableCell>{databug?.moduleId?.module_name}</TableCell>
-                    <TableCell>{databug?.assignedTo?.username}</TableCell>
-                    <TableCell>{databug?.reportedBy?.username}</TableCell>
-                    <TableCell>{databug?.severity}</TableCell>
-                    <TableCell>{databug?.sprint}</TableCell>
-                    <TableCell>
-                      {databug?.customerfound ? "Yes" : "No"}
-                    </TableCell>
-                    <TableCell>{formattedDate}</TableCell>
-                    <TableCell>{databug?.createdby}</TableCell>
-                    <TableCell>
-                      <Select
-                        defaultValue={databug?.status}
-                        onChange={(e) => {
-                          handleStatus(e, databug?._id);
-                          setExpandedRow(null);
-                        }}
-                      >
-                        <MenuItem value="Opened">Opened</MenuItem>
-                        <MenuItem value="Assigned">Assigned</MenuItem>
-                        <MenuItem value="InProgress">InProgress</MenuItem>
-                        <MenuItem value="Resolved">Resolved</MenuItem>
-                        <MenuItem value="Testing">Testing</MenuItem>
-                        <MenuItem value="Verified">Verified</MenuItem>
-                        <MenuItem value="Closed">Closed</MenuItem>
-                        <MenuItem value="Hold">Hold</MenuItem>
-                      </Select>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={13}
-                    >
-                      <Collapse in={isRowExpanded} timeout="auto" unmountOnExit>
-                        <Typography variant="h6" color="initial">
-                          Status History
-                        </Typography>
-                        <BugStatusTable
-                          bugStatusData={filteredResponse}
-                          headers={headers}
-                        />
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
-              )
-            }): <TableRow><TableCell colSpan={13}><Typography variant="h6" color="initial">No Records Found</Typography></TableCell></TableRow>}
+                        <Collapse
+                          in={isRowExpanded}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <Typography variant="h6" color="initial">
+                            Status History
+                          </Typography>
+                          <BugStatusTable
+                            bugStatusData={filteredResponse}
+                            headers={headers}
+                          />
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={13}>
+                  <Typography variant="h6" color="initial">
+                    No Records Found
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

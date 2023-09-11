@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { MenuItem, Select, Typography } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import apiService from "../services/apiService";
 
 export default function BasicTable({ rows, heading, handleClick }) {
@@ -23,7 +23,16 @@ export default function BasicTable({ rows, heading, handleClick }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  const statusColors = {
+    Opened: "green",
+    Assigned: "blue",
+    InProgress: "brown",
+    Resolved: "purple",
+    Testing: "orange",
+    Verified: "green",
+    Closed: "red",
+    Hold: "gray",
+  };
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
@@ -37,14 +46,13 @@ export default function BasicTable({ rows, heading, handleClick }) {
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    // Ensure day and month have two digits
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-
     return `${formattedDay}-${formattedMonth}-${year}`;
+   
   }
 
   return (
@@ -59,15 +67,18 @@ export default function BasicTable({ rows, heading, handleClick }) {
           {rows.length ? (
             rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 const originalDateString = row.estimate_date;
                 const formattedDate = formatDate(originalDateString);
+                const isOddRow = index % 2 === 0; 
+
                 return (
                   <TableRow
                     key={row.id}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
+                      backgroundColor: isOddRow ? "#EDEDED" : "#FFFFFF"
                     }}
                     onClick={() => {
                       handleClick(row.id);
@@ -81,7 +92,24 @@ export default function BasicTable({ rows, heading, handleClick }) {
                     <TableCell>{row?.sprint}</TableCell>
                     <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
-                    <TableCell>
+                    <FormControl sx={{ m: 2 }} size="small">
+                        <InputLabel ></InputLabel>
+                        <Select
+                        defaultValue={row?.status}
+                        onChange={(e) => {
+                          handleStatus(e, row._id);
+                        }}
+                      >
+                          {Object.entries(statusColors).map(
+                            ([status, color]) => (
+                              <MenuItem key={status} value={status}>
+                                <span style={{ color }}>{status}</span>
+                              </MenuItem>
+                            )
+                          )}
+                        </Select>
+                      </FormControl>
+                    {/* <TableCell>
                       <Select
                         defaultValue={row?.status}
                         onChange={(e) => {
@@ -97,7 +125,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
                         <MenuItem value="Closed">Closed</MenuItem>
                         <MenuItem value="Hold">Hold</MenuItem>
                       </Select>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })

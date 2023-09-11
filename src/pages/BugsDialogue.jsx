@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue({ loadData }) {
+export default function BugsDialogue({ loadData , bugStatus }) {
   const [open, setOpen] = useState(false);
   // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
@@ -61,8 +61,6 @@ export default function BugsDialogue({ loadData }) {
     setOpen(false);
   };
   const bugDisplay = async () => {
-    const data = await apiService.getBugs();
-
     const record = await apiService.getProjects();
     setprojectName(record);
     const moduledata = await apiService.getModule();
@@ -123,6 +121,7 @@ export default function BugsDialogue({ loadData }) {
         console.log(result);
         if (result) {
           loadData();
+          bugStatus()
           handleReset();
         }
         setOpen(false);
@@ -160,7 +159,6 @@ export default function BugsDialogue({ loadData }) {
   return (
     <>
       <Button
-        className="btn-1"
         variant="outlined"
         size="small"
         onClick={handleOpenDialog}

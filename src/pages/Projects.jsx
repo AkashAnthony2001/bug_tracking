@@ -4,6 +4,7 @@ import apiService from "../services/apiService";
 import ProjectCard from "../components/ProjectCard";
 import ProjectPage from "../components/ProjectPage";
 import FormDialog from "../components/FormDialog";
+import { Typography } from "@mui/material";
 
 const ProjectList = ({ projects, handleClick, setCorrect,load }) => {
   return (
@@ -16,7 +17,7 @@ const ProjectList = ({ projects, handleClick, setCorrect,load }) => {
           setCorrect={setCorrect}
           load={load}
         />
-      )):"No Projects Found"}
+      )):<Typography sx={{textAlign:'center'}} variant="h5">No Projects Found</Typography>}
     </>
   );
 };
