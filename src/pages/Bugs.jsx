@@ -20,7 +20,6 @@ import Button from "@mui/material/Button";
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
-  const [selectedStatus, setSelectedStatus] = React.useState("");
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
@@ -50,7 +49,6 @@ export default function Bugs() {
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
     console.log(statusData, "nr");
     setChangemsg(statusData);
@@ -77,7 +75,7 @@ export default function Bugs() {
 
   return (
     <>
-      <BugsDialogue loadData={bugDisplay} />
+      <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi}/>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -155,7 +153,7 @@ export default function Bugs() {
                       colSpan={13}
                     >
                       <Collapse in={isRowExpanded} timeout="auto" unmountOnExit>
-                        <Typography variant="h6" color="initial">
+                        <Typography variant="h5" color="initial" sx={{textAlign:'center'}}>
                           Status History
                         </Typography>
                         <BugStatusTable
@@ -167,7 +165,7 @@ export default function Bugs() {
                   </TableRow>
                 </>
               )
-            }): <TableRow><TableCell colSpan={13}><Typography variant="h6" color="initial">No Records Found</Typography></TableCell></TableRow>}
+            }): <TableRow><TableCell colSpan={13} sx={{textAlign:'center'}}><Typography variant="h6" color="initial">No Records Found</Typography></TableCell></TableRow>}
           </TableBody>
         </Table>
       </TableContainer>

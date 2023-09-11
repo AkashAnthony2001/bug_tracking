@@ -13,13 +13,13 @@ import {
 const BugStatusTable = ({ bugStatusData, headers }) => {
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
-    
 
-    return `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()} ${date.getHours >= 12 ? "PM" : "AM"}`  ;
+
+    return `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()} ${date.getHours >= 12 ? "PM" : "AM"}`;
   }
 
   return (
-    <TableContainer component={Paper} sx={{ width: '100%' , p:2 }} >
+    <TableContainer component={Paper} sx={{ width: '100%', p: 2 }} >
       <Table>
         <TableHead>
           <TableRow>
@@ -40,7 +40,19 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
                 <TableCell>{formattedDate}</TableCell>
               </TableRow>
             );
-          }):<Typography variant='h6'>No Records Found</Typography>}
+          }) : <TableRow>
+            <TableCell
+              colSpan={4}
+              sx={{ textAlign: "center" }}
+            >
+              <Typography
+                variant="h6"
+                color="initial"
+              >
+                No Records Found
+              </Typography>
+            </TableCell>
+          </TableRow>}
         </TableBody>
       </Table>
     </TableContainer>

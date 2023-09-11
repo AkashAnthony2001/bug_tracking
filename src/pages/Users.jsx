@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
 import UserDialog from "../components/usersDialog";
 import UserCard from "../components/UserCard";
+import { Typography } from "@mui/material";
 
 const Users = () => {
   const [userData, setUserData] = useState({});
@@ -31,7 +32,7 @@ const Users = () => {
               load={handleUsers}
             />
           ))
-        : "No Users Found"}
+        : <Typography sx={{textAlign:'center'}} variant="h5">No Users Found</Typography>}
     </>
   );
 };
