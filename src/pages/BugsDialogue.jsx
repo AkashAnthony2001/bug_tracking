@@ -160,10 +160,11 @@ export default function BugsDialogue({ loadData , bugStatus }) {
     <>
       <Button
         variant="outlined"
+        size="small"
         onClick={handleOpenDialog}
         style={{
           marginBottom: "20px",
-          background: "#1976D2",
+          background: "#596e79",
           color: "#ffffff",
           boxShadow: "3px 4px 10px 1px gray",
         }}
@@ -172,12 +173,7 @@ export default function BugsDialogue({ loadData , bugStatus }) {
       </Button>
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle
-          style={{
-            background: "#2196F3",
-            color: "#fff",
-            fontSize: "24px",
-            padding: "16px",
-          }}
+          style={{backgroundColor:"#596e79", color: "white" }}
         >
           Create Bugs
         </DialogTitle>{" "}
