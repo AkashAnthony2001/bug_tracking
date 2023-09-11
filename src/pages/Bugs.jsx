@@ -13,12 +13,10 @@ import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
 import BugsDialogue from "./BugsDialogue";
 import CustomizedSnackbars from "../components/CustomizedSnackbars";
-import Collapse from '@mui/material/Collapse';
-import BugStatusTable from '../components/BugStatusTable';
-import Typography from '@mui/material/Typography'
+import Collapse from "@mui/material/Collapse";
+import BugStatusTable from "../components/BugStatusTable";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
-
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -26,14 +24,14 @@ export default function Bugs() {
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
-  const [filteredResponse , setFilteredResponse] = useState([])
+  const [filteredResponse, setFilteredResponse] = useState([]);
 
-  const headers = ['Bug_id','Status','Updated By','Updated On']
+  const headers = ["Bug_id", "Status", "Updated By", "Updated On"];
 
-  const bugStatusApi = async() => {
-      const bugStatusResponse = await apiService.bugStatus()
-      setBugResponse(bugStatusResponse)
-  }
+  const bugStatusApi = async () => {
+    const bugStatusResponse = await apiService.bugStatus();
+    setBugResponse(bugStatusResponse);
+  };
 
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
@@ -46,16 +44,15 @@ export default function Bugs() {
     bugStatusApi();
   }, [changemsg]);
 
-
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
-      updatedby:localStorage.getItem('name'),
+      updatedby: localStorage.getItem("name"),
       _id: id,
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData, "nr")
+    console.log(statusData, "nr");
     setChangemsg(statusData);
   };
   function formatDate(isoDateString) {
@@ -69,19 +66,18 @@ export default function Bugs() {
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
 
-  const collapseRow = (index,bugid) => {
-    setExpandedRow(index === expandedRow ? null : index)
-    const filteredData = bugResponse.response.filter((data)=> {
-      return data.bug_id === bugid
-    })
-    setFilteredResponse(filteredData)
+  const collapseRow = (index, bugid) => {
+    setExpandedRow(index === expandedRow ? null : index);
+    const filteredData = bugResponse.response.filter((data) => {
+      return data.bug_id === bugid;
+    });
+    setFilteredResponse(filteredData);
     console.log(expandedRow);
-  }
+  };
 
-
-   return (
+  return (
     <>
-      <BugsDialogue loadData={bugDisplay}/>
+      <BugsDialogue loadData={bugDisplay} />
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -106,10 +102,21 @@ export default function Bugs() {
               const originalDateString = databug.estimate_date;
               const formattedDate = formatDate(originalDateString);
               const isRowExpanded = index === expandedRow;
+              console.log(bugData);
               return (
                 <>
-                  <TableRow key={databug.bug_id} sx={{ '& > *': { borderBottom: 'unset' } }} >
-                    <TableCell><Button variant="text" onClick={() => collapseRow(index,databug?.bug_id)}>{databug?.bug_id}</Button></TableCell>
+                  <TableRow
+                    key={databug.bug_id}
+                    sx={{ "& > *": { borderBottom: "unset" } }}
+                  >
+                    <TableCell>
+                      <Button
+                        variant="text"
+                        onClick={() => collapseRow(index, databug?.bug_id)}
+                      >
+                        {databug?.bug_id}
+                      </Button>
+                    </TableCell>
                     <TableCell>{databug?.bug_description}</TableCell>
                     <TableCell>{databug?.bug_type}</TableCell>
                     <TableCell>{databug?.projectId?.title}</TableCell>
@@ -118,7 +125,9 @@ export default function Bugs() {
                     <TableCell>{databug?.reportedBy?.username}</TableCell>
                     <TableCell>{databug?.severity}</TableCell>
                     <TableCell>{databug?.sprint}</TableCell>
-                    <TableCell>{databug?.customerfound ? "Yes" : "No"}</TableCell>
+                    <TableCell>
+                      {databug?.customerfound ? "Yes" : "No"}
+                    </TableCell>
                     <TableCell>{formattedDate}</TableCell>
                     <TableCell>{databug?.createdby}</TableCell>
                     <TableCell>
@@ -126,7 +135,7 @@ export default function Bugs() {
                         defaultValue={databug?.status}
                         onChange={(e) => {
                           handleStatus(e, databug?._id);
-                          setExpandedRow(null)
+                          setExpandedRow(null);
                         }}
                       >
                         <MenuItem value="Opened">Opened</MenuItem>
@@ -141,10 +150,18 @@ export default function Bugs() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={13}>
-                      <Collapse  in={isRowExpanded} timeout="auto" unmountOnExit>
-                      <Typography variant="h6" color="initial">Status History</Typography>
-                      <BugStatusTable bugStatusData={filteredResponse}  headers={headers}/>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={13}
+                    >
+                      <Collapse in={isRowExpanded} timeout="auto" unmountOnExit>
+                        <Typography variant="h6" color="initial">
+                          Status History
+                        </Typography>
+                        <BugStatusTable
+                          bugStatusData={filteredResponse}
+                          headers={headers}
+                        />
                       </Collapse>
                     </TableCell>
                   </TableRow>

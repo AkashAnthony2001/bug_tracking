@@ -15,10 +15,11 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import apiService from "../services/apiService";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue({loadData}) {
+export default function BugsDialogue({ loadData }) {
   const [open, setOpen] = useState(false);
   // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
@@ -39,7 +40,7 @@ export default function BugsDialogue({loadData}) {
     reportedBy: "",
     createdby: "",
     status: "",
-    estimate_date: "",
+    estimate_date: null,
     customerfound: "",
     bug_id: "",
   };
@@ -47,18 +48,16 @@ export default function BugsDialogue({loadData}) {
   const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
-    // setBugData((
-    //     ...prevData,
-    //     createdby: userName,
-    // );
+
     setBugData({
       ...bugData,
       createdby: userName,
-    })
+    });
     setOpen(true);
   };
 
   const handleCloseDialog = () => {
+    resetDate(); 
     setOpen(false);
   };
   const bugDisplay = async () => {
@@ -68,10 +67,9 @@ export default function BugsDialogue({loadData}) {
     setprojectName(record);
     const moduledata = await apiService.getModule();
     setModule(moduledata);
-    const assignedData = await apiService.getUsers();
-    setAssigned(assignedData);
-    const reportdata = await apiService.getUsers();
-    setReport(reportdata);
+    const getUsers = await apiService.getUsers();
+    setAssigned(getUsers);
+    setReport(getUsers);
   };
 
   const validateForm = () => {
@@ -123,8 +121,9 @@ export default function BugsDialogue({loadData}) {
       try {
         const result = await apiService.createBugs(data);
         console.log(result);
-        if(result){
-          loadData()
+        if (result) {
+          loadData();
+          handleReset();
         }
         setOpen(false);
       } catch (error) {
@@ -146,6 +145,7 @@ export default function BugsDialogue({loadData}) {
   };
 
   const handleReset = () => {
+    resetDate(); 
     setBugData(initialValues);
   };
   useEffect(() => {
@@ -153,13 +153,36 @@ export default function BugsDialogue({loadData}) {
     setUsername(localStorage.getItem("name"));
   }, []);
 
+
+  const resetDate = () => {
+    setDate(null);
+  };
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog}>
+      <Button
+        className="btn-1"
+        variant="outlined"
+        onClick={handleOpenDialog}
+        style={{
+          marginBottom: "20px",
+          background: "#1976D2",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}
+      >
         Create Bug
       </Button>
       <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle>Create Bugs</DialogTitle>
+        <DialogTitle
+          style={{
+            background: "#2196F3",
+            color: "#fff",
+            fontSize: "24px",
+            padding: "16px",
+          }}
+        >
+          Create Bugs
+        </DialogTitle>{" "}
         <DialogContent>
           <Grid container style={{ marginTop: "5px" }} spacing={2}>
             {/* project name dialogbox */}
@@ -391,16 +414,18 @@ export default function BugsDialogue({loadData}) {
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      label="Estimate Date"
-                      value={date || null}
-                      onChange={(value) => {
-          
-                        setDate( value?.$d?.toLocaleDateString("en-CA"));
-                      }}
-                    />
+                  <DatePicker
+                    label="Estimate Date"
+                    value={date || null}
+                    minDate={dayjs()}
+                    onChange={(value) => {
+                      setDate(value);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
                   </DemoContainer>
                 </LocalizationProvider>
+
                 {errors.estimate_date && (
                   <FormHelperText error>{errors.estimate_date}</FormHelperText>
                 )}
