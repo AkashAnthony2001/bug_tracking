@@ -102,7 +102,7 @@ export default function Bugs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bugData?.map((databug,index) => {
+            {bugData.length ? bugData?.map((databug,index) => {
               const originalDateString = databug.estimate_date;
               const formattedDate = formatDate(originalDateString);
               const isRowExpanded = index === expandedRow;
@@ -150,7 +150,7 @@ export default function Bugs() {
                   </TableRow>
                 </>
               )
-            })}
+            }): <TableRow><TableCell colSpan={13}><Typography variant="h6" color="initial">No Records Found</Typography></TableCell></TableRow>}
           </TableBody>
         </Table>
       </TableContainer>
