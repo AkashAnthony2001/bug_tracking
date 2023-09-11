@@ -124,7 +124,7 @@ export default function BasicTableSub({
                       {formattedDate}
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row?.createdby?.username}
+                      {row?.createdby}
                     </TableCell>
                     <TableCell component="th" scope="row">
                       {isoformattedDate}
