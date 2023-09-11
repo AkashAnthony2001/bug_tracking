@@ -165,7 +165,6 @@ export default function BasicTableSub({
                       </Select>
                     </TableCell> */}
 
-                    <TableCell align="right">{row?.type}</TableCell>
                   </TableRow>
                 );
               })
