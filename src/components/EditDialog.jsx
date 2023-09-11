@@ -55,13 +55,7 @@ function EditDialog({ item, open, setOpen,load }) {
     setOpen(false);
   };
 
-  if (editErr.error) {
-    return (
-      <>
-        <CustomizedSnackbars error={editErr.error} message={editErr.message} />
-      </>
-    );
-  }
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -102,6 +96,7 @@ function EditDialog({ item, open, setOpen,load }) {
           </DialogActions>
         </DialogContent>
       </Dialog>
+      <CustomizedSnackbars error={editErr.error} message={editErr.message} />
     </div>
   );
 }

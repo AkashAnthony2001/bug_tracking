@@ -13,7 +13,7 @@ import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/apiService";
 
-const drawerWidth = 240;
+const drawerWidth = 190;
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,8 +23,15 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const isAdmin = localStorage.getItem("role") === 'admin'
-  const filterarr = !isAdmin ? navbarItems?.filter((val) => val.text !== "Users" && val.text !== "Projects" && val.text !== "Modules") : navbarItems
+  const isAdmin = localStorage.getItem("role") === "admin";
+  const filterarr = !isAdmin
+    ? navbarItems?.filter(
+        (val) =>
+          val.text !== "Users" &&
+          val.text !== "Projects" &&
+          val.text !== "Modules"
+      )
+    : navbarItems;
 
   return (
     <Drawer
@@ -48,31 +55,40 @@ const Navbar = () => {
           padding: "1rem",
           textDecoration: "none",
           color: "black",
+          background: "#e7e6e1",
         }}
         href="/dashboard"
       >
         <Typography variant="h5">Issue Tracker</Typography>
       </Box>
       <Divider />
-      <List>
-        {filterarr && filterarr.map((item) => (
-          <ListItem key={item.id} disablePadding>
-            <ListItemButton
-              sx={{ width: "239px", padding: "auto" }}
-              selected={item.id === selectedItem.id}
-              onClick={() => {
-                setSelectedItem(item);
-                navigate(item.link);
-              }}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} sx={{ marginLeft: "-25px" }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+      <List sx={{ background: "#e7e6e1", height: "100%", color: "black" }}>
+        {filterarr &&
+          filterarr.map((item) => (
+            <ListItem key={item.id} disablePadding>
+              <ListItemButton
+                sx={{ width: "239px", padding: "auto" }}
+                selected={item.id === selectedItem.id}
+                onClick={() => {
+                  setSelectedItem(item);
+                  navigate(item.link);
+                }}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  sx={{ marginLeft: "-25px" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
       <Divider />
-      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "80%", alignSelf: "auto"}}>
+      <BasicDialog
+        action={logout}
+        buttonMsg="Logout"
+        sx={{ width: "100%"  }}
+      >
         Are you sure you want to log out?
       </BasicDialog>
     </Drawer>
