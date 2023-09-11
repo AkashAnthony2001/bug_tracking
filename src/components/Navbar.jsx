@@ -12,6 +12,7 @@ import navbarItems from "./constants/navbarItems";
 import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/apiService";
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 
 const drawerWidth = 190;
 
@@ -59,7 +60,7 @@ const Navbar = () => {
         }}
         href="/dashboard"
       >
-        <Typography variant="h5">Issue Tracker</Typography>
+        <Typography variant="h5"><TroubleshootIcon/>Issue Tracker</Typography>
       </Box>
       <Divider />
       <List sx={{ background: "#e7e6e1", height: "100%", color: "black" }}>

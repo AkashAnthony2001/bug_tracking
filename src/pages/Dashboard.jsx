@@ -31,7 +31,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [myBugs, setMyBugs] = useState([]);
   const [open, setOpen] = useState(0);
   const [close, setClose] = useState(0);
   const [inProcess, setInProcess] = useState(0);
@@ -53,7 +52,7 @@ const Dashboard = () => {
     minWidth: 275,
     margin: "20px",
     marginBottom: "1rem",
-    backgroundColor: "#fdfdfd",
+    backgroundColor: "#ececec",
     boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
   };
@@ -61,8 +60,7 @@ const Dashboard = () => {
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
-    setMyBugs(data);
-    // console.log(myBugs);
+
     const setOpened = data.filter((datas) => {
       return datas.status === "Assigned";
     }).length;
@@ -263,7 +261,7 @@ const Dashboard = () => {
                                       const formattedDate =
                                         formatDate(originalDateString);
                                       return (
-                                        <TableRow key={data.bug_id}>
+                                        <TableRow key={data.bug_id} sx={{background:"white"}}>
                                           <TableCell>{data.bug_id}</TableCell>
                                           <TableCell>{formattedDate}</TableCell>
                                         </TableRow>
@@ -316,7 +314,7 @@ const Dashboard = () => {
                                   {filterData.length
                                     ? filterData.map((val) => {
                                         return (
-                                          <TableRow>
+                                          <TableRow  key={filterData.bug_id} sx={{background:"white"}}>
                                             <TableCell>{val.bug_id}</TableCell>
                                             <TableCell>
                                               {formatDate(val.createdAt)}

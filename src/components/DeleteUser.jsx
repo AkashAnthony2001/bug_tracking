@@ -30,6 +30,9 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
+      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Dekete User
+        </DialogTitle>
         <DialogTitle id="alert-dialog-title">
           {"Are you sure want to Delete this User"}
         </DialogTitle>
