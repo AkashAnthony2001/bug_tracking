@@ -234,7 +234,6 @@ export default function Bugs() {
                           <Typography
                             variant="h6"
                             color="initial"
-                            sx={{ color: "blue" }}
                           >
                             Status History
                           </Typography>
