@@ -23,14 +23,14 @@ export default function BasicTableSub({
 
   // const [defaults, setDefaults] = React.useState();
   const statusColors = {
-    Opened: "green",
+    Opened: "	#32cd32",
     Assigned: "blue",
-    InProgress: "brown",
+    InProgress: "	#800000	",
     Resolved: "purple",
     Testing: "orange",
-    Verified: "green",
+    Verified: "	#32cd32",
     Closed: "red",
-    Hold: "gray",
+    Hold: "#708090",
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -71,8 +71,8 @@ export default function BasicTableSub({
   };
 
   return (
-    <TableContainer component={Paper} sx={{ width: "100%" }}>
-      <Table aria-label="tickets table" stickyHeader>
+    <TableContainer component={Paper}  sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}>
+      <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
             {headers && headers.map((val) => <TableCell>{val}</TableCell>)}
@@ -95,7 +95,8 @@ export default function BasicTableSub({
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
-                      backgroundColor: isEvenRow ? "#f2f2f2" : "white"
+                      backgroundColor: isEvenRow ? "#f2f2f2" : "white", border: '1px solid #ccc',
+                      padding: '8px',
                     }}
                     onClick={() => {
                       handleClick(row.id);

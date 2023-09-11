@@ -7,7 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import apiService from "../services/apiService";
 
 export default function BasicTable({ rows, heading, handleClick }) {
@@ -24,14 +30,14 @@ export default function BasicTable({ rows, heading, handleClick }) {
     setPage(0);
   };
   const statusColors = {
-    Opened: "green",
+    Opened: "	#32cd32",
     Assigned: "blue",
-    InProgress: "brown",
+    InProgress: "#800000",
     Resolved: "purple",
     Testing: "orange",
-    Verified: "green",
+    Verified: "	#32cd32",
     Closed: "red",
-    Hold: "gray",
+    Hold: "#708090",
   };
   const handleStatus = async (event, id) => {
     let obj = {
@@ -52,12 +58,14 @@ export default function BasicTable({ rows, heading, handleClick }) {
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
-   
   }
 
   return (
-    <TableContainer component={Paper} sx={{ width: "100%" }}>
-      <Table aria-label="tickets table" stickyHeader>
+    <TableContainer
+      component={Paper}
+      sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+    >
+      <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
             {heading && heading.map((data) => <TableCell>{data}</TableCell>)}
@@ -70,7 +78,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
               .map((row, index) => {
                 const originalDateString = row.estimate_date;
                 const formattedDate = formatDate(originalDateString);
-                const isOddRow = index % 2 === 0; 
+                const isOddRow = index % 2 === 0;
 
                 return (
                   <TableRow
@@ -78,7 +86,8 @@ export default function BasicTable({ rows, heading, handleClick }) {
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
-                      backgroundColor: isOddRow ? "#EDEDED" : "#FFFFFF"
+                      backgroundColor: isOddRow ? "#EDEDED" : "#FFFFFF",border: '1px solid #ccc',
+                      padding: '8px',
                     }}
                     onClick={() => {
                       handleClick(row.id);
@@ -93,22 +102,20 @@ export default function BasicTable({ rows, heading, handleClick }) {
                     <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
                     <TableCell>{formattedDate}</TableCell>
                     <FormControl sx={{ m: 2 }} size="small">
-                        <InputLabel ></InputLabel>
-                        <Select
+                      <InputLabel></InputLabel>
+                      <Select
                         defaultValue={row?.status}
                         onChange={(e) => {
                           handleStatus(e, row._id);
                         }}
                       >
-                          {Object.entries(statusColors).map(
-                            ([status, color]) => (
-                              <MenuItem key={status} value={status}>
-                                <span style={{ color }}>{status}</span>
-                              </MenuItem>
-                            )
-                          )}
-                        </Select>
-                      </FormControl>
+                        {Object.entries(statusColors).map(([status, color]) => (
+                          <MenuItem key={status} value={status}>
+                            <span style={{ color }}>{status}</span>
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                     {/* <TableCell>
                       <Select
                         defaultValue={row?.status}
@@ -131,14 +138,8 @@ export default function BasicTable({ rows, heading, handleClick }) {
               })
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={8}
-                sx={{ textAlign: "center" }}
-              >
-                <Typography
-                  variant="h6"
-                  color="initial"
-                >
+              <TableCell colSpan={8} sx={{ textAlign: "center" }}>
+                <Typography variant="h6" color="initial">
                   No Records Found
                 </Typography>
               </TableCell>
