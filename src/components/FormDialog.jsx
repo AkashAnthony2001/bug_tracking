@@ -56,7 +56,12 @@ export default function FormDialog({ setCorrect }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} size="small">
+      <Button variant="outlined" onClick={handleClickOpen} size="small"  style={{
+          marginBottom: "20px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}>
         Create Project
       </Button>
       <Dialog
@@ -68,7 +73,7 @@ export default function FormDialog({ setCorrect }) {
           },
         }}
       >
-        <DialogTitle style={{ background: "rgb(25,118,210)", color: "white" }}>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
           Create New Project
         </DialogTitle>
         <DialogContent>
@@ -98,8 +103,8 @@ export default function FormDialog({ setCorrect }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Create</Button>
+          <Button onClick={handleClose}  size="small" >Cancel</Button>
+          <Button onClick={handleSubmit} size="small" sx={{marginRight:"15px"}}>Create</Button>
         </DialogActions>
       </Dialog>
       <CustomizedSnackbars

@@ -8,7 +8,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Media from "react-media";
 import apiService from "../services/apiService";
 import Projects from "./Projects";
-import "../components/index.css";
+import "../components/dash.css";
 import {
   Card,
   CardActionArea,
@@ -25,7 +25,7 @@ import {
 import BugReportIcon from "@mui/icons-material/BugReport";
 import WorkIcon from "@mui/icons-material/Work";
 
-const drawerWidth = 240;
+const drawerWidth = 190;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -53,8 +53,8 @@ const Dashboard = () => {
     minWidth: 275,
     margin: "20px",
     marginBottom: "1rem",
-    backgroundColor: "hsl(0, 0%, 97%)",
-    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    backgroundColor: "#fdfdfd",
+    boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
   };
 

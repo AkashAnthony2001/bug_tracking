@@ -61,7 +61,12 @@ const UsersDialog = ({load}) => {
   };
   return (
     <>
-      <Button onClick={() => setOpen(true)} variant="outlined" size="small">Create User</Button>
+      <Button onClick={() => setOpen(true)} variant="outlined" size="small" style={{
+          marginBottom: "20px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}>Create User</Button>
       <Dialog open={open} onClose={handleClose}
       sx={{
         "& .MuiDialog-paper": {
@@ -69,7 +74,7 @@ const UsersDialog = ({load}) => {
         },
       }}>
       <form onSubmit={formik.handleSubmit}>
-        <DialogTitle style={{ background: "rgb(25,118,210)", color: "white" }}>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
           <Typography>Create User</Typography>
         </DialogTitle>
         <DialogContent sx={{marginTop: "20px"}}>
