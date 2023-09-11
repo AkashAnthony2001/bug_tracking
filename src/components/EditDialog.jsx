@@ -59,7 +59,9 @@ function EditDialog({ item, open, setOpen,load }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Project</DialogTitle>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Edit Project
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

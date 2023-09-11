@@ -59,7 +59,9 @@ console.log(moduledata,'fer')
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Module Data</DialogTitle>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Edit Module Data
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
