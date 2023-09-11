@@ -31,10 +31,12 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
   }
   return (
     <Dialog open={openDelete} onClose={handleClose}>
-      <DialogTitle>Confirm Delete</DialogTitle>
-      <DialogContent>
-        Are you sure you want to delete this module?
-      </DialogContent>
+      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Delete Module Data
+        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure want to Delete this Module"}
+        </DialogTitle>
       <DialogActions>
         <Button onClick={handleClose}>
           Cancel

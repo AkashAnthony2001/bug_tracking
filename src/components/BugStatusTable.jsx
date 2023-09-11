@@ -13,8 +13,7 @@ import {
 const BugStatusTable = ({ bugStatusData, headers }) => {
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
-
-
+    console.log(date);
     return `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()} ${date.getHours >= 12 ? "PM" : "AM"}`;
   }
 

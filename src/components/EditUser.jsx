@@ -57,7 +57,9 @@ function EditUser({ userData, load, open, setOpen }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit User Data</DialogTitle>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Edit User Data
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
