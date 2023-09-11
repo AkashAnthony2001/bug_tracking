@@ -21,7 +21,7 @@ export default function UserCard({ userData, setCorrect, load }) {
     marginTop: "10px",
     minWidth: 275,
     marginBottom: "1rem",
-    backgroundColor: "#fdfdfd", 
+    backgroundColor: "#F0F0F0", 
     boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
     borderRadius: "8px",
   };
