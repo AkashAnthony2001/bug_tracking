@@ -160,7 +160,6 @@ export default function BugsDialogue({ loadData }) {
   return (
     <>
       <Button
-        className="btn-1"
         variant="outlined"
         onClick={handleOpenDialog}
         style={{

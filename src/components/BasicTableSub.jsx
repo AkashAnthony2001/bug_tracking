@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { MenuItem, Select, Typography } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import apiService from "../services/apiService";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 
@@ -22,7 +22,16 @@ export default function BasicTableSub({
   const [selectedStatus, setSelectedStatus] = React.useState([]);
 
   // const [defaults, setDefaults] = React.useState();
-
+  const statusColors = {
+    Opened: "green",
+    Assigned: "blue",
+    InProgress: "brown",
+    Resolved: "purple",
+    Testing: "orange",
+    Verified: "green",
+    Closed: "red",
+    Hold: "gray",
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -74,17 +83,19 @@ export default function BasicTableSub({
           {row.length ? (
             row
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 const originalDateString = row.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isoDateString = row.createdAt;
                 const isoformattedDate = formatDate(isoDateString);
+                const isEvenRow = index % 2 === 0;
                 return (
                   <TableRow
                     key={row.id}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
+                      backgroundColor: isEvenRow ? "#f2f2f2" : "white"
                     }}
                     onClick={() => {
                       handleClick(row.id);
@@ -118,7 +129,24 @@ export default function BasicTableSub({
                     <TableCell component="th" scope="row">
                       {isoformattedDate}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <FormControl sx={{ m: 2 }} size="small">
+                        <InputLabel ></InputLabel>
+                        <Select
+                        defaultValue={row?.status}
+                        onChange={(e) => {
+                          handleStatus(e, row._id);
+                        }}
+                      >
+                          {Object.entries(statusColors).map(
+                            ([status, color]) => (
+                              <MenuItem key={status} value={status}>
+                                <span style={{ color }}>{status}</span>
+                              </MenuItem>
+                            )
+                          )}
+                        </Select>
+                      </FormControl>
+                    {/* <TableCell component="th" scope="row">
                       <Select
                         defaultValue={row?.status}
                         onChange={(e) => {
@@ -134,7 +162,7 @@ export default function BasicTableSub({
                         <MenuItem value="Closed">Closed</MenuItem>
                         <MenuItem value="Hold">Hold</MenuItem>
                       </Select>
-                    </TableCell>
+                    </TableCell> */}
 
                     <TableCell align="right">{row?.type}</TableCell>
                   </TableRow>
