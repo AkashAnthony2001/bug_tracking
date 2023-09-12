@@ -24,20 +24,20 @@ import {
 } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import WorkIcon from "@mui/icons-material/Work";
+import SprintBarGraph from "../components/SprintBarGraph";
 
 const drawerWidth = 190;
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [open, setOpen] = useState(0);
   const [close, setClose] = useState(0);
   const [inProcess, setInProcess] = useState(0);
   const [hold, setHold] = useState(0);
-
   const [assignedValue, setAssignedvalue] = useState([]);
   const [filterData, setFilterData] = useState([]);
+
   const token = localStorage.getItem("token");
 
   const checkAuth = async () => {
@@ -48,6 +48,7 @@ const Dashboard = () => {
     }
     return;
   };
+
   const cardStyle = {
     minWidth: 275,
     margin: "20px",
@@ -57,6 +58,7 @@ const Dashboard = () => {
     borderRadius: "8px",
   };
 
+ 
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
@@ -124,7 +126,6 @@ const Dashboard = () => {
 
   // console.log(d.toISOString())
   const formattedNewDate = formatDate(d);
-
   return (
     <div>
       <CssBaseline>
@@ -340,6 +341,15 @@ const Dashboard = () => {
                                 </TableBody>
                               </Table>
                             </TableContainer>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <div>
+                        <Card style={cardStyle} >
+                          <CardContent>
+                            <SprintBarGraph />
                           </CardContent>
                         </Card>
                       </div>
