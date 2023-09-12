@@ -68,7 +68,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
       <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
-            {heading && heading.map((data) => <TableCell>{data}</TableCell>)}
+            {heading && heading.map((data) => <TableCell >{data}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
