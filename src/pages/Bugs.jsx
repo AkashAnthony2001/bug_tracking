@@ -54,6 +54,10 @@ export default function Bugs() {
     bugStatusApi();
   }, [changemsg]);
 
+  const styles = {
+    textAlign: "center",
+    padding: "8px",
+  };
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
@@ -92,45 +96,24 @@ export default function Bugs() {
         sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
       >
         {" "}
-        <Table aria-label="simple table" sx={{ border: '1px solid #ccc', width: '100%' }}>
+        <Table
+          aria-label="simple table"
+          sx={{ border: "1px solid #ccc", width: "100%" }}
+        >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                BugId
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Bug Description
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Bug Type
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Project Name
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Module Name
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Assigned To
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Reported By
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Serviertiy
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Sprint
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Customer Found
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                Estimate_date
-              </TableCell>
-              <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                CreatedBy
-              </TableCell>
+              <TableCell style={styles}>BugId</TableCell>
+              <TableCell style={styles}>Bug Description</TableCell>
+              <TableCell style={styles}>Bug Type</TableCell>
+              <TableCell style={styles}>Project Name</TableCell>
+              <TableCell style={styles}>Module Name</TableCell>
+              <TableCell style={styles}>Assigned To</TableCell>
+              <TableCell style={styles}>Reported By</TableCell>
+              <TableCell style={styles}>Serviertiy</TableCell>
+              <TableCell style={styles}>Sprint</TableCell>
+              <TableCell style={styles}>Customer Found</TableCell>
+              <TableCell style={styles}>Estimate_date</TableCell>
+              <TableCell style={styles}>CreatedBy</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
@@ -149,51 +132,49 @@ export default function Bugs() {
                   <>
                     <TableRow
                       key={databug.bug_id}
-                      sx={{ "& > *": { borderBottom: "unset" }, ...rowStyles, border: '1px solid #ccc',
-                      padding: '8px', }}
+                      sx={{
+                        "& > *": { borderBottom: "unset" },
+                        ...rowStyles,
+                        border: "1px solid #ccc",
+                        padding: "8px",
+                      }}
                     >
                       <TableCell>
                         <Button
                           variant="text"
                           onClick={() => collapseRow(index, databug?.bug_id)}
-                          style={{ backgroundColor: "#596e79", color: "white" , padding: '4px 8px'}}
+                          style={{
+                            backgroundColor: "#596e79",
+                            color: "white",
+                            padding: "4px 8px",
+                          }}
                         >
                           {databug?.bug_id}
                         </Button>
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>
                         {databug?.bug_description}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                        {databug?.bug_type}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>{databug?.bug_type}</TableCell>
+                      <TableCell style={styles}>
                         {databug?.projectId?.title}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>
                         {databug?.moduleId?.module_name}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>
                         {databug?.assignedTo?.username}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>
                         {databug?.reportedBy?.username}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                        {databug?.severity}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                        {databug?.sprint}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
+                      <TableCell style={styles}>{databug?.severity}</TableCell>
+                      <TableCell style={styles}>{databug?.sprint}</TableCell>
+                      <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                        {formattedDate}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: "center", padding: "8px" }}>
-                        {databug?.createdby}
-                      </TableCell>
+                      <TableCell style={styles}>{formattedDate}</TableCell>
+                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
                         <Select
@@ -231,10 +212,7 @@ export default function Bugs() {
                           timeout="auto"
                           unmountOnExit
                         >
-                          <Typography
-                            variant="h6"
-                            color="initial"
-                          >
+                          <Typography variant="h6" color="initial">
                             Status History
                           </Typography>
                           <BugStatusTable
