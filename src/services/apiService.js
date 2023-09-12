@@ -282,6 +282,13 @@ const editUser = async (_id, record) => {
   return parsedResponse;
 };
 
+const getBySprint = async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/bySprint`);
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
+
 const apiService = {
   createUser,
   login,
@@ -308,7 +315,8 @@ const apiService = {
   createBugs,
   bugStatus,
   deleteUser,
-  editUser
+  editUser,
+  getBySprint
   
 };
 
