@@ -14,22 +14,17 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
     console.log(moduledata)
     if (res) {
       load()
-      setOpenDelete(false);
     }
+    setOpenDelete((prev)=>!prev);
   };
   const handleClose = () => {
     setOpenDelete(false);
-    
+    load()
     setOpenDelete(false);
   };
-  if (delrerr.error) {
-    return (
-      <>
-         <CustomizedSnackbars error={delrerr.error} message={delrerr.message} />
-      </>
-    );
-  }
+ 
   return (
+    <>
     <Dialog open={openDelete} onClose={handleClose}>
       <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
         Delete Module Data
@@ -46,6 +41,8 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
         </Button>
       </DialogActions>
     </Dialog>
+    <CustomizedSnackbars error={delrerr.error} message={delrerr.message} />
+    </>
   );
 };
 
