@@ -8,7 +8,7 @@ const chartSetting = {
             label: 'Bugs',
         },
     ],
-    width: 1100,
+    width: 500,
     height: 400,
 };
 
@@ -28,44 +28,44 @@ const SprintBarGraph = () => {
     };
     const sprintOptions = [
         {
-            label:"Sprint 1",
-            value:'sprint1'
+            label: "Sprint 1",
+            value: 'sprint1'
         },
         {
-            label:"Sprint 2",
-            value:'sprint2'
+            label: "Sprint 2",
+            value: 'sprint2'
         },
         {
-            label:"Sprint 3",
-            value:'sprint3'
+            label: "Sprint 3",
+            value: 'sprint3'
         },
         {
-            label:"Sprint 4",
-            value:'sprint4'
+            label: "Sprint 4",
+            value: 'sprint4'
         },
         {
-            label:"Sprint 5",
-            value:'sprint5'
+            label: "Sprint 5",
+            value: 'sprint5'
         },
         {
-            label:"Sprint 6",
-            value:'sprint6'
+            label: "Sprint 6",
+            value: 'sprint6'
         },
         {
-            label:"Sprint 7",
-            value:'sprint7'
+            label: "Sprint 7",
+            value: 'sprint7'
         },
         {
-            label:"Sprint 8",
-            value:'sprint8'
+            label: "Sprint 8",
+            value: 'sprint8'
         },
         {
-            label:"Sprint 9",
-            value:'sprint9'
+            label: "Sprint 9",
+            value: 'sprint9'
         },
         {
-            label:"Sprint 10",
-            value:'sprint10'
+            label: "Sprint 10",
+            value: 'sprint10'
         },
     ]
     useEffect(() => {
@@ -81,8 +81,16 @@ const SprintBarGraph = () => {
     return (
         <div>
             <div>
-                <select value={selectedSprint} onChange={handleSprintChange}>
-                   { sprintOptions.map((val)=>(
+                <label style={{ fontWeight: "bold", marginRight: "10px" }}>
+                    Select Sprint:
+                </label>
+                <select value={selectedSprint} onChange={handleSprintChange} style={{
+                    padding: "8px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    marginRight: "10px",
+                }}>
+                    {sprintOptions.map((val) => (
                         <option key={val.value} value={val.value}>{val.label}</option>
                     ))}
                 </select>
@@ -94,6 +102,7 @@ const SprintBarGraph = () => {
                     series={[{ dataKey: selectedSprint, label: `${selectedSprint} bugs`, valueFormatter }]}
                     layout="horizontal"
                     {...chartSetting}
+                    sx={{ maxHeight: '350px' }}
                 />
             ) : (
                 <p>Loading...</p>

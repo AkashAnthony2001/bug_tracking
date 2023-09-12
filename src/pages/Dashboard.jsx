@@ -25,6 +25,7 @@ import {
 import BugReportIcon from "@mui/icons-material/BugReport";
 import WorkIcon from "@mui/icons-material/Work";
 import SprintBarGraph from "../components/SprintBarGraph";
+import UserBarGraph from "../components/UserBarGraph";
 
 const drawerWidth = 190;
 
@@ -345,10 +346,19 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
-                    <Grid item xs={12}>
-                      <div>
+                    <Grid item xs={6}>
+                      <div style={{padding:2}}>
+                        <Card style={cardStyle}  >
+                          <CardContent sx={{textAlign:"center"}}>
+                            <UserBarGraph opened={open} closed={close}/>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <div style={{padding:2}}>
                         <Card style={cardStyle} >
-                          <CardContent>
+                          <CardContent sx={{textAlign:"center"}}>
                             <SprintBarGraph />
                           </CardContent>
                         </Card>
