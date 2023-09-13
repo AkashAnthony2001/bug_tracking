@@ -238,7 +238,7 @@ const Dashboard = () => {
                           <CardContent>
                             <h2>{<BugReportIcon />} My Bugs</h2>
                             <TableContainer
-                              sx={{ maxHeight: "220px", overflowY: "scroll" }}
+                              sx={{ maxHeight: "220px", overflowY: "scroll" , height:"220px"}}
                             >
                               <Table>
                                 <TableHead
@@ -297,7 +297,7 @@ const Dashboard = () => {
                           <CardContent>
                             <h2>{<WorkIcon />} My Work Items Due Today</h2>
                             <TableContainer
-                              sx={{ maxHeight: "220px", overflowY: "scroll" }}
+                              sx={{ maxHeight: "220px", overflowY: "scroll", height:"220px" }}
                             >
                               <Table>
                                 <TableHead
