@@ -386,23 +386,6 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </div>
-                <Grid item xs={6}>
-                      <div style={{ padding: 2 }}>
-                        <Card style={cardStyle}>
-                          <CardContent
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "100%",
-                              width: "100%",
-                            }}
-                          >
-                            <UserSprintGraph/>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </Grid>
               </>
             ) : (
               <Outlet />
