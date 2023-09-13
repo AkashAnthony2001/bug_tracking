@@ -239,6 +239,12 @@ const getBySprint = async () => {
 
   return parsedResponse;
 };
+const getUserSprint =async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/userSprint`);
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
 
 const adminUserData = async() => {
   const response = await fetch(`${baseUrl}/issuetracker/status`);
@@ -271,6 +277,7 @@ const apiService = {
   deleteUser,
   editUser,
   getBySprint,
+  getUserSprint,
   adminUserData
 };
 
