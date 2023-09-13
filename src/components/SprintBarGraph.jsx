@@ -12,7 +12,7 @@ const chartSetting = {
     height: 400,
 };
 
-const valueFormatter = (value) => `${value}mm`;
+const valueFormatter = (value) => `${value}`;
 
 const SprintBarGraph = () => {
     const [sprintData, setSprintData] = useState([]);

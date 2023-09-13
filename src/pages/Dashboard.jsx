@@ -26,6 +26,7 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import WorkIcon from "@mui/icons-material/Work";
 import SprintBarGraph from "../components/SprintBarGraph";
 import UserBarGraph from "../components/UserBarGraph";
+import UserSprintGraph from "../components/UserSprintGraph";
 
 const drawerWidth = 190;
 
@@ -107,7 +108,6 @@ const Dashboard = () => {
     }
   }, [assignedValue]);
 
-  console.log(assignedValue);
 
   const username = localStorage.getItem("name");
   function formatDate(isoDateString) {
@@ -360,7 +360,7 @@ const Dashboard = () => {
                               height: "100%",
                               width: "100%",
                             }}>
-                            <SprintBarGraph />
+                            {localStorage.getItem("role") === "admin" ? <SprintBarGraph /> : <UserSprintGraph/>}
                           </CardContent>
                         </Card>
                       </div>
@@ -384,6 +384,23 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </div>
+                <Grid item xs={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={cardStyle}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            <UserSprintGraph/>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
               </>
             ) : (
               <Outlet />

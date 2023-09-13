@@ -239,6 +239,12 @@ const getBySprint = async () => {
 
   return parsedResponse;
 };
+const getUserSprint =async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/userSprint`);
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
 
 const apiService = {
   createUser,
@@ -263,7 +269,8 @@ const apiService = {
   bugStatus,
   deleteUser,
   editUser,
-  getBySprint
+  getBySprint,
+  getUserSprint
 };
 
 export default apiService;

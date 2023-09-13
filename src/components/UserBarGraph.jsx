@@ -2,7 +2,7 @@ import React from 'react'
 import { BarChart } from '@mui/x-charts/BarChart';
 
 const UserBarGraph = ({opened,closed}) => {
-    console.log(opened,closed);
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h3>My Bugs</h3>
