@@ -240,6 +240,13 @@ const getBySprint = async () => {
   return parsedResponse;
 };
 
+const adminUserData = async() => {
+  const response = await fetch(`${baseUrl}/issuetracker/status`);
+  const parsedResponse = await response.json();
+  console.log(parsedResponse);
+  return parsedResponse;
+}
+
 const apiService = {
   createUser,
   login,
@@ -263,7 +270,8 @@ const apiService = {
   bugStatus,
   deleteUser,
   editUser,
-  getBySprint
+  getBySprint,
+  adminUserData
 };
 
 export default apiService;
