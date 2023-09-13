@@ -19,6 +19,8 @@ const Users = () => {
   useEffect(() => {
     handleUsers();
   }, [correct]);
+
+  
   return (
     <>
       <UserDialog load={handleUsers} />

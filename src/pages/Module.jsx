@@ -15,8 +15,6 @@ import ModuleDialogue from "./ModuleDialogue";
 
 export default function ModuleDemo() {
   const [Mtitle, setMtitle] = useState([]);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
   const [editedError, setEditedError] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [open, setOpen] = useState(false);
