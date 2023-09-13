@@ -38,9 +38,7 @@ const Dashboard = () => {
   const [hold, setHold] = useState(0);
   const [assignedValue, setAssignedvalue] = useState([]);
   const [filterData, setFilterData] = useState([]);
-
   const token = localStorage.getItem("token");
-
   const checkAuth = async () => {
     const isAuth = await apiService.isAuth();
     if (!isAuth) {
@@ -59,7 +57,6 @@ const Dashboard = () => {
     borderRadius: "8px",
   };
 
- 
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
@@ -263,7 +260,10 @@ const Dashboard = () => {
                                       const formattedDate =
                                         formatDate(originalDateString);
                                       return (
-                                        <TableRow key={data.bug_id} sx={{background:"white"}}>
+                                        <TableRow
+                                          key={data.bug_id}
+                                          sx={{ background: "white" }}
+                                        >
                                           <TableCell>{data.bug_id}</TableCell>
                                           <TableCell>{formattedDate}</TableCell>
                                         </TableRow>
@@ -313,32 +313,35 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {filterData.length
-                                    ? filterData.map((val) => {
-                                        return (
-                                          <TableRow  key={filterData.bug_id} sx={{background:"white"}}>
-                                            <TableCell>{val.bug_id}</TableCell>
-                                            <TableCell>
-                                              {formatDate(val.createdAt)}
-                                            </TableCell>
-                                          </TableRow>
-                                        );
-                                      })
-                                    :(
-                                      <TableRow>
-                                        <TableCell
-                                          colSpan={2}
-                                          sx={{ textAlign: "center" }}
+                                  {filterData.length ? (
+                                    filterData.map((val) => {
+                                      return (
+                                        <TableRow
+                                          key={filterData.bug_id}
+                                          sx={{ background: "white" }}
                                         >
-                                          <Typography
-                                            variant="h6"
-                                            color="initial"
-                                          >
-                                            No Records Found
-                                          </Typography>
-                                        </TableCell>
-                                      </TableRow>
-                                    )}
+                                          <TableCell>{val.bug_id}</TableCell>
+                                          <TableCell>
+                                            {formatDate(val.createdAt)}
+                                          </TableCell>
+                                        </TableRow>
+                                      );
+                                    })
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan={2}
+                                        sx={{ textAlign: "center" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          color="initial"
+                                        >
+                                          No Records Found
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -346,20 +349,35 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
+                   
                     <Grid item xs={6}>
-                      <div style={{padding:2}}>
-                        <Card style={cardStyle}  >
-                          <CardContent sx={{textAlign:"center"}}>
-                            <UserBarGraph opened={open} closed={close}/>
+                      <div style={{ padding: 2 }}>
+                        <Card style={cardStyle}>
+                          <CardContent  sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}>
+                            <SprintBarGraph />
                           </CardContent>
                         </Card>
                       </div>
                     </Grid>
                     <Grid item xs={6}>
-                      <div style={{padding:2}}>
-                        <Card style={cardStyle} >
-                          <CardContent sx={{textAlign:"center"}}>
-                            <SprintBarGraph />
+                      <div style={{ padding: 2 }}>
+                        <Card style={cardStyle}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            <UserBarGraph opened={open} closed={close} />
                           </CardContent>
                         </Card>
                       </div>
