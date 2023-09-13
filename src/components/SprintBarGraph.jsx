@@ -80,7 +80,7 @@ const SprintBarGraph = () => {
 
     return (
         <div>
-            <div>
+            <div style={{textAlign:'center'}}>
                 <label style={{ fontWeight: "bold", marginRight: "10px" }}>
                     Select Sprint:
                 </label>

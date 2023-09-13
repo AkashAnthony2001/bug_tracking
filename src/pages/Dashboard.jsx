@@ -27,6 +27,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import SprintBarGraph from "../components/SprintBarGraph";
 import UserBarGraph from "../components/UserBarGraph";
 import UserSprintGraph from "../components/UserSprintGraph";
+import AdminUsersGraph from "../components/AdminUsersGraph";
 
 const drawerWidth = 190;
 
@@ -377,7 +378,8 @@ const Dashboard = () => {
                               width: "100%",
                             }}
                           >
-                            <UserBarGraph opened={open} closed={close} />
+                            {localStorage.getItem('role') === 'admin' ? <AdminUsersGraph /> : <UserBarGraph opened={open} closed={close} />}
+                  
                           </CardContent>
                         </Card>
                       </div>
