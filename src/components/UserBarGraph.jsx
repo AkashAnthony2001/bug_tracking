@@ -4,7 +4,8 @@ import { BarChart } from '@mui/x-charts/BarChart';
 const UserBarGraph = ({opened,closed}) => {
     console.log(opened,closed);
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h3>My Bugs</h3>
             <BarChart
                 xAxis={[{ scaleType: 'band', data: ['Assigned', 'Closed'] }]}
                 series={[{ data: [opened, closed]  }]}
