@@ -13,7 +13,7 @@ function EditModule({ moduledata, load, open, setOpen }) {
   const [editedModuleName, setEditedModuleName] = useState("");
   const [editedModuleDes, setEditedModuleDes] = useState("");
   const [moduleNameError, setmoduleNameError] = useState("");
-  const [moduleDesError, setmoduleDesError] = useState("");
+  // const [moduleDesError, setmoduleDesError] = useState("");
 console.log(moduledata,'fer')
   useEffect(() => {
     if(moduledata){
@@ -36,12 +36,12 @@ console.log(moduledata,'fer')
     } else {
       setmoduleNameError({ error: false, message: "" });
     }
-    if (!editedModuleDes) {
-      setmoduleDesError({ error: true, message: "Module Description is required" });
-      return;
-    }else {
-      setmoduleDesError({ error: false, message: "" });
-    }
+    // if (!editedModuleDes) {
+    //   setmoduleDesError({ error: true, message: "Module Description is required" });
+    //   return;
+    // }else {
+    //   setmoduleDesError({ error: false, message: "" });
+    // }
 
     let res = await apiService.editModuledata(moduledata._id, moduleObj);
     setEditErr(res);
@@ -84,9 +84,9 @@ console.log(moduledata,'fer')
             fullWidth
             variant="standard"
             value={editedModuleDes}
-            error={moduleDesError.error}
-            helperText={moduleDesError.error ? moduleDesError.message : ""}
-            onChange={(e) => setEditedModuleDes(e.target.value)}
+            // error={moduleDesError.error}
+            // helperText={moduleDesError.error ? moduleDesError.message : ""}
+            // onChange={(e) => setEditedModuleDes(e.target.value)}
           />
           <DialogActions>
             <Button size="small" onClick={handleClose}>
