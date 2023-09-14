@@ -34,7 +34,7 @@ const isAuth = async () => {
   const response = await fetch(`${baseUrl}/login/auth`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 
@@ -47,14 +47,23 @@ const logout = () => {
 };
 
 const getProjects = async () => {
-  const response = await fetch(`${baseUrl}/projects`);
+  
+  const response = await fetch(`${baseUrl}/projects`,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    }
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
 };
 
 const getUsers = async () => {
-  const response = await fetch(`${baseUrl}/users`);
+  const response = await fetch(`${baseUrl}/users`,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    }
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
@@ -80,6 +89,7 @@ const createProject = async (record) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`
     },
     body: JSON.stringify(record),
   });
