@@ -127,7 +127,6 @@ export default function Bugs() {
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
-                console.log(bugData);
                 return (
                   <>
                     <TableRow

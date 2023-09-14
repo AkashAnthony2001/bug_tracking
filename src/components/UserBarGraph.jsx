@@ -8,7 +8,7 @@ const UserBarGraph = ({opened,closed}) => {
             <h3>My Bugs</h3>
             <BarChart
                 xAxis={[{ scaleType: 'band', data: ['Assigned', 'Closed'] }]}
-                series={[{ data: [opened, closed]  }]}
+                series={[{ data: [opened,closed]}]}
                 width={500}
                 height={400}
                 sx={{maxHeight:'350px'}}
