@@ -34,12 +34,6 @@ function EditModule({ moduledata, load, open, setOpen }) {
     } else {
       setmoduleNameError({ error: false, message: "" });
     }
-    // if (!editedModuleDes) {
-    //   setmoduleDesError({ error: true, message: "Module Description is required" });
-    //   return;
-    // }else {
-    //   setmoduleDesError({ error: false, message: "" });
-    // }
 
     let res = await apiService.editModuledata(moduledata._id, moduleObj);
     setEditErr(res);
@@ -81,9 +75,6 @@ function EditModule({ moduledata, load, open, setOpen }) {
             fullWidth
             variant="standard"
             value={editedModuleDes}
-            // error={moduleDesError.error}
-            // helperText={moduleDesError.error ? moduleDesError.message : ""}
-            // onChange={(e) => setEditedModuleDes(e.target.value)}
           />
           <DialogActions>
             <Button size="small" onClick={handleClose}>
