@@ -31,7 +31,6 @@ const login = async (userObj) => {
 };
 
 const isAuth = async () => {
-  const token = localStorage.getItem("token");
 
   const response = await fetch(`${baseUrl}/login/auth`, {
     method: "POST",
@@ -305,7 +304,6 @@ const adminUserData = async () => {
     },
   });
   const parsedResponse = await response.json();
-  console.log(parsedResponse);
   return parsedResponse;
 };
 

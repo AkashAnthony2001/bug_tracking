@@ -48,7 +48,6 @@ function EditDialog({ item, open, setOpen,load }) {
     }
     setEditedTitle(projectObj.title);
     setEditedDescription(projectObj.description);
-    console.log(projectObj);
   };
 
   const handleClose = () => {

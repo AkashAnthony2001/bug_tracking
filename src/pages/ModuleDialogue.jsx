@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -35,7 +35,6 @@ export default function ModuleDialogue({ loadData }) {
       module_description: moduleDesc,
     };
     const result = await apiService.createModule(moduledata);
-    console.log(result);
     if (result) {
       setOpen(false);
       loadData();

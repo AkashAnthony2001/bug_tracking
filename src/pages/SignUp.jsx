@@ -44,7 +44,6 @@ export default function SignUp() {
       const result = await apiService.createUser(values);
 
       if (result.error) {
-        // Handle error
         return;
       }
 

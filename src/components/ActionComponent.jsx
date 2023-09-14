@@ -8,13 +8,6 @@ function ActionComponent({ project, setCorrect, load }) {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
-  // const handleDelete = async () => {
-  //   let res = await apiService.deleteProject(project._id);
-
-  //   setCorrect((prev) => !prev);
-  // };
-
-  // console.log(id);
 
   const handleEdit = () => {
     setOpen(true);
@@ -22,9 +15,6 @@ function ActionComponent({ project, setCorrect, load }) {
   const handleDelete = () => {
     setOpenDelete(true);
   };
-
-  // console.log(openEditDailog,"state")
-
   return (
     <div>
       <Button size="small" onClick={handleEdit}>

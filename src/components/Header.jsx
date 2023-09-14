@@ -2,7 +2,6 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import NotificationBell from "./NotificationBell";
 import UserAvatar from "./UserAvatar";
-import TempNavbar from "./TempNavbar";
 
 const Header = ({ drawerWidth, tmpbar = false, username }) => {
   const [open, setOpen] = React.useState(false);
@@ -42,7 +41,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
             alignItems: "center",
           }}
         >
-          {tmpbar ? <TempNavbar /> : null}
+         
           <Typography
             variant="h6"
             noWrap

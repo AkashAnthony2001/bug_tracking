@@ -72,7 +72,6 @@ const SprintBarGraph = () => {
         getBugsBySprint();
     }, []);
 
-    // You should map the data inside the render function, not outside
     const mappedSprintData = sprintData.map((item) => ({
         user: item.user,
         [selectedSprint]: item[selectedSprint],

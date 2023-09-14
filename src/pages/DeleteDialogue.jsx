@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import apiService from "../services/apiService";
 import CustomizedSnackbars from "../components/CustomizedSnackbars";
 
@@ -11,7 +11,6 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
   const handleDelete = async () => {
     let res = await apiService.deleteModule(moduledata);
     setdelErr(res) ;
-    console.log(moduledata)
     if (res) {
       load()
     }

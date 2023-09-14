@@ -13,7 +13,6 @@ import {
 const BugStatusTable = ({ bugStatusData, headers }) => {
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
-    console.log(date);
     return `${date.toLocaleDateString()} ${convertTo12HourFormat(date.getHours(),date.getMinutes())}`;
   }
 

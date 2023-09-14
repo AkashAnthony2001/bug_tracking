@@ -123,7 +123,6 @@ const Dashboard = () => {
   }
   const d = new Date();
 
-  // console.log(d.toISOString())
   const formattedNewDate = formatDate(d);
   return (
     <div>
