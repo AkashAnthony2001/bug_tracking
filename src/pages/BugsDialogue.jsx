@@ -21,7 +21,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function BugsDialogue({ loadData , bugStatus }) {
   const [open, setOpen] = useState(false);
-  // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
@@ -118,7 +117,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
       };
       try {
         const result = await apiService.createBugs(data);
-        console.log(result);
         if (result) {
           loadData();
           bugStatus()
@@ -140,7 +138,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
     if (response) {
       setBugData({ ...bugData, bug_id: response.response, moduleId: data });
     }
-    console.log(response);
   };
 
   const handleReset = () => {
@@ -179,7 +176,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
         </DialogTitle>{" "}
         <DialogContent>
           <Grid container style={{ marginTop: "5px" }} spacing={2}>
-            {/* project name dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="project-name-label">Project name</InputLabel>
@@ -205,7 +201,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             <br />
             <br />
 
-            {/* module name dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="module-name-label">Module name</InputLabel>
@@ -229,7 +224,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
                 <FormHelperText error>{errors.moduleId}</FormHelperText>
               </FormControl>
             </Grid>
-            {/* bug id dialogue */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <TextField
@@ -248,7 +242,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             <br />
             <br />
 
-            {/* Bug Type dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="bug-type-label">Bug Type</InputLabel>
@@ -267,7 +260,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* bug_description dialogbox */}
             <Grid item xs={12}>
               <TextField
                 id="outlined-multiline-static"
@@ -294,7 +286,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             <br />
             <br />
 
-            {/* assigned name dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="assigned-to-label">Assigned To</InputLabel>
@@ -319,7 +310,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* Reported by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="reported-by-label">Reported By</InputLabel>
@@ -341,7 +331,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* created by dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <TextField
@@ -356,7 +345,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* Serviertiy dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="bug-type-label">Serviertiy</InputLabel>
@@ -381,7 +369,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
 
             <br />
             <br />
-            {/* customer found dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="bug-type-label">Customer Found</InputLabel>
@@ -403,7 +390,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* estimate date dailog */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -425,7 +411,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
                 )}
               </FormControl>
             </Grid>
-            {/* status dialogbox */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="bug-type-label">Status</InputLabel>
@@ -450,7 +435,6 @@ export default function BugsDialogue({ loadData , bugStatus }) {
             </Grid>
             <br />
             <br />
-            {/* Sprint dialog box */}
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="bug-type-label">Sprint</InputLabel>

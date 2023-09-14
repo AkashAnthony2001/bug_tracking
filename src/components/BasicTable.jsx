@@ -46,7 +46,6 @@ export default function BasicTable({ rows, heading, handleClick }) {
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData);
   };
 
   function formatDate(isoDateString) {
@@ -68,7 +67,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
       <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
-            {heading && heading.map((data) => <TableCell >{data}</TableCell>)}
+            {heading && heading.map((data) => <TableCell key={data}>{data}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -82,7 +81,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
 
                 return (
                   <TableRow
-                    key={row.id}
+                    key={row._id}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       cursor: "pointer",
@@ -116,23 +115,6 @@ export default function BasicTable({ rows, heading, handleClick }) {
                         ))}
                       </Select>
                     </FormControl>
-                    {/* <TableCell>
-                      <Select
-                        defaultValue={row?.status}
-                        onChange={(e) => {
-                          handleStatus(e, row._id);
-                        }}
-                      >
-                        <MenuItem value="Opened">Opened</MenuItem>
-                        <MenuItem value="Assigned">Assigned</MenuItem>
-                        <MenuItem value="InProgress">InProgress</MenuItem>
-                        <MenuItem value="Resolved">Resolved</MenuItem>
-                        <MenuItem value="Testing">Testing</MenuItem>
-                        <MenuItem value="Verified">Verified</MenuItem>
-                        <MenuItem value="Closed">Closed</MenuItem>
-                        <MenuItem value="Hold">Hold</MenuItem>
-                      </Select>
-                    </TableCell> */}
                   </TableRow>
                 );
               })

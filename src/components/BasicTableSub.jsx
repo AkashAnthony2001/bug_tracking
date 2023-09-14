@@ -9,7 +9,6 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import apiService from "../services/apiService";
-import CustomizedSnackbars from "./CustomizedSnackbars";
 
 export default function BasicTableSub({
   row,
@@ -18,10 +17,8 @@ export default function BasicTableSub({
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [record, setRecord] = React.useState({});
   const [selectedStatus, setSelectedStatus] = React.useState([]);
 
-  // const [defaults, setDefaults] = React.useState();
   const statusColors = {
     Opened: "	#32cd32",
     Assigned: "blue",
@@ -35,7 +32,6 @@ export default function BasicTableSub({
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  // console.log(defaults, "jgdjgsjghdv");
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
@@ -47,7 +43,6 @@ export default function BasicTableSub({
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, options);
   }
-  // console.log(record);
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -67,7 +62,6 @@ export default function BasicTableSub({
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData);
   };
 
   return (
@@ -75,7 +69,7 @@ export default function BasicTableSub({
       <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
-            {headers && headers.map((val) => <TableCell>{val}</TableCell>)}
+            {headers && headers.map((val) => <TableCell key={val}>{val}</TableCell>)}
           </TableRow>
         </TableHead>
 
@@ -147,24 +141,6 @@ export default function BasicTableSub({
                           )}
                         </Select>
                       </FormControl>
-                    {/* <TableCell component="th" scope="row">
-                      <Select
-                        defaultValue={row?.status}
-                        onChange={(e) => {
-                          handleStatus(e, row._id);
-                        }}
-                      >
-                        <MenuItem value="Opened">Opened</MenuItem>
-                        <MenuItem value="Assigned">Assigned</MenuItem>
-                        <MenuItem value="InProgress">InProgress</MenuItem>
-                        <MenuItem value="Resolved">Resolved</MenuItem>
-                        <MenuItem value="Testing">Testing</MenuItem>
-                        <MenuItem value="Verified">Verified</MenuItem>
-                        <MenuItem value="Closed">Closed</MenuItem>
-                        <MenuItem value="Hold">Hold</MenuItem>
-                      </Select>
-                    </TableCell> */}
-
                   </TableRow>
                 );
               })
