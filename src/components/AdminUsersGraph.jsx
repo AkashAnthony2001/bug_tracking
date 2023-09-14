@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import apiService from '../services/apiService';
 
-// import 'react-loading-skeleton/dist/skeleton.css'
-import { Skeleton } from '@mui/material';
 
 const AdminUsersGraph = () => {
   const [adminUser, setAdminUser] = useState([]);
@@ -22,7 +20,7 @@ const AdminUsersGraph = () => {
   }, []);
 console.log(adminUser);
   if (!adminUser || adminUser.length === 0) {
-    return <div><Skeleton variant="text" sx={{ fontSize: '1rem' }} /></div>;
+    return <div>Loading...</div>;
   }
 
   const xAxisData = adminUser && adminUser?.map((item) => item.username);

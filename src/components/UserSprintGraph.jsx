@@ -14,7 +14,7 @@ export default function UserSprintGraph() {
   useEffect(() => {
     async function fetchData() {
       const graphData = await apiService.getUserSprint();
-      const filteredData = graphData?.filter(
+      const filteredData = graphData?.response?.filter(
         (data) => data.username === localStorage.getItem("username")
       );
       if (filteredData.length > 0) {
@@ -26,6 +26,7 @@ export default function UserSprintGraph() {
 
   return (
     <div>
+      <h3 style={{textAlign:"center"}}>User Sprint Data</h3>
       {sprintData.map((userData) => (
         <BarChart
           key={userData.username}

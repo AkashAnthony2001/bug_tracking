@@ -353,7 +353,7 @@ const Dashboard = () => {
 
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
-                        <Card style={cardStyle}>
+                        <Card style={{ ...cardStyle, height: '500px' }}>
                           <CardContent sx={{
                             display: "flex",
                             justifyContent: "center",
@@ -368,7 +368,7 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
-                        <Card style={cardStyle}>
+                        <Card style={{ ...cardStyle, height: '500px' }}>
                           <CardContent
                             sx={{
                               display: "flex",
@@ -379,11 +379,11 @@ const Dashboard = () => {
                             }}
                           >
                             {localStorage.getItem('role') === 'admin' ? <AdminUsersGraph /> : <UserBarGraph opened={open} closed={close} />}
-
                           </CardContent>
                         </Card>
                       </div>
                     </Grid>
+
                   </Grid>
                 </div>
               </>
