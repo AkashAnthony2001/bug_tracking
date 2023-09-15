@@ -18,7 +18,6 @@ const AdminUsersGraph = () => {
   useEffect(() => {
     getAdminUserData();
   }, []);
-console.log(adminUser);
   if (!adminUser || adminUser.length === 0) {
     return <div>Loading...</div>;
   }

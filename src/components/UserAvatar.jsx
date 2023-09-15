@@ -6,7 +6,7 @@ const UserAvatar = ({ children }) => {
   return (
     <Box>
       <Button
-        onClick={() => { console.log('clicked user avatar') }}
+        onClick={() => {('clicked user avatar')}}
       >
         <Avatar
           sx={{ 

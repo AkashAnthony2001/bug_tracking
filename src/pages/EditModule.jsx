@@ -13,7 +13,6 @@ function EditModule({ moduledata, load, open, setOpen }) {
   const [editedModuleName, setEditedModuleName] = useState("");
   const [editedModuleDes, setEditedModuleDes] = useState("");
   const [moduleNameError, setmoduleNameError] = useState("");
-console.log(moduledata,'fer')
   useEffect(() => {
     if(moduledata){
 
@@ -35,7 +34,6 @@ console.log(moduledata,'fer')
     } else {
       setmoduleNameError({ error: false, message: "" });
     }
- 
     let res = await apiService.editModuledata(moduledata._id, moduleObj);
     setEditErr(res);
     if (res) {
@@ -44,7 +42,6 @@ console.log(moduledata,'fer')
     }
     setEditedModuleName(moduleObj.module_name);
     setEditedModuleDes(moduleObj.module_description);
-    console.log(moduleObj);
   };
   const handleClose = () => {
     setOpen(false);
@@ -77,7 +74,6 @@ console.log(moduledata,'fer')
             fullWidth
             variant="standard"
             value={editedModuleDes}
-            
           />
           <DialogActions>
             <Button size="small" onClick={handleClose}>

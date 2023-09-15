@@ -37,7 +37,6 @@ export default function Bugs() {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
-    // console.log(data, "res");
   };
   const statusColors = {
     Opened: "	#32cd32",
@@ -65,7 +64,6 @@ export default function Bugs() {
       _id: id,
     };
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData, "nr");
     setChangemsg(statusData);
   };
   function formatDate(isoDateString) {
@@ -85,7 +83,6 @@ export default function Bugs() {
       return data.bug_id === bugid;
     });
     setFilteredResponse(filteredData);
-    console.log(expandedRow);
   };
 
   return (
