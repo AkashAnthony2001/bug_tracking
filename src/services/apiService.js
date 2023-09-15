@@ -307,7 +307,22 @@ const adminUserData = async () => {
   return parsedResponse;
 };
 
+const editComment = async (commentData,_id) => {
+    const response = await fetch(`${baseUrl}/issuestatus/${_id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentData),
+    });
+    const parsedResponse = await response.json();
+  
+    return parsedResponse;
+}
+
 const apiService = {
+  editComment,
   createUser,
   login,
   logout,
