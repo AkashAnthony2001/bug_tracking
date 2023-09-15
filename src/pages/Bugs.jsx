@@ -46,7 +46,7 @@ export default function Bugs() {
     Testing: "orange",
     Verified: "	#32cd32",
     Closed: "red",
-    Hold: "#708090",
+    Hold: "#708090"
   };
   useEffect(() => {
     bugDisplay();
@@ -55,7 +55,7 @@ export default function Bugs() {
 
   const styles = {
     textAlign: "center",
-    padding: "8px",
+    padding: "8px"
   };
   const handleStatus = async (event, id) => {
     let obj = {
