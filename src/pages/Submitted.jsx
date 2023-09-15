@@ -16,7 +16,7 @@ const Submitted = () => {
     SubmitedDisplay();
   }, []);
 
-  const headers = ["Project Name", "Module Name", "Assigned To", "Reported By", "Sprint", "Customer Found", "Estimate Date", "Created By", "Created Date", "Status"];
+  const headers = ["BugId","Project Name", "Module Name", "Assigned To", "Reported By", "Sprint", "Customer Found", "Estimate Date", "Created By", "Created Date", "Status"];
 
   return (
     <>
