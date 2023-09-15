@@ -20,7 +20,7 @@ const Assigned = () => {
 
 
 
-const heading= ["Project Name","ModuleId", "AssignedTo","ReportedBy","Sprint","Customerfound", "Estimate_date", "Status"]
+const heading= ["BugId","Project Name","ModuleId", "AssignedTo","ReportedBy","Sprint","Customerfound", "Estimate_date", "Status"]
   return (
     <>
       <BasicTable rows={assignedValue} heading={heading}/>
