@@ -1,4 +1,4 @@
-const baseUrl = "https://bugtrackingbackend.onrender.com/api";
+const baseUrl = "https://localhost:3001/api";
 
 const createUser = async (userObj) => {
   const response = await fetch(`${baseUrl}/users/`, {

@@ -34,7 +34,6 @@ function EditModule({ moduledata, load, open, setOpen }) {
     } else {
       setmoduleNameError({ error: false, message: "" });
     }
-
     let res = await apiService.editModuledata(moduledata._id, moduleObj);
     setEditErr(res);
     if (res) {
