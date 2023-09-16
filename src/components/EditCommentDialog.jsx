@@ -6,7 +6,7 @@ import { Box, Button, DialogActions, Grid, TextField, Typography } from '@mui/ma
 
 const EditCommentDialog = ({ isOpen, onClose, bugData ,setComment , comment, handleComment }) => {
    
-
+  
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle style={{backgroundColor:"#596e79", color: "white" }}>Add Comments</DialogTitle>

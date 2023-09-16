@@ -240,7 +240,6 @@ export default function Bugs() {
                           <BugStatusTable
                             bugStatusData={filteredResponse}
                             headers={headers}
-                            
                           />
                         </Collapse>
                       </TableCell>

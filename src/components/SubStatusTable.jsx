@@ -21,7 +21,12 @@ function SubStatusTable({ bugStatusData, headers }) {
   const [comment, setComment] = useState("");
 
   const handleCloseDialog = () => {
+    resetCommentField()
     setIsDialogOpen(false);
+  };
+  
+  const resetCommentField = () => {
+    setComment('');
   };
 
   const handleComment = async() => {
@@ -31,6 +36,7 @@ function SubStatusTable({ bugStatusData, headers }) {
       }
       const statusData = await apiService.editComment(obj,_id);
       if(!statusData.error){
+        resetCommentField()
         handleCloseDialog()
       }
      

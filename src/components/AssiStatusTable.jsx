@@ -19,7 +19,12 @@ function AssiStatusTable({ bugStatusData, headers }) {
   const [editData, setEditData] = useState()
   const [comment, setComment] = useState("");
 
+  const resetCommentField = () => {
+    setComment('');
+  };
+
   const handleCloseDialog = () => {
+    resetCommentField();
     setIsDialogOpen(false);
   };
 
@@ -30,6 +35,7 @@ function AssiStatusTable({ bugStatusData, headers }) {
       }
       const statusData = await apiService.editComment(obj,_id);
       if(!statusData.error){
+        resetCommentField()
         handleCloseDialog()
       }
      

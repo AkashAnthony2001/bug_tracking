@@ -18,7 +18,12 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
   const [editData, setEditData] = useState()
   const [comment, setComment] = useState("");
 
+  const resetCommentField = () => {
+    setComment('');
+  };
+
   const handleCloseDialog = () => {
+    resetCommentField()
     setIsDialogOpen(false);
   };
 
@@ -29,6 +34,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
       }
       const statusData = await apiService.editComment(obj,_id);
      if(!statusData.error){
+      resetCommentField()
       handleCloseDialog()
      }
   }
@@ -65,7 +71,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
             return (
               <TableRow key={statusData?.bug_id}>
                 <TableCell>{statusData?.bug_id}</TableCell>
-                <TableCell>{statusData?.comments} <Button onClick={() => {setEditData(statusData); setIsDialogOpen(true)} }>Edit</Button></TableCell>
+                <TableCell>{statusData?.comments} <Button onClick={() => {setEditData(statusData); setIsDialogOpen(true); } }>Edit</Button></TableCell>
                 <TableCell>{statusData?.status}</TableCell>
                 <TableCell>{statusData?.updatedby}</TableCell>
                 <TableCell>{formattedDate}</TableCell>
