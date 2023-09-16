@@ -10,6 +10,8 @@ import TablePagination from "@mui/material/TablePagination";
 import Collapse from "@mui/material/Collapse";
 import AssiStatusTable from "./AssiStatusTable";
 import CustomizedSnackbars from "./CustomizedSnackbars";
+import StatusChangeDialog from "../components/StatusChangeDialog";
+
 import {
   Button,
   FormControl,
@@ -27,8 +29,25 @@ export default function BasicTable({ rows, heading, handleClick }) {
   const [expandedRow, setExpandedRow] = React.useState(null);
   const [filteredResponse, setFilteredResponse] = React.useState([]);
   const [changemsg, setChangemsg] = React.useState({});
+  const [bugStatusData, setBugStatusData] = React.useState({});
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [comment, setComment] = React.useState("");
 
-  const headers = ["Bug_id", "Status", "Updated By", "Updated On"];
+  const handleComment = async() => {
+    const obj = {
+        ...bugStatusData,
+        comment
+    }
+    console.log(obj)
+    
+    const statusData = await apiService.putStatus(obj);
+    if(!statusData.error){
+      handleCloseDialog()
+      setChangemsg(statusData);
+    }
+}
+
+  const headers = ["Bug_id", "Comments" , "Status", "Updated By", "Updated On"];
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -49,13 +68,20 @@ export default function BasicTable({ rows, heading, handleClick }) {
     Hold: "#708090",
   };
   const handleStatus = async (event, id) => {
+    setIsDialogOpen(true);
+
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    const statusData = await apiService.putStatus(obj);
-    setChangemsg(statusData);
+    setBugStatusData(obj)
+
+    
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
   };
 
   function formatDate(isoDateString) {
@@ -218,6 +244,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

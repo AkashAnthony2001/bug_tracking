@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,34 @@ import {
   TableRow,
   Paper,
   Typography,
+  Button
 } from "@mui/material";
+import EditCommentDialog from './EditCommentDialog'
+import apiService from '../services/apiService';
+
 
 function SubStatusTable({ bugStatusData, headers }) {
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editData, setEditData] = useState()
+  const [comment, setComment] = useState("");
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleComment = async() => {
+    const {_id , } = editData
+      const obj = {
+          comment
+      }
+      const statusData = await apiService.editComment(obj,_id);
+      if(!statusData.error){
+        handleCloseDialog()
+      }
+     
+  }
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     return `${date.toLocaleDateString()} ${convertTo12HourFormat(
@@ -27,13 +52,14 @@ function SubStatusTable({ bugStatusData, headers }) {
     }
   }
   return (
+    <>
     <TableContainer component={Paper} sx={{ width: '100%', p: 2 }} >
       <Table>
         <TableHead>
           <TableRow>
             {headers.map((heading) => (
               <TableCell key={heading}>{heading}</TableCell>
-            ))}
+              ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -43,6 +69,7 @@ function SubStatusTable({ bugStatusData, headers }) {
             return (
               <TableRow key={statusData?.bug_id}>
                 <TableCell>{statusData?.bug_id}</TableCell>
+                <TableCell>{statusData?.comments} <Button onClick={() => {setEditData(statusData); setIsDialogOpen(true)} }>Edit</Button> </TableCell>
                 <TableCell>{statusData?.status}</TableCell>
                 <TableCell>{statusData?.updatedby}</TableCell>
                 <TableCell>{formattedDate}</TableCell>
@@ -52,11 +79,11 @@ function SubStatusTable({ bugStatusData, headers }) {
             <TableCell
               colSpan={4}
               sx={{ textAlign: "center" }}
-            >
+              >
               <Typography
                 variant="h6"
                 color="initial"
-              >
+                >
                 No Records Found
               </Typography>
             </TableCell>
@@ -64,6 +91,9 @@ function SubStatusTable({ bugStatusData, headers }) {
         </TableBody>
       </Table>
     </TableContainer>
+    <EditCommentDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={editData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+
+                </>
   );
 }
 

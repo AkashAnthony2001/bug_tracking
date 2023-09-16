@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3001/api";
+const baseUrl = process.env.BASE_URL || "http://localhost:3001/api";
 
 const createUser = async (userObj) => {
   const response = await fetch(`${baseUrl}/users/`, {

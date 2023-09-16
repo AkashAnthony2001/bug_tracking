@@ -28,7 +28,9 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
           comment
       }
       const statusData = await apiService.editComment(obj,_id);
-     
+     if(!statusData.error){
+      handleCloseDialog()
+     }
   }
 
   function formatDate(isoDateString) {

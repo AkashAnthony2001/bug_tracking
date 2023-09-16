@@ -19,6 +19,8 @@ import {
 import apiService from "../services/apiService";
 import SubStatusTable from "./SubStatusTable";
 import CustomizedSnackbars from "./CustomizedSnackbars";
+import StatusChangeDialog from "../components/StatusChangeDialog";
+
 
 export default function BasicTableSub({ row, headers, handleClick }) {
   const [page, setPage] = React.useState(0);
@@ -27,8 +29,27 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   const [expandedRow, setExpandedRow] = React.useState(null);
   const [filteredResponse, setFilteredResponse] = React.useState([]);
   const [changemsg, setChangemsg] = React.useState({});
+  const [bugStatusData, setBugStatusData] = React.useState({});
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [comment, setComment] = React.useState("");
 
-  const heading = ["Bug_id", "Status", "Updated By", "Updated On"];
+
+
+  const handleComment = async() => {
+      const obj = {
+          ...bugStatusData,
+          comment
+      }
+      console.log(obj)
+      
+      const statusData = await apiService.putStatus(obj);
+      if(!statusData.error){
+        handleCloseDialog()
+        setChangemsg(statusData)
+      }
+  }
+
+  const heading = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
   const statusColors = {
     Opened: "	#32cd32",
@@ -66,14 +87,22 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   }
 
   const handleStatus = async (event, id) => {
+    setIsDialogOpen(true);
+
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    const statusData = await apiService.putStatus(obj);
-    setChangemsg(statusData);
+    setBugStatusData(obj)
+
+
   };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
   const bugStatusApi = async () => {
     const bugStatusResponse = await apiService.bugStatus();
     setBugResponse(bugStatusResponse);
@@ -245,6 +274,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

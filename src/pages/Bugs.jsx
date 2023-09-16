@@ -22,13 +22,13 @@ import Button from "@mui/material/Button";
 import StatusChangeDialog from "../components/StatusChangeDialog";
 
 export default function Bugs() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
   const [filteredResponse, setFilteredResponse] = useState([]);
   const [bugStatusData, setBugStatusData] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
 
 
@@ -41,7 +41,10 @@ export default function Bugs() {
       console.log(obj)
       
       const statusData = await apiService.putStatus(obj);
-      setChangemsg(statusData)
+      if(!statusData.error){
+        handleCloseDialog();
+        setChangemsg(statusData)
+      }
   }
 
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
