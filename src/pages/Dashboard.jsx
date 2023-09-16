@@ -352,7 +352,7 @@ const Dashboard = () => {
 
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
-                        <Card style={{ ...cardStyle, height: '500px' }}>
+                        <Card style={{ ...cardStyle, height: '600px' }}>
                           <CardContent sx={{
                             display: "flex",
                             justifyContent: "center",
@@ -367,7 +367,7 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
-                        <Card style={{ ...cardStyle, height: '500px' }}>
+                        <Card style={{ ...cardStyle, height: '600px' }}>
                           <CardContent
                             sx={{
                               display: "flex",
