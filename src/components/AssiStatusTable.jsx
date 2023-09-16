@@ -13,7 +13,7 @@ import {
   import EditCommentDialog from './EditCommentDialog'
 import apiService from '../services/apiService';
 
-function AssiStatusTable({ bugStatusData, headers }) {
+function AssiStatusTable({ bugStatusData, headers , setExpandedRow , load}) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editData, setEditData] = useState()
@@ -33,6 +33,8 @@ function AssiStatusTable({ bugStatusData, headers }) {
       const obj = {
           comment
       }
+      load()
+      setExpandedRow(null)
       const statusData = await apiService.editComment(obj,_id);
       if(!statusData.error){
         resetCommentField()

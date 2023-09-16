@@ -13,7 +13,7 @@ import {
 import EditCommentDialog from './EditCommentDialog'
 import apiService from '../services/apiService';
 
-const BugStatusTable = ({ bugStatusData, headers }) => {
+const BugStatusTable = ({ bugStatusData, headers , load , setExpandedRow }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editData, setEditData] = useState()
   const [comment, setComment] = useState("");
@@ -31,7 +31,9 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
     const {_id , } = editData
       const obj = {
           comment
-      }
+      };
+      load()
+      setExpandedRow(null)
       const statusData = await apiService.editComment(obj,_id);
      if(!statusData.error){
       resetCommentField()
@@ -93,7 +95,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
         </TableBody>
       </Table>
     </TableContainer>
-    <EditCommentDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={editData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+    <EditCommentDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={editData} setComment={setComment} comment={comment} handleComment={handleComment}  />
     </>
   );
 };

@@ -240,6 +240,8 @@ export default function Bugs() {
                           <BugStatusTable
                             bugStatusData={filteredResponse}
                             headers={headers}
+                            load={bugStatusApi}
+                            setExpandedRow={setExpandedRow}
                           />
                         </Collapse>
                       </TableCell>

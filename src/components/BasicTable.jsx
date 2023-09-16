@@ -216,6 +216,8 @@ export default function BasicTable({ rows, heading, handleClick }) {
                             <AssiStatusTable
                               bugStatusData={filteredResponse}
                               headers={headers}
+                              load={bugStatusApi}
+                              setExpandedRow={setExpandedRow}
                             />
                           </Collapse>
                         </TableCell>

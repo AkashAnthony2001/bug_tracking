@@ -14,7 +14,7 @@ import EditCommentDialog from './EditCommentDialog'
 import apiService from '../services/apiService';
 
 
-function SubStatusTable({ bugStatusData, headers }) {
+function SubStatusTable({ bugStatusData, headers, setExpandedRow, load }) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editData, setEditData] = useState()
@@ -34,6 +34,8 @@ function SubStatusTable({ bugStatusData, headers }) {
       const obj = {
           comment
       }
+      load()
+      setExpandedRow(null)
       const statusData = await apiService.editComment(obj,_id);
       if(!statusData.error){
         resetCommentField()

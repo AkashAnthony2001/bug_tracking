@@ -246,6 +246,8 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                             <SubStatusTable
                               bugStatusData={filteredResponse}
                               headers={heading}
+                              setExpandedRow={setExpandedRow}
+                              load={bugStatusApi}
                             />
                           </Collapse>
                         </TableCell>
