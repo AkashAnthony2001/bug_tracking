@@ -19,6 +19,7 @@ import Collapse from "@mui/material/Collapse";
 import BugStatusTable from "../components/BugStatusTable";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import StatusChangeDialog from "../components/StatusChangeDialog";
 
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -26,8 +27,27 @@ export default function Bugs() {
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
   const [filteredResponse, setFilteredResponse] = useState([]);
+  const [bugStatusData, setBugStatusData] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [comment, setComment] = useState("");
 
-  const headers = ["Bug_id", "Status", "Updated By", "Updated On"];
+
+
+  const handleComment = async() => {
+      const obj = {
+          ...bugStatusData,
+          comment
+      }
+      console.log(obj)
+      
+      const statusData = await apiService.putStatus(obj);
+      if(!statusData.error){
+        handleCloseDialog();
+        setChangemsg(statusData)
+      }
+  }
+
+  const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
   const bugStatusApi = async () => {
     const bugStatusResponse = await apiService.bugStatus();
@@ -58,13 +78,15 @@ export default function Bugs() {
     padding: "8px"
   };
   const handleStatus = async (event, id) => {
+    setIsDialogOpen(true);
+
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    const statusData = await apiService.putStatus(obj);
-    setChangemsg(statusData);
+    setBugStatusData(obj)
+    
   };
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -85,6 +107,10 @@ export default function Bugs() {
     setFilteredResponse(filteredData);
   };
 
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
     <>
       <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
@@ -214,6 +240,7 @@ export default function Bugs() {
                           <BugStatusTable
                             bugStatusData={filteredResponse}
                             headers={headers}
+                            
                           />
                         </Collapse>
                       </TableCell>
@@ -233,6 +260,7 @@ export default function Bugs() {
           </TableBody>
         </Table>
       </TableContainer>
+      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

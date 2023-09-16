@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React,{useState} from "react";
 import {
   Table,
   TableBody,
@@ -8,12 +8,14 @@ import {
   TableRow,
   Paper,
   Typography,
-  Button,
-} from '@mui/material';
+  Button
+} from "@mui/material";
 import EditCommentDialog from './EditCommentDialog'
 import apiService from '../services/apiService';
 
-const BugStatusTable = ({ bugStatusData, headers }) => {
+
+function SubStatusTable({ bugStatusData, headers }) {
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editData, setEditData] = useState()
   const [comment, setComment] = useState("");
@@ -28,25 +30,27 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
           comment
       }
       const statusData = await apiService.editComment(obj,_id);
-     if(!statusData.error){
-      handleCloseDialog()
-     }
+      if(!statusData.error){
+        handleCloseDialog()
+      }
+     
   }
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
-    return `${date.toLocaleDateString()} ${convertTo12HourFormat(date.getHours(),date.getMinutes())}`;
+    return `${date.toLocaleDateString()} ${convertTo12HourFormat(
+      date.getHours(),
+      date.getMinutes()
+    )}`;
   }
 
-  function convertTo12HourFormat(hours,mins) {
+  function convertTo12HourFormat(hours, mins) {
     if (hours >= 0 && hours <= 11) {
       return `${hours === 0 ? 12 : hours}:${mins} AM`;
     } else {
       return `${hours === 12 ? 12 : hours - 12}:${mins} PM`;
     }
   }
-
-
   return (
     <>
     <TableContainer component={Paper} sx={{ width: '100%', p: 2 }} >
@@ -55,7 +59,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
           <TableRow>
             {headers.map((heading) => (
               <TableCell key={heading}>{heading}</TableCell>
-            ))}
+              ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,7 +69,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
             return (
               <TableRow key={statusData?.bug_id}>
                 <TableCell>{statusData?.bug_id}</TableCell>
-                <TableCell>{statusData?.comments} <Button onClick={() => {setEditData(statusData); setIsDialogOpen(true)} }>Edit</Button></TableCell>
+                <TableCell>{statusData?.comments} <Button onClick={() => {setEditData(statusData); setIsDialogOpen(true)} }>Edit</Button> </TableCell>
                 <TableCell>{statusData?.status}</TableCell>
                 <TableCell>{statusData?.updatedby}</TableCell>
                 <TableCell>{formattedDate}</TableCell>
@@ -75,11 +79,11 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
             <TableCell
               colSpan={4}
               sx={{ textAlign: "center" }}
-            >
+              >
               <Typography
                 variant="h6"
                 color="initial"
-              >
+                >
                 No Records Found
               </Typography>
             </TableCell>
@@ -88,8 +92,9 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
       </Table>
     </TableContainer>
     <EditCommentDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={editData} setComment={setComment} comment={comment} handleComment={handleComment}/>
-    </>
-  );
-};
 
-export default BugStatusTable;
+                </>
+  );
+}
+
+export default SubStatusTable;

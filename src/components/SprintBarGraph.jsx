@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { BarChart } from "@mui/x-charts/BarChart";
-import apiService from "../services/apiService";
+import React, { useEffect, useState } from 'react';
+import { BarChart } from '@mui/x-charts/BarChart';
+import apiService from '../services/apiService';
 
 const chartSetting = {
-  xAxis: [
-    {
-      label: "Bugs",
-    },
-  ],
-  width: 500,
-  height: 400,
+    xAxis: [
+        {
+            label: 'Bugs',
+        },
+    ],
+    width: 500,
+    height: 400,
 };
 
 const valueFormatter = (value) => `${value}`;

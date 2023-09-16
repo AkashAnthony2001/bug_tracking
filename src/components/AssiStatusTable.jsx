@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React,{useState} from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,
-  Button,
-} from '@mui/material';
-import EditCommentDialog from './EditCommentDialog'
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Typography,
+    Button
+  } from '@mui/material';
+  import EditCommentDialog from './EditCommentDialog'
 import apiService from '../services/apiService';
 
-const BugStatusTable = ({ bugStatusData, headers }) => {
+function AssiStatusTable({ bugStatusData, headers }) {
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editData, setEditData] = useState()
   const [comment, setComment] = useState("");
@@ -28,9 +29,10 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
           comment
       }
       const statusData = await apiService.editComment(obj,_id);
-     if(!statusData.error){
-      handleCloseDialog()
-     }
+      if(!statusData.error){
+        handleCloseDialog()
+      }
+     
   }
 
   function formatDate(isoDateString) {
@@ -46,7 +48,6 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
     }
   }
 
-
   return (
     <>
     <TableContainer component={Paper} sx={{ width: '100%', p: 2 }} >
@@ -55,7 +56,7 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
           <TableRow>
             {headers.map((heading) => (
               <TableCell key={heading}>{heading}</TableCell>
-            ))}
+              ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,11 +76,11 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
             <TableCell
               colSpan={4}
               sx={{ textAlign: "center" }}
-            >
+              >
               <Typography
                 variant="h6"
                 color="initial"
-              >
+                >
                 No Records Found
               </Typography>
             </TableCell>
@@ -88,8 +89,9 @@ const BugStatusTable = ({ bugStatusData, headers }) => {
       </Table>
     </TableContainer>
     <EditCommentDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={editData} setComment={setComment} comment={comment} handleComment={handleComment}/>
-    </>
+
+                </>
   );
 };
 
-export default BugStatusTable;
+export default AssiStatusTable
