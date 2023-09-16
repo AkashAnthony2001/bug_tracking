@@ -5,6 +5,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import HomeIcon from '@mui/icons-material/Home';
 import PestControlIcon from '@mui/icons-material/PestControl';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 
 
 
@@ -28,7 +29,7 @@ const navbarItems = [
   }, {
     id: 3,
     text: 'Submitted by me',
-    icon: <BugReportIcon />,
+    icon: <AutoAwesomeMotionIcon />,
     link: '/dashboard/submitted'
   },{
     id: 4,

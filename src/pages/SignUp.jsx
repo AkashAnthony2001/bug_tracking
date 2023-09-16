@@ -1,54 +1,53 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import apiService from '../services/apiService'
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom'
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import apiService from "../services/apiService";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const theme = createTheme();
 const validationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
-  role: Yup.string().required('Role is required'),
+  name: Yup.string().required("Name is required"),
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Password is required"),
+  role: Yup.string().required("Role is required"),
 });
-
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = React.useState(false);
-  
+
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      username: '',
-      password: '',
-      role: '',
+      name: "",
+      username: "",
+      password: "",
+      role: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       const result = await apiService.createUser(values);
 
       if (result.error) {
-        // Handle error
+        formik.setFieldError("username", result.message);
         return;
       }
 
-      navigate('/login');
+      navigate("/login");
     },
   });
   const handleClickShowPassword = () => {
@@ -65,22 +64,24 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
           }}
         >
-          <Box sx={{
-              bgcolor: 'whitesmoke',
+          <Box
+            sx={{
+              bgcolor: "whitesmoke",
               p: 5,
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               borderRadius: 6,
-              alignItems: 'center',
-            }}>
-            <Typography component="h1" variant="h5" sx={{pt:0,pb:3}}>
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h1" variant="h5" sx={{ pt: 0, pb: 3 }}>
               Sign Up
             </Typography>
             <form onSubmit={formik.handleSubmit} noValidate>
@@ -94,8 +95,7 @@ export default function SignUp() {
                     id="name"
                     label="Name"
                     error={formik.touched.name && Boolean(formik.errors.name)}
-                    autoFocus
-                    {...formik.getFieldProps('name')}
+                    {...formik.getFieldProps("name")}
                   />
                   {formik.touched.name && formik.errors.name && (
                     <Typography variant="caption" color="error">
@@ -110,9 +110,11 @@ export default function SignUp() {
                     id="username"
                     label="Username"
                     name="username"
-                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    error={
+                      formik.touched.username && Boolean(formik.errors.username)
+                    }
                     autoComplete="username"
-                    {...formik.getFieldProps('username')}
+                    {...formik.getFieldProps("username")}
                   />
                   {formik.touched.username && formik.errors.username && (
                     <Typography variant="caption" color="error">
@@ -126,11 +128,13 @@ export default function SignUp() {
                     fullWidth
                     name="password"
                     label="Password"
-                    type={showPassword ? 'text' : 'password'}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    type={showPassword ? "text" : "password"}
+                    error={
+                      formik.touched.password && Boolean(formik.errors.password)
+                    }
                     id="password"
                     autoComplete="new-password"
-                    {...formik.getFieldProps('password')}
+                    {...formik.getFieldProps("password")}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -160,7 +164,7 @@ export default function SignUp() {
                       label="Role"
                       id="role"
                       value={formik.values.role}
-                      onChange={formik.handleChange('role')}
+                      onChange={formik.handleChange("role")}
                       error={formik.touched.role && Boolean(formik.errors.role)}
                     >
                       <MenuItem value="developer">Developer</MenuItem>
@@ -183,7 +187,9 @@ export default function SignUp() {
                 Sign Up
               </Button>
             </form>
-            <Typography variant="text" color="initial">Already have an account? <Link to="/login">Sign In</Link></Typography>
+            <Typography variant="text" color="initial">
+              Already have an account? <Link to="/login">Sign In</Link>
+            </Typography>
           </Box>
         </Box>
       </Container>

@@ -56,11 +56,26 @@ export default function FormDialog({ setCorrect }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} size="small"  style={{
+          marginBottom: "20px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}>
         Create Project
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create New Project</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "10px",
+          },
+        }}
+      >
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+          Create New Project
+        </DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
@@ -88,8 +103,8 @@ export default function FormDialog({ setCorrect }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Create</Button>
+          <Button onClick={handleClose}  size="small" >Cancel</Button>
+          <Button onClick={handleSubmit} size="small" sx={{marginRight:"15px"}}>Create</Button>
         </DialogActions>
       </Dialog>
       <CustomizedSnackbars

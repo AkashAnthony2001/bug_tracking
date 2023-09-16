@@ -13,8 +13,6 @@ function EditModule({ moduledata, load, open, setOpen }) {
   const [editedModuleName, setEditedModuleName] = useState("");
   const [editedModuleDes, setEditedModuleDes] = useState("");
   const [moduleNameError, setmoduleNameError] = useState("");
-  const [moduleDesError, setmoduleDesError] = useState("");
-console.log(moduledata,'fer')
   useEffect(() => {
     if(moduledata){
 
@@ -36,13 +34,6 @@ console.log(moduledata,'fer')
     } else {
       setmoduleNameError({ error: false, message: "" });
     }
-    if (!editedModuleDes) {
-      setmoduleDesError({ error: true, message: "Module Description is required" });
-      return;
-    }else {
-      setmoduleDesError({ error: false, message: "" });
-    }
-
     let res = await apiService.editModuledata(moduledata._id, moduleObj);
     setEditErr(res);
     if (res) {
@@ -51,7 +42,6 @@ console.log(moduledata,'fer')
     }
     setEditedModuleName(moduleObj.module_name);
     setEditedModuleDes(moduleObj.module_description);
-    console.log(moduleObj);
   };
   const handleClose = () => {
     setOpen(false);
@@ -59,7 +49,9 @@ console.log(moduledata,'fer')
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Module Data</DialogTitle>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Edit Module Data
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -82,9 +74,6 @@ console.log(moduledata,'fer')
             fullWidth
             variant="standard"
             value={editedModuleDes}
-            error={moduleDesError.error}
-            helperText={moduleDesError.error ? moduleDesError.message : ""}
-            onChange={(e) => setEditedModuleDes(e.target.value)}
           />
           <DialogActions>
             <Button size="small" onClick={handleClose}>

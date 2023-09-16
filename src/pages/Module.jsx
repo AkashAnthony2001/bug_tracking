@@ -15,8 +15,6 @@ import ModuleDialogue from "./ModuleDialogue";
 
 export default function ModuleDemo() {
   const [Mtitle, setMtitle] = useState([]);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
   const [editedError, setEditedError] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [open, setOpen] = useState(false);
@@ -56,6 +54,14 @@ export default function ModuleDemo() {
       </>
     );
   }
+  const cardStyle = {
+    marginTop: "10px",
+    minWidth: 275,
+    marginBottom: "1rem",
+    backgroundColor: "#F0F0F0", 
+    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    borderRadius: "8px",
+  };
 
   return (
     <>
@@ -63,7 +69,7 @@ export default function ModuleDemo() {
         <ModuleDialogue loadData={() => Moduledisplay()} />
 
         {Mtitle?.map((moduledata) => (
-          <Card sx={{ minWidth: 275, marginBottom: "1rem", m: 2 }}>
+          <Card sx={cardStyle}>
             <CardActionArea>
               <CardContent>
                 <div style={{ display: "flex", alignItems: "center" }}>

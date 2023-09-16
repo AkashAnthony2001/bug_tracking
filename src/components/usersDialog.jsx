@@ -61,21 +61,30 @@ const UsersDialog = ({load}) => {
   };
   return (
     <>
-      <Button onClick={() => setOpen(true)} variant="outlined">Create User</Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Button onClick={() => setOpen(true)} variant="outlined" size="small" style={{
+          marginBottom: "20px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}>Create User</Button>
+      <Dialog open={open} onClose={handleClose}
+      sx={{
+        "& .MuiDialog-paper": {
+          borderRadius: "10px",
+        },
+      }}>
       <form onSubmit={formik.handleSubmit}>
-        <DialogTitle>
+        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
           <Typography>Create User</Typography>
         </DialogTitle>
-        <DialogContent >
-         <Stack spacing={2}>
+        <DialogContent sx={{marginTop: "20px"}}>
+         <Stack spacing={1}>
             <TextField
               fullWidth
               id="name"
               name="name"
               label="Name"
               type="text"
-              sx={{mt:1}}
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

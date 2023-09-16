@@ -7,7 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { MenuItem, Select, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import apiService from "../services/apiService";
 
 export default function BasicTable({ rows, heading, handleClick }) {
@@ -23,7 +29,16 @@ export default function BasicTable({ rows, heading, handleClick }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  const statusColors = {
+    Opened: "	#32cd32",
+    Assigned: "blue",
+    InProgress: "#800000",
+    Resolved: "purple",
+    Testing: "orange",
+    Verified: "	#32cd32",
+    Closed: "red",
+    Hold: "#708090",
+  };
   const handleStatus = async (event, id) => {
     let obj = {
       status: event.target.value,
@@ -31,79 +46,86 @@ export default function BasicTable({ rows, heading, handleClick }) {
     };
     setSelectedStatus(event.target.value);
     const statusData = await apiService.putStatus(obj);
-    console.log(statusData);
   };
- 
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    // Ensure day and month have two digits
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
 
   return (
-    <TableContainer component={Paper} sx={{ width: "100%" }}>
-      <Table aria-label="tickets table" stickyHeader>
+    <TableContainer
+      component={Paper}
+      sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+    >
+      <Table aria-label="tickets table" stickyHeader sx={{ border: '1px solid #ccc', width: '100%' }}>
         <TableHead>
           <TableRow>
-            {heading && heading.map((data) => <TableCell>{data}</TableCell>)}
+            {heading && heading.map((data) => <TableCell key={data}>{data}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.length ? (
             rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 const originalDateString = row.estimate_date;
                 const formattedDate = formatDate(originalDateString);
-                return(
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    handleClick(row.id);
-                  }}
-                  tabIndex={-1}
-                >
-                  <TableCell>{row?.projectId?.title}</TableCell>
-                  <TableCell>{row?.moduleId?.module_name}</TableCell>
-                  <TableCell>{row?.assignedTo?.username}</TableCell>
-                  <TableCell>{row?.reportedBy?.name}</TableCell>
-                  <TableCell>{row?.sprint}</TableCell>
-                  <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
-                  <TableCell>{formattedDate}</TableCell>
-                  <TableCell>
-                    <Select
-                      defaultValue={row?.status}
-                      onChange={(e) => {
-                        handleStatus(e, row._id);
-                      }}
-                    >
-                      <MenuItem value="Opened">Opened</MenuItem>
-                      <MenuItem value="Assigned">Assigned</MenuItem>
-                      <MenuItem value="InProgress">InProgress</MenuItem>
-                      <MenuItem value="Resolved">Resolved</MenuItem>
-                      <MenuItem value="Testing">Testing</MenuItem>
-                      <MenuItem value="Verified">Verified</MenuItem>
-                      <MenuItem value="Closed">Closed</MenuItem>
-                      <MenuItem value="Hold">Hold</MenuItem>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              );})
+                const isOddRow = index % 2 === 0;
+
+                return (
+                  <TableRow
+                    key={row._id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      cursor: "pointer",
+                      backgroundColor: isOddRow ? "#EDEDED" : "#FFFFFF",border: '1px solid #ccc',
+                      padding: '8px',
+                    }}
+                    onClick={() => {
+                      handleClick(row.id);
+                    }}
+                    tabIndex={-1}
+                  >
+                    <TableCell>{row?.projectId?.title}</TableCell>
+                    <TableCell>{row?.moduleId?.module_name}</TableCell>
+                    <TableCell>{row?.assignedTo?.username}</TableCell>
+                    <TableCell>{row?.reportedBy?.name}</TableCell>
+                    <TableCell>{row?.sprint}</TableCell>
+                    <TableCell>{row?.customerfound ? "Yes" : "No"}</TableCell>
+                    <TableCell>{formattedDate}</TableCell>
+                    <FormControl sx={{ m: 2 }} size="small">
+                      <InputLabel></InputLabel>
+                      <Select
+                        defaultValue={row?.status}
+                        onChange={(e) => {
+                          handleStatus(e, row._id);
+                        }}
+                      >
+                        {Object.entries(statusColors).map(([status, color]) => (
+                          <MenuItem key={status} value={status}>
+                            <span style={{ color }}>{status}</span>
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </TableRow>
+                );
+              })
           ) : (
-            <Typography variant="h6" color="initial">
-              No Records Found
-            </Typography>
+            <TableRow>
+              <TableCell colSpan={8} sx={{ textAlign: "center" }}>
+                <Typography variant="h6" color="initial">
+                  No Records Found
+                </Typography>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

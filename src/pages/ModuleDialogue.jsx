@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiService from "../services/apiService";
 
@@ -36,7 +35,6 @@ export default function ModuleDialogue({ loadData }) {
       module_description: moduleDesc,
     };
     const result = await apiService.createModule(moduledata);
-    console.log(result);
     if (result) {
       setOpen(false);
       loadData();
@@ -47,11 +45,21 @@ export default function ModuleDialogue({ loadData }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add
+      <Button variant="outlined" onClick={handleClickOpen} size="small"  style={{
+          marginBottom: "20px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 4px 10px 1px gray",
+        }}>
+        Add Module
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create Module</DialogTitle>
+      <Dialog open={open} onClose={handleClose} 
+      sx={{
+        "& .MuiDialog-paper": {
+          borderRadius: "10px",
+        },
+      }}>
+        <DialogTitle  style={{backgroundColor:"#596e79", color: "white" }}>Create Module</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -78,6 +86,7 @@ export default function ModuleDialogue({ loadData }) {
           />
         </DialogContent>
         <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Create</Button>
         </DialogActions>
       </Dialog>

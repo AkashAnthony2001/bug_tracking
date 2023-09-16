@@ -8,7 +8,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Media from "react-media";
 import apiService from "../services/apiService";
 import Projects from "./Projects";
-import "../components/index.css";
+import "../components/dash.css";
 import {
   Card,
   CardActionArea,
@@ -24,23 +24,23 @@ import {
 } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import WorkIcon from "@mui/icons-material/Work";
+import SprintBarGraph from "../components/SprintBarGraph";
+import UserBarGraph from "../components/UserBarGraph";
+import UserSprintGraph from "../components/UserSprintGraph";
+import AdminUsersGraph from "../components/AdminUsersGraph";
 
-const drawerWidth = 240;
+const drawerWidth = 190;
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [myBugs, setMyBugs] = useState([]);
   const [open, setOpen] = useState(0);
   const [close, setClose] = useState(0);
   const [inProcess, setInProcess] = useState(0);
   const [hold, setHold] = useState(0);
-
   const [assignedValue, setAssignedvalue] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const token = localStorage.getItem("token");
-
   const checkAuth = async () => {
     const isAuth = await apiService.isAuth();
     if (!isAuth) {
@@ -50,13 +50,21 @@ const Dashboard = () => {
     return;
   };
 
+  const cardStyle = {
+    minWidth: 275,
+    margin: "20px",
+    marginBottom: "1rem",
+    backgroundColor: "#ececec",
+    boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
+    borderRadius: "8px",
+  };
+
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
-    setMyBugs(data);
-    // console.log(myBugs);
+
     const setOpened = data.filter((datas) => {
-      return datas.status === "Opened";
+      return datas.status === "Assigned";
     }).length;
     setOpen(setOpened);
     const setClosed = data.filter((datas) => {
@@ -82,6 +90,7 @@ const Dashboard = () => {
     if (token) {
       checkAuth();
     }
+    Assigneddisplay();
   }, []);
   const Assigneddisplay = async () => {
     const username = localStorage.getItem("username");
@@ -90,14 +99,16 @@ const Dashboard = () => {
   };
   useEffect(() => {
     displayBugs();
-    Assigneddisplay();
-    const filterArr =
-      assignedValue &&
-      assignedValue.filter((val) => val.createdAt.includes(formattedNewDate));
-    setFilterData(filterArr);
-  }, []);
+    if (assignedValue.length) {
+      const filterArr =
+        assignedValue &&
+        assignedValue?.filter((val) =>
+          val.createdAt.includes(formattedNewDate)
+        );
+      setFilterData(filterArr);
+    }
+  }, [assignedValue]);
 
-  // console.log(assignedValue);
 
   const username = localStorage.getItem("name");
   function formatDate(isoDateString) {
@@ -112,9 +123,7 @@ const Dashboard = () => {
   }
   const d = new Date();
 
-  // console.log(d.toISOString())
   const formattedNewDate = formatDate(d);
-
   return (
     <div>
       <CssBaseline>
@@ -163,23 +172,23 @@ const Dashboard = () => {
               <Projects />
             ) : location.pathname === "/dashboard" ? (
               <>
-                <div className="container">
-                  <div className="card">
-                    <Card>
+                <Grid container spacing={4}>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
                             {open}
                           </Typography>
                           <Typography variant="h7" color="black">
-                            Open Bugs
+                            Assigned Bugs
                           </Typography>
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -191,9 +200,9 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -205,9 +214,9 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                  <div className="card">
-                    <Card>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -219,17 +228,17 @@ const Dashboard = () => {
                         </CardContent>
                       </CardActionArea>
                     </Card>
-                  </div>
-                </div>
+                  </Grid>
+                </Grid>
                 <div className="bigCards">
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <div>
-                        <Card>
+                        <Card style={cardStyle}>
                           <CardContent>
                             <h2>{<BugReportIcon />} My Bugs</h2>
                             <TableContainer
-                              sx={{ maxHeight: "500px", overflowY: "scroll" }}
+                              sx={{ maxHeight: "220px", overflowY: "scroll", height: "220px" }}
                             >
                               <Table>
                                 <TableHead
@@ -245,22 +254,36 @@ const Dashboard = () => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {assignedValue.length
-                                    ? assignedValue.map((data) => {
-                                        const originalDateString =
-                                          data.createdAt;
-                                        const formattedDate =
-                                          formatDate(originalDateString);
-                                        return (
-                                          <TableRow key={data.bug_id}>
-                                            <TableCell>{data.bug_id}</TableCell>
-                                            <TableCell>
-                                              {formattedDate}
-                                            </TableCell>
-                                          </TableRow>
-                                        );
-                                      })
-                                    : "No Records Found"}
+                                  {assignedValue.length ? (
+                                    assignedValue.map((data) => {
+                                      const originalDateString = data.createdAt;
+                                      const formattedDate =
+                                        formatDate(originalDateString);
+                                      return (
+                                        <TableRow
+                                          key={data.bug_id}
+                                          sx={{ background: "white" }}
+                                        >
+                                          <TableCell>{data.bug_id}</TableCell>
+                                          <TableCell>{formattedDate}</TableCell>
+                                        </TableRow>
+                                      );
+                                    })
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan={2}
+                                        sx={{ textAlign: "center" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          color="initial"
+                                        >
+                                          No Records Found
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -270,30 +293,55 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item xs={6}>
                       <div>
-                        <Card>
+                        <Card style={cardStyle}>
                           <CardContent>
                             <h2>{<WorkIcon />} My Work Items Due Today</h2>
-                            <TableContainer>
+                            <TableContainer
+                              sx={{ maxHeight: "220px", overflowY: "scroll", height: "220px" }}
+                            >
                               <Table>
-                                <TableHead>
+                                <TableHead
+                                  sx={{
+                                    position: "sticky",
+                                    top: 0,
+                                    bgcolor: "white",
+                                  }}
+                                >
                                   <TableRow>
                                     <TableCell>Bug</TableCell>
                                     <TableCell>Date</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {filterData.length
-                                    ? filterData.map((val) => {
-                                        return (
-                                          <TableRow>
-                                            <TableCell>{val.bug_id}</TableCell>
-                                            <TableCell>
-                                              {formatDate(val.createdAt)}
-                                            </TableCell>
-                                          </TableRow>
-                                        );
-                                      })
-                                    : "No Records Found"}
+                                  {filterData.length ? (
+                                    filterData.map((val) => {
+                                      return (
+                                        <TableRow
+                                          key={filterData.bug_id}
+                                          sx={{ background: "white" }}
+                                        >
+                                          <TableCell>{val.bug_id}</TableCell>
+                                          <TableCell>
+                                            {formatDate(val.createdAt)}
+                                          </TableCell>
+                                        </TableRow>
+                                      );
+                                    })
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan={2}
+                                        sx={{ textAlign: "center" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          color="initial"
+                                        >
+                                          No Records Found
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
                                 </TableBody>
                               </Table>
                             </TableContainer>
@@ -301,6 +349,40 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
+
+                    <Grid item xs={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={{ ...cardStyle, height: '600px' }}>
+                          <CardContent sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                            width: "100%",
+                          }}>
+                            {localStorage.getItem("role") === "admin" ? <SprintBarGraph /> : <UserSprintGraph />}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={{ ...cardStyle, height: '600px' }}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            {localStorage.getItem('role') === 'admin' ? <AdminUsersGraph /> : <UserBarGraph opened={open} closed={close} />}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+
                   </Grid>
                 </div>
               </>

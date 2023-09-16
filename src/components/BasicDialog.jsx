@@ -24,7 +24,9 @@ export default function BasicDialog({ action, children, buttonMsg, sx }) {
     <Box
       sx={{
         marginTop: 'auto',
-        width: '100%'
+        width: '100%',
+        display: 'flex',
+        alignItems: "center"
       }}
     >
       <Button variant="outlined" color="error" onClick={handleClickOpen}

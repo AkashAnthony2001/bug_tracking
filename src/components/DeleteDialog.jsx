@@ -19,16 +19,13 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
     load()
     setOpenDelete(false);
   };
-  if (err.error) {
-    return (
-      <>
-        <CustomizedSnackbars error={err.error} message={err.message} />
-      </>
-    );
-  }
+
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
+      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        Delete Project
+        </DialogTitle>
         <DialogTitle id="alert-dialog-title">
           {"Are you sure want to Delete this Project"}
         </DialogTitle>
@@ -37,6 +34,7 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
           <Button onClick={handleDelete}>Delete</Button>
         </DialogActions>
       </Dialog>
+      <CustomizedSnackbars error={err.error} message={err.message} />
     </div>
   );
 }

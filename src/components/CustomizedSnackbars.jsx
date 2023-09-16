@@ -8,12 +8,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function CustomizedSnackbars({ error = false, message = "",setChangemsg  }) {
+export default function CustomizedSnackbars({ error = false, message = "",setChangemsg=""  }) {
   const [open, setOpen] = React.useState(false);
 
-  //   const handleClick = () => {
-  //     setOpen(true);
-  //   };
   React.useEffect(() => {
     if (message) {
       setOpen(true);
@@ -27,7 +24,6 @@ export default function CustomizedSnackbars({ error = false, message = "",setCha
 
     setOpen(false);
     setChangemsg("")
-    // setCreate({})
   };
 
   return (

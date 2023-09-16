@@ -9,8 +9,7 @@ import Assigned from './pages/Assigned';
 import Projects from './pages/Projects';
 import Submitted from './pages/Submitted';
 import Module from './pages/Module';
-import Bugs from './components/Bugs';
-
+import Bugs from './pages/Bugs';
 import Users from './pages/Users'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

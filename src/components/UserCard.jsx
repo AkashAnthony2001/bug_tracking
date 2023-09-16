@@ -17,9 +17,17 @@ export default function UserCard({ userData, setCorrect, load }) {
     setOpenDelete(true);
     setId();
   };
+  const cardStyle = {
+    marginTop: "10px",
+    minWidth: 275,
+    marginBottom: "1rem",
+    backgroundColor: "#F0F0F0", 
+    boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
+    borderRadius: "8px",
+  };
 
   return (
-    <Card sx={{ minWidth: 275, marginBottom: "1rem" }}>
+    <Card sx={cardStyle}>
       <CardActionArea>
         <CardContent>
           <div style={{ display: "flex", alignItems: "center" }}>

@@ -1,5 +1,3 @@
-import helpers from "./helpers";
-
 const baseUrl = "http://localhost:3001/api";
 
 const createUser = async (userObj) => {
@@ -8,6 +6,7 @@ const createUser = async (userObj) => {
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(userObj),
   });
@@ -21,6 +20,7 @@ const login = async (userObj) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(userObj),
   });
@@ -31,12 +31,11 @@ const login = async (userObj) => {
 };
 
 const isAuth = async () => {
-  const token = localStorage.getItem("token");
 
   const response = await fetch(`${baseUrl}/login/auth`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 
@@ -49,66 +48,46 @@ const logout = () => {
 };
 
 const getProjects = async () => {
-  const response = await fetch(`${baseUrl}/projects`);
-  const parsedResponse = await response.json();
-
-  return parsedResponse;
-};
-
-const getTickets = async (project) => {
-  const projectRoute = helpers.formatRoute(project.title);
-  const response = await fetch(`${baseUrl}/issues/${projectRoute}`);
-  const parsedResponse = await response.json();
-
-  return parsedResponse.tickets;
-};
-
-const getTicketInfo = async (projectTitle, ticketId) => {
-  const projectRoute = helpers.formatRoute(projectTitle);
-
-  const response = await fetch(`${baseUrl}/issues/${projectRoute}/${ticketId}`);
+  const response = await fetch(`${baseUrl}/projects`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
 };
 
 const getUsers = async () => {
-  const response = await fetch(`${baseUrl}/users`);
-  const parsedResponse = await response.json();
-
-  return parsedResponse;
-};
-
-const saveTicket = async (method, bodyObj, projectTitle, id) => {
-  const projectRoute = helpers.formatRoute(projectTitle);
-
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`${baseUrl}/issues/${projectRoute}/${id}`, {
-    method,
+  const response = await fetch(`${baseUrl}/users`, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify(bodyObj),
   });
-
   const parsedResponse = await response.json();
 
   return parsedResponse;
 };
+
 const getAssignments = async (username) => {
-
-  const response = await fetch(`${baseUrl}/issuetracker/assigned/${username}/`);
+  const response = await fetch(
+    `${baseUrl}/issuetracker/assigned/${username}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
   const parsedResponse = await response.json();
   return parsedResponse;
-
 };
-
- 
 
 const getSubmissions = async (username) => {
-  const response = await fetch(`${baseUrl}/issuetracker/reported/${username}`);
+  const response = await fetch(`${baseUrl}/issuetracker/reported/${username}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
@@ -119,6 +98,7 @@ const createProject = async (record) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(record),
   });
@@ -130,19 +110,23 @@ const createProject = async (record) => {
 const deleteProject = async (id) => {
   const response = await fetch(`${baseUrl}/projects/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });
   const parsedResponse = await response.json();
   return parsedResponse;
 };
 
 const editProject = async (record) => {
-  const { description,title} = record;
-  let payload = { description,title}
+  const { description, title } = record;
+  let payload = { description, title };
   const response = await fetch(`${baseUrl}/projects/${record.id}`, {
     method: "PUT",
 
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
 
     body: JSON.stringify(payload),
@@ -152,26 +136,13 @@ const editProject = async (record) => {
 
   return parsedResponse;
 };
-const putPStatus = async ( statusid ,rowid ) => {
-  const status ={
-    statusid
-  }
-  const response = await fetch(`${baseUrl}/issuetracker/${rowid}`, {
-    method: "PUT", 
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(status),
-  });
-  const parsedResponse = await response.json();
 
-  return parsedResponse;
-}
 const createModule = async (record) => {
   const response = await fetch(`${baseUrl}/modules`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(record),
   });
@@ -183,7 +154,10 @@ const createModule = async (record) => {
 const deleteModule = async (_id) => {
   const response = await fetch(`${baseUrl}/modules/${_id}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });
   const parsedResponse = await response.json();
 
@@ -194,6 +168,7 @@ const editModuledata = async (_id, record) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(record),
   });
@@ -201,12 +176,13 @@ const editModuledata = async (_id, record) => {
 
   return parsedResponse;
 };
-const putStatus = async (status) => {
 
+const putStatus = async (status) => {
   const response = await fetch(`${baseUrl}/issuetracker/${status._id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(status),
   });
@@ -214,16 +190,24 @@ const putStatus = async (status) => {
 
   return parsedResponse;
 };
+
 const getBugs = async () => {
-  const response = await fetch(`${baseUrl}/issuetracker/`);
+  const response = await fetch(`${baseUrl}/issuetracker/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
 };
 
-
 const getModule = async () => {
-  const response = await fetch(`${baseUrl}/modules/`);
+  const response = await fetch(`${baseUrl}/modules/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
@@ -234,19 +218,20 @@ const createBugs = async (record) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(record),
   });
   const parsedResponse = await response.json();
   return parsedResponse;
-
 };
 
 const generateBug = async (id) => {
-  const response = await fetch(`${baseUrl}/issuetracker/generateId`,{
+  const response = await fetch(`${baseUrl}/issuetracker/generateId`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(id),
   });
@@ -255,24 +240,33 @@ const generateBug = async (id) => {
   return parsedResponse;
 };
 
-
 const bugStatus = async () => {
-  const response = await fetch(`${baseUrl}/issuestatus/`);
+  const response = await fetch(`${baseUrl}/issuestatus/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const parsedResponse = await response.json();
 
   return parsedResponse;
-}
+};
+
 const deleteUser = async (id) => {
   const response = await fetch(`${baseUrl}/users/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });
   const parsedResponse = await response.json();
   return parsedResponse;
 };
+
 const editUser = async (_id, record) => {
   const response = await fetch(`${baseUrl}/users/${_id}`, {
     method: "PUT",
     headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(record),
@@ -282,22 +276,49 @@ const editUser = async (_id, record) => {
   return parsedResponse;
 };
 
+const getBySprint = async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/bySprint`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
+const getUserSprint = async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/userSprint`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+};
+
+const adminUserData = async () => {
+  const response = await fetch(`${baseUrl}/issuetracker/status`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  const parsedResponse = await response.json();
+  return parsedResponse;
+};
+
 const apiService = {
   createUser,
   login,
   logout,
   getProjects,
-  getTickets,
-  getTicketInfo,
   getUsers,
-  saveTicket,
   isAuth,
   getAssignments,
   getSubmissions,
   createProject,
   deleteProject,
   editProject,
-  putPStatus,
   createModule,
   deleteModule,
   generateBug,
@@ -308,8 +329,10 @@ const apiService = {
   createBugs,
   bugStatus,
   deleteUser,
-  editUser
-  
+  editUser,
+  getBySprint,
+  getUserSprint,
+  adminUserData,
 };
 
 export default apiService;
