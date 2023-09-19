@@ -79,6 +79,7 @@ export default function Bugs() {
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
+    setComment("")
 
     let obj = {
       status: event.target.value,

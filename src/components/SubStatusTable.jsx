@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import {
   Table,
   TableBody,
@@ -59,6 +59,12 @@ function SubStatusTable({ bugStatusData, headers, setExpandedRow, load }) {
       return `${hours === 12 ? 12 : hours - 12}:${mins} PM`;
     }
   }
+  useEffect(()=>{
+    if(editData){
+      setComment(editData?.comments)
+    }
+  
+  },[editData])
   return (
     <>
     <TableContainer component={Paper} sx={{ width: '100%', p: 2 }} >

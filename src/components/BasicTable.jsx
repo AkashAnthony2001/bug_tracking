@@ -69,6 +69,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
+    setComment("")
 
     let obj = {
       status: event.target.value,
