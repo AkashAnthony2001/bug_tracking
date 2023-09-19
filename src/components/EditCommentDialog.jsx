@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, Button, DialogActions, Grid, TextField, Typography } from '@mui/material';
 
 const EditCommentDialog = ({ isOpen, onClose, bugData, setComment, comment, handleComment }) => {
-
-
   return (
     <div>
       <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
@@ -19,6 +17,7 @@ const EditCommentDialog = ({ isOpen, onClose, bugData, setComment, comment, hand
               label="Comments"
               multiline
               fullWidth
+              name='comments'
               style={{ marginTop: "10px" }}
               size="small"
               rows={5}
