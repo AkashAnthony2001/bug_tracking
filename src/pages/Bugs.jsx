@@ -139,8 +139,6 @@ export default function Bugs() {
     setSelectedStatus(event.target.value)
     console.log(event.target.value);
   }
-
-
   return (
     <>
       <Box style={{ display: 'flex', justifyContent: "space-between" }}>
@@ -287,7 +285,7 @@ export default function Bugs() {
                       <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell style={{...styles, color:formattedDate <= formatDate(new Date()) ? 'red' : 'black'}} >{formattedDate}</TableCell>
+                      <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
                       <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
