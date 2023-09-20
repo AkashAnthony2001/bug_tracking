@@ -10,7 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Box
+  Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -31,26 +31,35 @@ export default function Bugs() {
   const [bugStatusData, setBugStatusData] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
-  const [users, setUsers] = useState([])
-  const [selectedUser, setSelectedUser] = useState('');
-  const [selectedSprint, setSelectedSprint] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [filteredData, setFilteredData] = useState(bugData)
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedSprint, setSelectedSprint] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [filteredData, setFilteredData] = useState(bugData);
+  const [updateSprint, setUpdateSprint] = useState({});
 
   const handleComment = async () => {
     const obj = {
       ...bugStatusData,
-      comment
-    }
-    console.log(obj)
+      comment,
+    };
+    console.log(obj);
 
     const statusData = await apiService.putStatus(obj);
     if (!statusData.error) {
       handleCloseDialog();
-      setChangemsg(statusData)
+      setChangemsg(statusData);
     }
-  }
-
+  };
+  const handleChange = async (event, _id) => {
+    let obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    bugDisplay()
+  };
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
   const bugStatusApi = async () => {
@@ -62,7 +71,7 @@ export default function Bugs() {
     const data = await apiService.getBugs();
     setBugdata(data);
     const usersData = await apiService.getUsers();
-    setUsers(usersData)
+    setUsers(usersData);
   };
   const statusColors = {
     Opened: "	#32cd32",
@@ -72,38 +81,40 @@ export default function Bugs() {
     Testing: "orange",
     Verified: "	#32cd32",
     Closed: "red",
-    Hold: "#708090"
+    Hold: "#708090",
   };
   useEffect(() => {
     bugDisplay();
     bugStatusApi();
   }, [changemsg]);
 
-  useEffect(()=> {
-    const filteredItems = bugData?.filter(item => (
-      (selectedUser === '' || item.assignedTo.username === selectedUser) &&
-      (selectedSprint === '' || item.sprint === selectedSprint) &&
-      (selectedStatus === '' || item.status === selectedStatus)
-    ));
+  useEffect(() => {
+    const filteredItems = bugData?.filter(
+      (item) =>
+        (selectedUser === "" || item.assignedTo.username === selectedUser) &&
+        (selectedSprint === "" || item.sprint === selectedSprint) &&
+        (selectedStatus === "" || item.status === selectedStatus)
+    );
     setFilteredData(filteredItems);
     console.log(filteredData);
-  },[selectedUser,selectedSprint,selectedStatus,bugData])
+  }, [selectedUser, selectedSprint, selectedStatus, bugData]);
 
   const styles = {
     textAlign: "center",
-    padding: "8px"
+    padding: "8px",
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
-    setComment("")
+    setComment("");
 
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setBugStatusData(obj)
+    setBugStatusData(obj);
   };
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -124,82 +135,91 @@ export default function Bugs() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
-  const sprints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const sprints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const handleSelectedUsers = (event) => {
-    setSelectedUser(event.target.value)
-  }
+    setSelectedUser(event.target.value);
+  };
 
   const handleSelectedSprint = (event) => {
-    setSelectedSprint(event.target.value)
+    setSelectedSprint(event.target.value);
     console.log(event.target.value);
-  }
+  };
 
   const handleSelectedStatus = (event) => {
-    setSelectedStatus(event.target.value)
+    setSelectedStatus(event.target.value);
     console.log(event.target.value);
   }
   return (
     <>
-      <Box style={{ display: 'flex', justifyContent: "space-between" }}>
+      <Box style={{ display: "flex", justifyContent: "space-between" }}>
         <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography sx={{ mx: 1, fontWeight: 'bold' }} variant="text" color="initial">Filter : </Typography>
-          <FormControl sx={{ minWidth: 120, mx: 1 }} size='small'>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{ mx: 1, fontWeight: "bold" }}
+            variant="text"
+            color="initial"
+          >
+            Filter :{" "}
+          </Typography>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
               value={selectedUser}
               onChange={(event) => handleSelectedUsers(event)}
               displayEmpty
-              inputProps={{ 'aria-label': 'Without label' }}
+              inputProps={{ "aria-label": "Without label" }}
             >
               <MenuItem value="">
                 <em>Users</em>
               </MenuItem>
-              {users && users?.map((data) => (
-                <MenuItem key={data._id} value={data?.username}>{data?.username}</MenuItem>
-              ))}
+              {users &&
+                users?.map((data) => (
+                  <MenuItem key={data._id} value={data?.username}>
+                    {data?.username}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
-          <FormControl sx={{ minWidth: 120 }} size='small'>
+          <FormControl sx={{ minWidth: 120 }} size="small">
             <Select
               value={selectedSprint}
               onChange={(event) => handleSelectedSprint(event)}
               displayEmpty
-              inputProps={{ 'aria-label': 'Without label' }}
+              inputProps={{ "aria-label": "Without label" }}
             >
               <MenuItem value="">
                 <em>Sprints</em>
               </MenuItem>
               {sprints.map((data) => (
-                <MenuItem key={data} value={data}>{data}</MenuItem>
+                <MenuItem key={data} value={data}>
+                  {data}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{ minWidth: 120, mx: 1 }} size='small'>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
               value={selectedStatus}
               onChange={(event) => handleSelectedStatus(event)}
               displayEmpty
-              inputProps={{ 'aria-label': 'Without label' }}
+              inputProps={{ "aria-label": "Without label" }}
             >
               <MenuItem value="">
                 <em>Status</em>
               </MenuItem>
-              {Object.entries(statusColors).map(
-                ([status, color]) => (
-                  <MenuItem
-                    key={status}
-                    value={status}
-                    style={{
-                      width: "100%",
-                      marginTop: "5px",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    <span style={{ color }}>{status}</span>
-                  </MenuItem>
-                )
-              )}
+              {Object.entries(statusColors).map(([status, color]) => (
+                <MenuItem
+                  key={status}
+                  value={status}
+                  style={{
+                    width: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <span style={{ color }}>{status}</span>
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
@@ -281,7 +301,28 @@ export default function Bugs() {
                         {databug?.reportedBy?.username}
                       </TableCell>
                       <TableCell style={styles}>{databug?.severity}</TableCell>
-                      <TableCell style={styles}>{databug?.sprint}</TableCell>
+                      <TableCell style={styles}>
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={databug?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, databug?._id);
+                            }}
+                          >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
+                            <MenuItem value="4">4</MenuItem>
+                            <MenuItem value="5">5</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                            <MenuItem value="7">7</MenuItem>
+                            <MenuItem value="8">8</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>{" "}
                       <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
@@ -351,7 +392,14 @@ export default function Bugs() {
           </TableBody>
         </Table>
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment} />
+      <StatusChangeDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        bugData={bugStatusData}
+        setComment={setComment}
+        comment={comment}
+        handleComment={handleComment}
+      />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

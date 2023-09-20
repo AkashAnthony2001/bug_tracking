@@ -142,7 +142,7 @@ const editProject = async (record) => {
 const editSprint = async (record) => {
   const { id , data } = record;
   const payload = { sprint:data }
-  const response = await fetch(`${baseUrl}/sprint/${id}`, {
+  const response = await fetch(`${baseUrl}/issuetracker/sprint/${id}`, {
     method: "PUT",
 
     headers: {
