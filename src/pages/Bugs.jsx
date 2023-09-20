@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Box
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -30,21 +31,24 @@ export default function Bugs() {
   const [bugStatusData, setBugStatusData] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [users, setUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedSprint, setSelectedSprint] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [filteredData, setFilteredData] = useState(bugData)
 
+  const handleComment = async () => {
+    const obj = {
+      ...bugStatusData,
+      comment
+    }
+    console.log(obj)
 
-
-  const handleComment = async() => {
-      const obj = {
-          ...bugStatusData,
-          comment
-      }
-      console.log(obj)
-      
-      const statusData = await apiService.putStatus(obj);
-      if(!statusData.error){
-        handleCloseDialog();
-        setChangemsg(statusData)
-      }
+    const statusData = await apiService.putStatus(obj);
+    if (!statusData.error) {
+      handleCloseDialog();
+      setChangemsg(statusData)
+    }
   }
 
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
@@ -57,6 +61,8 @@ export default function Bugs() {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
+    const usersData = await apiService.getUsers();
+    setUsers(usersData)
   };
   const statusColors = {
     Opened: "	#32cd32",
@@ -73,6 +79,16 @@ export default function Bugs() {
     bugStatusApi();
   }, [changemsg]);
 
+  useEffect(()=> {
+    const filteredItems = bugData?.filter(item => (
+      (selectedUser === '' || item.assignedTo.username === selectedUser) &&
+      (selectedSprint === '' || item.sprint === selectedSprint) &&
+      (selectedStatus === '' || item.status === selectedStatus)
+    ));
+    setFilteredData(filteredItems);
+    console.log(filteredData);
+  },[selectedUser,selectedSprint,selectedStatus,bugData])
+
   const styles = {
     textAlign: "center",
     padding: "8px"
@@ -87,7 +103,6 @@ export default function Bugs() {
       _id: id,
     };
     setBugStatusData(obj)
-    
   };
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -99,7 +114,6 @@ export default function Bugs() {
 
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
-
   const collapseRow = (index, bugid) => {
     setExpandedRow(index === expandedRow ? null : index);
     const filteredData = bugResponse.response.filter((data) => {
@@ -107,14 +121,91 @@ export default function Bugs() {
     });
     setFilteredResponse(filteredData);
   };
-
-
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
+  const sprints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+  const handleSelectedUsers = (event) => {
+    setSelectedUser(event.target.value)
+  }
+
+  const handleSelectedSprint = (event) => {
+    setSelectedSprint(event.target.value)
+    console.log(event.target.value);
+  }
+
+  const handleSelectedStatus = (event) => {
+    setSelectedStatus(event.target.value)
+    console.log(event.target.value);
+  }
+
+
   return (
     <>
-      <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
+      <Box style={{ display: 'flex', justifyContent: "space-between" }}>
+        <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography sx={{ mx: 1, fontWeight: 'bold' }} variant="text" color="initial">Filter : </Typography>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size='small'>
+            <Select
+              value={selectedUser}
+              onChange={(event) => handleSelectedUsers(event)}
+              displayEmpty
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              <MenuItem value="">
+                <em>Users</em>
+              </MenuItem>
+              {users && users?.map((data) => (
+                <MenuItem key={data._id} value={data?.username}>{data?.username}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120 }} size='small'>
+            <Select
+              value={selectedSprint}
+              onChange={(event) => handleSelectedSprint(event)}
+              displayEmpty
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              <MenuItem value="">
+                <em>Sprints</em>
+              </MenuItem>
+              {sprints.map((data) => (
+                <MenuItem key={data} value={data}>{data}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size='small'>
+            <Select
+              value={selectedStatus}
+              onChange={(event) => handleSelectedStatus(event)}
+              displayEmpty
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              <MenuItem value="">
+                <em>Status</em>
+              </MenuItem>
+              {Object.entries(statusColors).map(
+                ([status, color]) => (
+                  <MenuItem
+                    key={status}
+                    value={status}
+                    style={{
+                      width: "100%",
+                      marginTop: "5px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    <span style={{ color }}>{status}</span>
+                  </MenuItem>
+                )
+              )}
+            </Select>
+          </FormControl>
+        </div>
+      </Box>
       <TableContainer
         component={Paper}
         sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
@@ -142,8 +233,8 @@ export default function Bugs() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bugData.length ? (
-              bugData?.map((databug, index) => {
+            {filteredData.length ? (
+              filteredData?.map((databug, index) => {
                 const rowStyles =
                   index % 2 === 0
                     ? { backgroundColor: "#FFFFFF" }
@@ -196,7 +287,7 @@ export default function Bugs() {
                       <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell style={styles}>{formattedDate}</TableCell>
+                      <TableCell style={{...styles, color:formattedDate <= formatDate(new Date()) ? 'red' : 'black'}} >{formattedDate}</TableCell>
                       <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
@@ -262,7 +353,7 @@ export default function Bugs() {
           </TableBody>
         </Table>
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment} />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}
