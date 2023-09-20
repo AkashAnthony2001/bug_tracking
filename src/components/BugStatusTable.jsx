@@ -74,22 +74,22 @@ const BugStatusTable = ({ bugStatusData, headers, load, setExpandedRow }) => {
               bugStatusData?.map((statusData, index) => {
                 const originalDateString = statusData?.createdAt;
                 const formattedDate = formatDate(originalDateString);
-                const isLastHistoryEntry = index === bugStatusData.length - 1;
+                const lastHistoryDisable = index === bugStatusData.length - 1;
                 return (
                   <TableRow key={statusData?.bug_id}>
-                    <TableCell>{statusData?.bug_id}</TableCell>
-                    <TableCell>
-                      {statusData?.comments}
-                      {isLastHistoryEntry && (
-                        <Button
-                          onClick={() => {
-                            setEditData(statusData);
-                            setIsDialogOpen(true);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                      )}
+                  <TableCell>{statusData?.bug_id}</TableCell>
+                  <TableCell>
+                    {statusData?.comments}
+                    {lastHistoryDisable && (
+                      <Button
+                        onClick={() => {
+                          setEditData(statusData);
+                          setIsDialogOpen(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    )}
                     </TableCell>
                     <TableCell>{statusData?.status}</TableCell>
                     <TableCell>{statusData?.updatedby}</TableCell>

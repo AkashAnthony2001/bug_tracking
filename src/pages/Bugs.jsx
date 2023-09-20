@@ -30,22 +30,22 @@ export default function Bugs() {
   const [bugStatusData, setBugStatusData] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [selectedSprint, setSelectedSprint] = useState("");
 
 
+  const handleComment = async () => {
+    const obj = {
+      ...bugStatusData,
+      comment,
+    };
+    console.log(obj);
 
-  const handleComment = async() => {
-      const obj = {
-          ...bugStatusData,
-          comment
-      }
-      console.log(obj)
-      
-      const statusData = await apiService.putStatus(obj);
-      if(!statusData.error){
-        handleCloseDialog();
-        setChangemsg(statusData)
-      }
-  }
+    const statusData = await apiService.putStatus(obj);
+    if (!statusData.error) {
+      handleCloseDialog();
+      setChangemsg(statusData);
+    }
+  };
 
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -66,7 +66,7 @@ export default function Bugs() {
     Testing: "orange",
     Verified: "	#32cd32",
     Closed: "red",
-    Hold: "#708090"
+    Hold: "#708090",
   };
   useEffect(() => {
     bugDisplay();
@@ -75,7 +75,7 @@ export default function Bugs() {
 
   const styles = {
     textAlign: "center",
-    padding: "8px"
+    padding: "8px",
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
@@ -85,8 +85,16 @@ export default function Bugs() {
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setBugStatusData(obj)
-    
+    setBugStatusData(obj);
+  };
+  const handleChange = async (event, id) => {
+    let obj = {
+      status: event.target.value,
+      _id: id,
+    };
+    setSelectedSprint(event.target.value);
+    const sprintData = await apiService.putStatus(obj);
+    setChangemsg(sprintData);
   };
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -106,7 +114,6 @@ export default function Bugs() {
     });
     setFilteredResponse(filteredData);
   };
-
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -191,7 +198,28 @@ export default function Bugs() {
                         {databug?.reportedBy?.username}
                       </TableCell>
                       <TableCell style={styles}>{databug?.severity}</TableCell>
-                      <TableCell style={styles}>{databug?.sprint}</TableCell>
+                      <TableCell style={styles}>
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={databug?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, databug?._id);
+                            }}
+                          >
+                            <MenuItem value="Sprint 1">1</MenuItem>
+                            <MenuItem value="Sprint 2">2</MenuItem>
+                            <MenuItem value="Sprint 3">3</MenuItem>
+                            <MenuItem value="Sprint 4">4</MenuItem>
+                            <MenuItem value="Sprint 5">5</MenuItem>
+                            <MenuItem value="Sprint 6">6</MenuItem>
+                            <MenuItem value="Sprint 7">7</MenuItem>
+                            <MenuItem value="Sprint 8">8</MenuItem>
+                            <MenuItem value="Sprint 9">9</MenuItem>
+                            <MenuItem value="Sprint 10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>{" "}
                       <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
@@ -261,7 +289,14 @@ export default function Bugs() {
           </TableBody>
         </Table>
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+      <StatusChangeDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        bugData={bugStatusData}
+        setComment={setComment}
+        comment={comment}
+        handleComment={handleComment}
+      />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}
