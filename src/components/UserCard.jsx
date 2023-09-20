@@ -9,13 +9,12 @@ import EditUser from "./EditUser";
 export default function UserCard({ userData, setCorrect, load }) {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [id, setId] = useState("");
   const handleEdit = () => {
     setOpen(true);
   };
   const handleDelete = () => {
     setOpenDelete(true);
-    setId();
+   
   };
   const cardStyle = {
     marginTop: "10px",
@@ -59,7 +58,7 @@ export default function UserCard({ userData, setCorrect, load }) {
           </div>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleEdit}>
+          <Button size="small" onClick={handleEdit} sx={{color:"#596e79"}}>
             Edit
           </Button>
           <EditUser

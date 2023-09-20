@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -18,10 +19,11 @@ import CustomizedSnackbars from "../components/CustomizedSnackbars";
 import Collapse from "@mui/material/Collapse";
 import BugStatusTable from "../components/BugStatusTable";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import StatusChangeDialog from "../components/StatusChangeDialog";
-
-export default function Bugs() {
+import CustomizedMenus from "../components/CustomizedMenus";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { Link, useNavigate } from "react-router-dom";
+export default function Bugs({ handleClick }) {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
@@ -31,21 +33,19 @@ export default function Bugs() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
 
+  const handleComment = async () => {
+    const obj = {
+      ...bugStatusData,
+      comment,
+    };
+    console.log(obj);
 
-
-  const handleComment = async() => {
-      const obj = {
-          ...bugStatusData,
-          comment
-      }
-      console.log(obj)
-      
-      const statusData = await apiService.putStatus(obj);
-      if(!statusData.error){
-        handleCloseDialog();
-        setChangemsg(statusData)
-      }
-  }
+    const statusData = await apiService.putStatus(obj);
+    if (!statusData.error) {
+      handleCloseDialog();
+      setChangemsg(statusData);
+    }
+  };
 
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -66,7 +66,7 @@ export default function Bugs() {
     Testing: "orange",
     Verified: "	#32cd32",
     Closed: "red",
-    Hold: "#708090"
+    Hold: "#708090",
   };
   useEffect(() => {
     bugDisplay();
@@ -75,19 +75,18 @@ export default function Bugs() {
 
   const styles = {
     textAlign: "center",
-    padding: "8px"
+    padding: "8px",
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
-    setComment("")
+    setComment("");
 
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setBugStatusData(obj)
-    
+    setBugStatusData(obj);
   };
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -108,9 +107,21 @@ export default function Bugs() {
     setFilteredResponse(filteredData);
   };
 
-
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
+  };
+  const header = [
+    "BugId",
+    "BugDescription",
+    "AssignedTo",
+    "Sprint",
+    "EstimateDate",
+    "Status",
+    "MoreInfo",
+  ];
+  const navigate = useNavigate();
+  const handleIconClick = (databug) => {
+    navigate(`/dashboard/details/${databug.bug_id}`, { state: databug });
   };
   return (
     <>
@@ -122,47 +133,45 @@ export default function Bugs() {
         {" "}
         <Table
           aria-label="simple table"
+          stickyHeader
           sx={{ border: "1px solid #ccc", width: "100%" }}
         >
           <TableHead>
             <TableRow>
-              <TableCell style={styles}>BugId</TableCell>
-              <TableCell style={styles}>Bug Description</TableCell>
-              <TableCell style={styles}>Bug Type</TableCell>
-              <TableCell style={styles}>Project Name</TableCell>
-              <TableCell style={styles}>Module Name</TableCell>
-              <TableCell style={styles}>Assigned To</TableCell>
-              <TableCell style={styles}>Reported By</TableCell>
-              <TableCell style={styles}>Serviertiy</TableCell>
-              <TableCell style={styles}>Sprint</TableCell>
-              <TableCell style={styles}>Customer Found</TableCell>
-              <TableCell style={styles}>Estimate_date</TableCell>
-              <TableCell style={styles}>CreatedBy</TableCell>
-              <TableCell>Status</TableCell>
+              {header &&
+                header.map((val) => (
+                  <TableCell sx={{ textAlign: "center" }} key={val}>
+                    {val}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {bugData.length ? (
               bugData?.map((databug, index) => {
-                const rowStyles =
-                  index % 2 === 0
-                    ? { backgroundColor: "#FFFFFF" }
-                    : { backgroundColor: "#F0F0F0" };
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
+                const isEvenRow = index % 2 === 0;
+
                 return (
                   <>
                     <TableRow
                       key={databug.bug_id}
                       sx={{
-                        "& > *": { borderBottom: "unset" },
-                        ...rowStyles,
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        cursor: "pointer",
+                        backgroundColor: isEvenRow ? "#f2f2f2" : "white",
                         border: "1px solid #ccc",
                         padding: "8px",
                       }}
+                      onClick={() => {
+                        handleClick(databug.id);
+                      }}
+                      tabIndex={-1}
                     >
-                      <TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
                         <Button
                           variant="text"
                           onClick={() => collapseRow(index, databug?.bug_id)}
@@ -174,30 +183,21 @@ export default function Bugs() {
                         >
                           {databug?.bug_id}
                         </Button>
+                        <span>
+                          <ArrowOutwardIcon
+                            sx={{ color: "#596e79" }}
+                            onClick={() => handleIconClick(databug)}
+                          />
+                        </span>
                       </TableCell>
-                      <TableCell style={styles}>
+                      <TableCell style={styles} sx={{ maxWidth: "500px" }}>
                         {databug?.bug_description}
-                      </TableCell>
-                      <TableCell style={styles}>{databug?.bug_type}</TableCell>
-                      <TableCell style={styles}>
-                        {databug?.projectId?.title}
-                      </TableCell>
-                      <TableCell style={styles}>
-                        {databug?.moduleId?.module_name}
                       </TableCell>
                       <TableCell style={styles}>
                         {databug?.assignedTo?.username}
                       </TableCell>
-                      <TableCell style={styles}>
-                        {databug?.reportedBy?.username}
-                      </TableCell>
-                      <TableCell style={styles}>{databug?.severity}</TableCell>
                       <TableCell style={styles}>{databug?.sprint}</TableCell>
-                      <TableCell style={styles}>
-                        {databug?.customerfound ? "Yes" : "No"}
-                      </TableCell>
                       <TableCell style={styles}>{formattedDate}</TableCell>
-                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
                         <Select
@@ -224,6 +224,9 @@ export default function Bugs() {
                           )}
                         </Select>
                       </FormControl>
+                      <TableCell style={styles}>
+                        <CustomizedMenus data={databug} />
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell
@@ -262,7 +265,14 @@ export default function Bugs() {
           </TableBody>
         </Table>
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+      <StatusChangeDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        bugData={bugStatusData}
+        setComment={setComment}
+        comment={comment}
+        handleComment={handleComment}
+      />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

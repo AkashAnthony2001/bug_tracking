@@ -21,7 +21,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function BugsDialogue({ loadData }) {
   const [open, setOpen] = useState(false);
-  // const [selectedStatus, setSelectedStatus] = useState([]);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
   const [assigned, setAssigned] = useState([]);
