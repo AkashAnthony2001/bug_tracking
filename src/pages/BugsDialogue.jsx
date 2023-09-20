@@ -8,6 +8,7 @@ import {
   TextField,
   Grid,
   FormHelperText,
+  Box, Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
@@ -19,7 +20,7 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function BugsDialogue({ loadData , bugStatus }) {
+export default function BugsDialogue({ loadData, bugStatus }) {
   const [open, setOpen] = useState(false);
   const [projectName, setprojectName] = useState([]);
   const [module, setModule] = useState([]);
@@ -56,7 +57,7 @@ export default function BugsDialogue({ loadData , bugStatus }) {
   };
 
   const handleCloseDialog = () => {
-    resetDate(); 
+    resetDate();
     setOpen(false);
   };
   const bugDisplay = async () => {
@@ -141,7 +142,7 @@ export default function BugsDialogue({ loadData , bugStatus }) {
   };
 
   const handleReset = () => {
-    resetDate(); 
+    resetDate();
     setBugData(initialValues);
   };
   useEffect(() => {
@@ -155,22 +156,24 @@ export default function BugsDialogue({ loadData , bugStatus }) {
   };
   return (
     <>
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={handleOpenDialog}
-        style={{
-          marginBottom: "20px",
-          background: "#596e79",
-          color: "#ffffff",
-          boxShadow: "3px 4px 10px 1px gray",
-        }}
-      >
-        Create Bug
-      </Button>
+
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={handleOpenDialog}
+          style={{
+            marginBottom: "20px",
+            background: "#596e79",
+            color: "#ffffff",
+            boxShadow: "3px 4px 10px 1px gray",
+          }}
+        >
+          Create Bug
+        </Button>
+        
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle
-          style={{backgroundColor:"#596e79", color: "white" }}
+          style={{ backgroundColor: "#596e79", color: "white" }}
         >
           Create Bugs
         </DialogTitle>{" "}
@@ -394,15 +397,15 @@ export default function BugsDialogue({ loadData , bugStatus }) {
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DatePicker"]}>
-                  <DatePicker
-                    label="Estimate Date"
-                    value={date || null}
-                    minDate={dayjs()}
-                    onChange={(value) => {
-                      setDate(value);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                    <DatePicker
+                      label="Estimate Date"
+                      value={date || null}
+                      minDate={dayjs()}
+                      onChange={(value) => {
+                        setDate(value);
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
                   </DemoContainer>
                 </LocalizationProvider>
 

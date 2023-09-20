@@ -10,7 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button,
+  Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -32,6 +32,12 @@ export default function Bugs({ handleClick }) {
   const [bugStatusData, setBugStatusData] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedSprint, setSelectedSprint] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [filteredData, setFilteredData] = useState(bugData);
+  const [updateSprint, setUpdateSprint] = useState({});
 
   const handleComment = async () => {
     const obj = {
@@ -46,7 +52,15 @@ export default function Bugs({ handleClick }) {
       setChangemsg(statusData);
     }
   };
-
+  const handleChange = async (event, _id) => {
+    let obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    bugDisplay()
+  };
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
   const bugStatusApi = async () => {
@@ -57,6 +71,8 @@ export default function Bugs({ handleClick }) {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
+    const usersData = await apiService.getUsers();
+    setUsers(usersData);
   };
   const statusColors = {
     Opened: "	#32cd32",
@@ -73,6 +89,17 @@ export default function Bugs({ handleClick }) {
     bugStatusApi();
   }, [changemsg]);
 
+  useEffect(() => {
+    const filteredItems = bugData?.filter(
+      (item) =>
+        (selectedUser === "" || item.assignedTo.username === selectedUser) &&
+        (selectedSprint === "" || item.sprint === selectedSprint) &&
+        (selectedStatus === "" || item.status === selectedStatus)
+    );
+    setFilteredData(filteredItems);
+    console.log(filteredData);
+  }, [selectedUser, selectedSprint, selectedStatus, bugData]);
+
   const styles = {
     textAlign: "center",
     padding: "8px",
@@ -88,6 +115,7 @@ export default function Bugs({ handleClick }) {
     };
     setBugStatusData(obj);
   };
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -98,7 +126,6 @@ export default function Bugs({ handleClick }) {
 
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
-
   const collapseRow = (index, bugid) => {
     setExpandedRow(index === expandedRow ? null : index);
     const filteredData = bugResponse.response.filter((data) => {
@@ -123,9 +150,95 @@ export default function Bugs({ handleClick }) {
   const handleIconClick = (databug) => {
     navigate(`/dashboard/details/${databug.bug_id}`, { state: databug });
   };
+  const sprints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  const handleSelectedUsers = (event) => {
+    setSelectedUser(event.target.value);
+  };
+
+  const handleSelectedSprint = (event) => {
+    setSelectedSprint(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const handleSelectedStatus = (event) => {
+    setSelectedStatus(event.target.value);
+    console.log(event.target.value);
+  }
   return (
     <>
-      <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
+      <Box style={{ display: "flex", justifyContent: "space-between" }}>
+        <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{ mx: 1, fontWeight: "bold" }}
+            variant="text"
+            color="initial"
+          >
+            Filter :{" "}
+          </Typography>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
+            <Select
+              value={selectedUser}
+              onChange={(event) => handleSelectedUsers(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="">
+                <em>Users</em>
+              </MenuItem>
+              {users &&
+                users?.map((data) => (
+                  <MenuItem key={data._id} value={data?.username}>
+                    {data?.username}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120 }} size="small">
+            <Select
+              value={selectedSprint}
+              onChange={(event) => handleSelectedSprint(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="">
+                <em>Sprints</em>
+              </MenuItem>
+              {sprints.map((data) => (
+                <MenuItem key={data} value={data}>
+                  {data}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
+            <Select
+              value={selectedStatus}
+              onChange={(event) => handleSelectedStatus(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="">
+                <em>Status</em>
+              </MenuItem>
+              {Object.entries(statusColors).map(([status, color]) => (
+                <MenuItem
+                  key={status}
+                  value={status}
+                  style={{
+                    width: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <span style={{ color }}>{status}</span>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+      </Box>
       <TableContainer
         component={Paper}
         sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
@@ -196,8 +309,37 @@ export default function Bugs({ handleClick }) {
                       <TableCell style={styles}>
                         {databug?.assignedTo?.username}
                       </TableCell>
-                      <TableCell style={styles}>{databug?.sprint}</TableCell>
-                      <TableCell style={styles}>{formattedDate}</TableCell>
+                      <TableCell style={styles}>
+                        {databug?.reportedBy?.username}
+                      </TableCell>
+                      <TableCell style={styles}>{databug?.severity}</TableCell>
+                      <TableCell style={styles}>
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={databug?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, databug?._id);
+                            }}
+                          >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
+                            <MenuItem value="4">4</MenuItem>
+                            <MenuItem value="5">5</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                            <MenuItem value="7">7</MenuItem>
+                            <MenuItem value="8">8</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>{" "}
+                      <TableCell style={styles}>
+                        {databug?.customerfound ? "Yes" : "No"}
+                      </TableCell>
+                      <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
+                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
                         <Select
