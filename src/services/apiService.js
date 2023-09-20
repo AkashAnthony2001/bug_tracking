@@ -1,4 +1,4 @@
-const baseUrl = process.env.BASE_URL || "http://localhost:3001/api";
+const baseUrl = process.env.BASE_URL || "http://13.234.30.159:3001/api";
 
 const createUser = async (userObj) => {
   const response = await fetch(`${baseUrl}/users/`, {
@@ -132,9 +132,30 @@ const editProject = async (record) => {
     body: JSON.stringify(payload),
   });
 
+  
+
   const parsedResponse = await response.json();
 
   return parsedResponse;
+};
+
+const editSprint = async (record) => {
+  const { id , data } = record;
+  const payload = { sprint:data }
+  const response = await fetch(`${baseUrl}/sprint/${id}`, {
+    method: "PUT",
+
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+
+    body: JSON.stringify(payload),
+  });
+
+const parsedResponse = await response.json();
+
+return parsedResponse;
 };
 
 const createModule = async (record) => {
@@ -348,6 +369,7 @@ const apiService = {
   getBySprint,
   getUserSprint,
   adminUserData,
+  editSprint
 };
 
 export default apiService;

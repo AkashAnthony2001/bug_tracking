@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, Button, DialogActions, Grid, TextField, Typography } from '@mui/material';
 
 const StatusChangeDialog = ({ isOpen, onClose, bugData,handleComment,comment,setComment }) => {
+  useEffect(()=>{
+    
+  },[])
    
 
   return (

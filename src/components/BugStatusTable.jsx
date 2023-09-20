@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -57,6 +57,12 @@ const BugStatusTable = ({ bugStatusData, headers, load, setExpandedRow }) => {
       return `${hours === 12 ? 12 : hours - 12}:${mins} PM`;
     }
   }
+  useEffect(()=>{
+    if(editData){
+      setComment(editData?.comments)
+    }
+  
+  },[editData])
 
   return (
     <>
