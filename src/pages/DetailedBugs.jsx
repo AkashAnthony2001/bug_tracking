@@ -69,7 +69,7 @@ const DetailedBugs = () => {
         size="small"
         style={{
           marginBottom: "0px",
-          background: "#596e79",
+          background: "#398EED",
           color: "#ffffff",
           boxShadow: "3px 2px 10px 0px gray",
         }}
@@ -86,7 +86,7 @@ const DetailedBugs = () => {
               <TableRow key={index}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
-                backgroundColor: index % 2 === 0 ? "#EDEDED" : "#FFFFFF",
+                backgroundColor: index % 2 === 0 ? "#F1F6F9" : "#FFFFFF",
                 borderBottom: "1px solid #e0e0e0",
                 padding: "8px",
               }}>

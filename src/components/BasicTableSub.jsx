@@ -179,7 +179,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
-                          backgroundColor: isEvenRow ? "#f2f2f2" : "white",
+                          backgroundColor: isEvenRow ? "#F1F6F9" : "white",
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}
@@ -192,7 +192,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                           sx={{
                             textAlign: "center",
                             alignItems: "center",
-                            maxWidth: "240px",
+                            maxWidth: "220px",
                           }}
                         >
                           <div
@@ -202,7 +202,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                               variant="text"
                               onClick={() => collapseRow(index, row?.bug_id)}
                               style={{
-                                backgroundColor: "#596e79",
+                                backgroundColor: "#398EED",
                                 color: "white",
                                 padding: "4px 8px",
                                 textTransform: "lowercase",
@@ -217,11 +217,11 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                               }}
                             >
                               <ArrowOutwardIcon
-                                sx={{ color: "#596e79" }}
+                                sx={{ color: "#398EED" }}
                                 onClick={() => handleIconClick(row)}
                               />
                               <ContentCopyRoundedIcon
-                                sx={{ color: "#596e79", fontSize: "large" }}
+                                sx={{ color: "#398EED", fontSize: "large" }}
                                 onClick={() =>
                                   copyToClipboard(row?.bug_id, index)
                                 }
