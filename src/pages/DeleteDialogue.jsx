@@ -25,7 +25,7 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
   return (
     <>
     <Dialog open={openDelete} onClose={handleClose}>
-      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+      <DialogTitle style={{ backgroundColor:"#398EED", color: "white" }}>
         Delete Module Data
         </DialogTitle>
         <DialogTitle id="alert-dialog-title">

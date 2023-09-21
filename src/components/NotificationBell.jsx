@@ -23,7 +23,7 @@ const NotificationBell = ({ notifications, handleOpen, handleClose, anchorEl, op
           anchorEl={anchorEl}
         >
           <Badge badgeContent={badgeContent} color="primary">
-            <NotificationsIcon color="action" />
+            <NotificationsIcon color="action" sx={{color:"#ffffff"}}/>
           </Badge>
         </IconButton>
       </Tooltip>

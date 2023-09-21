@@ -58,7 +58,7 @@ function EditDialog({ item, open, setOpen,load }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        <DialogTitle style={{ backgroundColor:"#398EED", color: "white" }}>
         Edit Project
         </DialogTitle>
         <DialogContent>

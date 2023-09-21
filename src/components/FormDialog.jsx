@@ -58,9 +58,9 @@ export default function FormDialog({ setCorrect }) {
     <div>
       <Button variant="outlined" onClick={handleClickOpen} size="small"  style={{
           marginBottom: "20px",
-          background: "#596e79",
+          background: "#398EED",
           color: "#ffffff",
-          boxShadow: "3px 4px 10px 1px gray",
+          boxShadow: "1px 1px 7px 1px gray",
         }}>
         Create Project
       </Button>
@@ -73,7 +73,7 @@ export default function FormDialog({ setCorrect }) {
           },
         }}
       >
-        <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+        <DialogTitle style={{ backgroundColor:"#398EED", color: "white" }}>
           Create New Project
         </DialogTitle>
         <DialogContent>

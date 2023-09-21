@@ -8,7 +8,7 @@ const EditCommentDialog = ({ isOpen, onClose, bugData, setComment, comment, hand
   return (
     <div>
       <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-        <DialogTitle style={{ backgroundColor: "#596e79", color: "white" }}>Add Comments</DialogTitle>
+        <DialogTitle style={{ backgroundColor: "#398EED", color: "white" }}>Add Comments</DialogTitle>
         <DialogContent sx={{ p: 3, }}>
           <Box sx={{ p: 1 }}><Typography variant="h6" color="initial">Your Selected Status : {bugData?.status}</Typography></Box>
           <Grid item xs={12}>

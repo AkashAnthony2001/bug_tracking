@@ -193,7 +193,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
-                          backgroundColor: isOddRow ? "#EDEDED" : "#FFFFFF",
+                          backgroundColor: isOddRow ? "#F1F6F9" : "#FFFFFF",
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}
@@ -210,7 +210,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                               variant="text"
                               onClick={() => collapseRow(index, row?.bug_id)}
                               style={{
-                                backgroundColor: "#596e79",
+                                backgroundColor: "#398EED",
                                 color: "white",
                                 padding: "4px 8px",
                                 textTransform: "lowercase",
@@ -220,11 +220,11 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                             </Button>
                             <span style={{display:"flex", flexDirection:"column"}}>
                               <ArrowOutwardIcon
-                                sx={{ color: "#596e79" }}
+                                sx={{ color: "#398EED" }}
                                 onClick={() => handleIconClick(row)}
                               />
                               <ContentCopyRoundedIcon
-                                sx={{ color: "#596e79", fontSize: "large" }}
+                                sx={{ color: "#398EED", fontSize: "large" }}
                                 onClick={() =>
                                   copyToClipboard(row?.bug_id, index)
                                 }

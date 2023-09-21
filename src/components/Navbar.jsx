@@ -12,6 +12,7 @@ import navbarItems from "./constants/navbarItems";
 import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/apiService";
+import MeyiLogo from  "../assets/logo.png"
 
 const drawerWidth = 190;
 
@@ -56,16 +57,16 @@ const Navbar = () => {
           padding: "1rem",
           textDecoration: "none",
           color: "black",
-          background: "#CAEDFF",
+          background: "#ffffff",
         }}
         href="/dashboard"
       >
-        <Typography style={{ fontWeight: "bold", fontSize: "19px" }}>
-          Meyi Bug Tracker
-        </Typography>
+        <div style={{display:"flex", flexDirection:"row" ,alignItems:"center"}}>
+        <img src={MeyiLogo} alt="logo" style={{height:"25px",width:"35px",}}/>
+        <Typography  sx={{color:"#398EED", fontWeight:"bold", paddingLeft:"3px"}}>Bug Tracker</Typography>
+        </div>
       </Box>
-      <Divider />
-      <List sx={{ background: "#CAEDFF", height: "100%", color: "black" }}>
+      <List sx={{ background: "#ffffff", height: "100%", color: "black" }}>
         {filterarr &&
           filterarr.map((item) => (
             <ListItem key={item.id} disablePadding>
@@ -83,10 +84,10 @@ const Navbar = () => {
                   navigate(item.link);
                 }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemIcon sx={{color:item.color}}>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.text}
-                  sx={{ marginLeft: "-25px" }}
+                  sx={{ marginLeft: "-25px",color:"#6e6e6e" }}
                 />
               </ListItemButton>
             </ListItem>

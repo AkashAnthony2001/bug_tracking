@@ -47,9 +47,9 @@ export default function ModuleDialogue({ loadData }) {
     <div>
       <Button variant="outlined" onClick={handleClickOpen} size="small"  style={{
           marginBottom: "20px",
-          background: "#596e79",
+          background: "#398EED",
           color: "#ffffff",
-          boxShadow: "3px 4px 10px 1px gray",
+          boxShadow: "1px 1px 8px 1px gray",
         }}>
         Add Module
       </Button>
@@ -59,7 +59,7 @@ export default function ModuleDialogue({ loadData }) {
           borderRadius: "10px",
         },
       }}>
-        <DialogTitle  style={{backgroundColor:"#596e79", color: "white" }}>Create Module</DialogTitle>
+        <DialogTitle  style={{backgroundColor:"#398EED", color: "white" }}>Create Module</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

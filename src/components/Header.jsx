@@ -24,7 +24,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
       sx={{
         width: `calc(100% - ${drawerWidth}px)`,
         ml: `${drawerWidth}px`,
-        backgroundColor: "#CAEDFF",
+        backgroundColor: "#398EED",
       }}
     >
       <Toolbar
@@ -47,15 +47,14 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
             display: "flex",
             alignItems: "center",
           }}
-        > <Typography
-        variant="h6"
-        noWrap
-        component="div"
-        sx={{ color: "black" }}
-      >
-        Welcome {username}
-      </Typography>
-        
+        >
+          <NotificationBell
+          sx={{color:"white"}}
+            anchorEl={anchorEl}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            open={open}
+          />
           <UserAvatar>{name}</UserAvatar>
         </Box>
       </Toolbar>

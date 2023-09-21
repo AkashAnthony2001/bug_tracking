@@ -163,9 +163,9 @@ export default function BugsDialogue({ loadData, bugStatus }) {
           onClick={handleOpenDialog}
           style={{
             marginBottom: "20px",
-            background: "#596e79",
+            background: "#398EED",
             color: "#ffffff",
-            boxShadow: "3px 4px 10px 1px gray",
+            boxShadow: "1px 1px 8px 1px gray",
           }}
         >
           Create Bug
@@ -173,7 +173,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
         
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle
-          style={{ backgroundColor: "#596e79", color: "white" }}
+          style={{ backgroundColor: "#398EED", color: "white" }}
         >
           Create Bugs
         </DialogTitle>{" "}

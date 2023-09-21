@@ -11,40 +11,39 @@ const navbarItems = [
   {
     id: 0,
     text: 'Home',
-    icon: <HomeIcon style={{ color: 'black' }} />,
-    link: '/dashboard',
-    
+    icon: <HomeIcon/>,
+    link: '/dashboard',color:"#6373e7"
   },
   {
     id: 1,
     text: 'Projects',
-    icon: <DashboardIcon style={{ color: 'black' }} />,
-    link: '/dashboard/projects',
+    icon: <DashboardIcon />,
+    link: '/dashboard/projects',color:"#aee9f9"
   }, {
     id: 2,
-    text: 'Modules',
-    icon: <ViewModuleIcon style={{ color: 'black' }} />,
-    link: '/dashboard/module',
+    text: 'Assigned to me',
+    icon: <AssignmentIcon />,
+    link: '/dashboard/assigned',color:"#1b2b4e"
   }, {
     id: 3,
-    text: 'Users',
-    icon: <PeopleAltOutlinedIcon style={{ color: 'black' }} />,
-    link: '/dashboard/users',
+    text: 'Submitted by me',
+    icon: <AutoAwesomeMotionIcon />,
+    link: '/dashboard/submitted',color:"#f47e5d"
   },{
     id: 4,
-    text: 'Assigned to me',
-    icon: <AssignmentIcon style={{ color: 'black' }} />,
-    link: '/dashboard/assigned',
+    text: 'Modules',
+    icon: <ViewModuleIcon />,
+    link: '/dashboard/module',color:"#4fce87"
   },{
     id: 5,
-    text: 'Submitted by me',
-    icon: <AutoAwesomeMotionIcon style={{ color: 'black' }} />,
-    link: '/dashboard/submitted',
+    text: 'Bugs',
+    icon: <PestControlIcon />,
+    link: '/dashboard/bugs',color:"#f26139"
   },{
     id: 6,
-    text: 'Bugs',
-    icon: <PestControlIcon style={{ color: 'black' }} />,
-    link: '/dashboard/bugs',
+    text: 'Users',
+    icon: <PeopleAltOutlinedIcon />,
+    link: '/dashboard/users',color:"#ee5273"
   }
 ];
 
