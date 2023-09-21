@@ -12,7 +12,6 @@ import navbarItems from "./constants/navbarItems";
 import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/apiService";
-import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 
 const drawerWidth = 190;
 
@@ -42,6 +41,7 @@ const Navbar = () => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
+          backgroundColor: "#CAEDFF"
         },
         display: "flex",
         flexDirection: "column",
@@ -56,19 +56,27 @@ const Navbar = () => {
           padding: "1rem",
           textDecoration: "none",
           color: "black",
-          background: "#e7e6e1",
+          background: "#CAEDFF",
         }}
         href="/dashboard"
       >
-        <Typography variant="h5"><TroubleshootIcon/>Issue Tracker</Typography>
+        <Typography style={{ fontWeight: "bold", fontSize: "19px" }}>
+          Meyi Bug Tracker
+        </Typography>
       </Box>
       <Divider />
-      <List sx={{ background: "#e7e6e1", height: "100%", color: "black" }}>
+      <List sx={{ background: "#CAEDFF", height: "100%", color: "black" }}>
         {filterarr &&
           filterarr.map((item) => (
             <ListItem key={item.id} disablePadding>
               <ListItemButton
-                sx={{ width: "239px", padding: "auto" }}
+                sx={{
+                  width: "239px",
+                  padding: "auto",
+                  "&.Mui-selected": {
+                    backgroundColor: "#ADC4CE",
+                  },
+                }}
                 selected={item.id === selectedItem.id}
                 onClick={() => {
                   setSelectedItem(item);
@@ -85,11 +93,7 @@ const Navbar = () => {
           ))}
       </List>
       <Divider />
-      <BasicDialog
-        action={logout}
-        buttonMsg="Logout"
-        sx={{ width: "100%"  }}
-      >
+      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "100%" }}>
         Are you sure you want to log out?
       </BasicDialog>
     </Drawer>

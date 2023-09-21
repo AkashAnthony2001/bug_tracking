@@ -7,47 +7,45 @@ import PestControlIcon from '@mui/icons-material/PestControl';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 
-
-
 const navbarItems = [
   {
     id: 0,
     text: 'Home',
-    icon: <HomeIcon/>,
-    link: '/dashboard'
+    icon: <HomeIcon style={{ color: 'black' }} />,
+    link: '/dashboard',
+    
   },
   {
     id: 1,
     text: 'Projects',
-    icon: <DashboardIcon />,
-    link: '/dashboard/projects'
+    icon: <DashboardIcon style={{ color: 'black' }} />,
+    link: '/dashboard/projects',
   }, {
     id: 2,
-    text: 'Assigned to me',
-    icon: <AssignmentIcon />,
-    link: '/dashboard/assigned'
+    text: 'Modules',
+    icon: <ViewModuleIcon style={{ color: 'black' }} />,
+    link: '/dashboard/module',
   }, {
     id: 3,
-    text: 'Submitted by me',
-    icon: <AutoAwesomeMotionIcon />,
-    link: '/dashboard/submitted'
+    text: 'Users',
+    icon: <PeopleAltOutlinedIcon style={{ color: 'black' }} />,
+    link: '/dashboard/users',
   },{
     id: 4,
-    text: 'Modules',
-    icon: <ViewModuleIcon />,
-    link: '/dashboard/module'
+    text: 'Assigned to me',
+    icon: <AssignmentIcon style={{ color: 'black' }} />,
+    link: '/dashboard/assigned',
   },{
     id: 5,
-    text: 'Bugs',
-    icon: <PestControlIcon />,
-    link: '/dashboard/bugs'
+    text: 'Submitted by me',
+    icon: <AutoAwesomeMotionIcon style={{ color: 'black' }} />,
+    link: '/dashboard/submitted',
   },{
     id: 6,
-    text: 'Users',
-    icon: <PeopleAltOutlinedIcon />,
-    link: '/dashboard/users'
+    text: 'Bugs',
+    icon: <PestControlIcon style={{ color: 'black' }} />,
+    link: '/dashboard/bugs',
   }
+];
 
-]
-
-export default navbarItems
+export default navbarItems;

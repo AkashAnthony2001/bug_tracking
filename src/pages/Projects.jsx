@@ -6,19 +6,33 @@ import FormDialog from "../components/FormDialog";
 import { Typography } from "@mui/material";
 
 const ProjectList = ({ projects, setCorrect,load }) => {
+  const gridContainerStyle = {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", 
+    gap: "1rem", 
+  };
   return (
     <>
-      {projects.length ? projects.map((project) => (
-        <ProjectCard
-          key={project._id}
-          project={project}
-          setCorrect={setCorrect}
-          load={load}
-        />
-      )):<Typography sx={{textAlign:'center'}} variant="h5">No Projects Found</Typography>}
+     {projects.length ? (
+        <div style={gridContainerStyle}>
+          {projects.map((project) => (
+            <ProjectCard
+              key={project._id}
+              project={project}
+              setCorrect={setCorrect}
+              load={load}
+            />
+          ))}
+        </div>
+      ) : (
+        <Typography sx={{ textAlign: "center" }} variant="h5">
+          No Projects Found
+        </Typography>
+      )}
     </>
   );
 };
+
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -32,7 +46,7 @@ const Projects = () => {
   useEffect(() => {
     handleProjects();
   }, [correct]);
-
+ 
   return (
     <>
       <div>

@@ -54,7 +54,7 @@ const Dashboard = () => {
     minWidth: 275,
     margin: "20px",
     marginBottom: "1rem",
-    backgroundColor: "#ececec",
+    backgroundColor: "#EDEDED",
     boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
   };
@@ -236,7 +236,7 @@ const Dashboard = () => {
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
-                            <h2>{<BugReportIcon />} My Bugs</h2>
+                          <h3>{<BugReportIcon />} My Bugs </h3> 
                             <TableContainer
                               sx={{ maxHeight: "220px", overflowY: "scroll", height: "220px" }}
                             >

@@ -22,7 +22,7 @@ import CustomizedSnackbars from "./CustomizedSnackbars";
 import StatusChangeDialog from "../components/StatusChangeDialog";
 
 
-export default function BasicTableSub({ row, headers, handleClick }) {
+export default function BasicTableSub({ row, headers, handleClick, submitted }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [bugResponse, setBugResponse] = React.useState([]);
@@ -32,6 +32,8 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
+  const [updateSprint, setUpdateSprint] = React.useState("");
+
 
 
 
@@ -118,7 +120,23 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   React.useEffect(() => {
     bugStatusApi();
   }, [changemsg]);
-
+  const handleChange = async (event, _id) => {
+    let obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    if (!sprintData.error) {
+      
+      const message = `Sprint updated to ${event.target.value}.`;
+      setChangemsg({
+        ...sprintData,
+        message,
+      })
+      submitted()
+    }
+  };
   return (
     <>
       <TableContainer
@@ -190,8 +208,27 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                           {row?.reportedBy?.username}
                         </TableCell>
                         <TableCell component="th" scope="row">
-                          {row?.sprint}
-                        </TableCell>
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={row?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, row?._id);
+                            }}
+                          >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
+                            <MenuItem value="4">4</MenuItem>
+                            <MenuItem value="5">5</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                            <MenuItem value="7">7</MenuItem>
+                            <MenuItem value="8">8</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>
                         <TableCell component="th" scope="row">
                           {row?.customerfound ? "Yes" : "No yet"}
                         </TableCell>

@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import apiService from "../services/apiService";
 
-export default function BasicTable({ rows, heading, handleClick }) {
+export default function BasicTable({ rows, heading, handleClick, Assigneddisplay}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [bugResponse, setBugResponse] = React.useState([]);
@@ -32,6 +32,8 @@ export default function BasicTable({ rows, heading, handleClick }) {
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
+  const [updateSprint, setUpdateSprint] =  React.useState({});
+
 
   const handleComment = async() => {
     const obj = {
@@ -109,7 +111,22 @@ export default function BasicTable({ rows, heading, handleClick }) {
   React.useEffect(() => {
     bugStatusApi();
   }, [changemsg]);
-
+  const handleChange = async (event, _id) => {
+    let obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    if (!sprintData.error) {
+      const message = `Sprint updated to ${event.target.value}.`;
+      setChangemsg({
+        ...sprintData,
+        message,
+      });
+      Assigneddisplay();
+    }
+  };
   return (
     <>
       <TableContainer
@@ -169,7 +186,28 @@ export default function BasicTable({ rows, heading, handleClick }) {
                         <TableCell>{row?.moduleId?.module_name}</TableCell>
                         <TableCell>{row?.assignedTo?.username}</TableCell>
                         <TableCell>{row?.reportedBy?.name}</TableCell>
-                        <TableCell>{row?.sprint}</TableCell>
+                        <TableCell>
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={row?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, row?._id);
+                            }}
+                          >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
+                            <MenuItem value="4">4</MenuItem>
+                            <MenuItem value="5">5</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                            <MenuItem value="7">7</MenuItem>
+                            <MenuItem value="8">8</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>{" "}
                         <TableCell>
                           {row?.customerfound ? "Yes" : "No"}
                         </TableCell>

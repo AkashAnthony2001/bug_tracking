@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Box,
+  TablePagination,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -37,6 +38,8 @@ export default function Bugs() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
   const [updateSprint, setUpdateSprint] = useState({});
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleComment = async () => {
     const obj = {
@@ -58,7 +61,14 @@ export default function Bugs() {
     };
     setUpdateSprint(event.target.value);
     const sprintData = await apiService.editSprint(obj);
-    bugDisplay()
+    if (!sprintData.error) {
+      const message = `Sprint updated to ${event.target.value}.`;
+      setChangemsg({
+        ...sprintData,
+        message,
+      });
+      bugDisplay();
+    }
   };
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -114,6 +124,17 @@ export default function Bugs() {
     };
     setBugStatusData(obj);
   };
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -149,7 +170,7 @@ export default function Bugs() {
   const handleSelectedStatus = (event) => {
     setSelectedStatus(event.target.value);
     console.log(event.target.value);
-  }
+  };
   return (
     <>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -326,7 +347,17 @@ export default function Bugs() {
                       <TableCell style={styles}>
                         {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
+                      <TableCell
+                        style={{
+                          ...styles,
+                          color:
+                            new Date(databug?.estimate_date) <= new Date()
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {formattedDate}
+                      </TableCell>
                       <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <InputLabel></InputLabel>
@@ -405,6 +436,16 @@ export default function Bugs() {
         message={changemsg.message}
         setChangemsg={setChangemsg}
       />
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50, 100]}
+        component="div"
+        count={filteredData.length} 
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
+    
   );
 }

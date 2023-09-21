@@ -23,7 +23,7 @@ const Assigned = () => {
 const heading= ["BugId","Project Name","ModuleId", "AssignedTo","ReportedBy","Sprint","Customerfound", "Estimate_date", "Status"]
   return (
     <>
-      <BasicTable rows={assignedValue} heading={heading}/>
+      <BasicTable rows={assignedValue} heading={heading} Assigneddisplay={Assigneddisplay()}/>
     </>
   );
 };

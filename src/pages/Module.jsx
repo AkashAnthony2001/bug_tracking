@@ -54,13 +54,20 @@ export default function ModuleDemo() {
       </>
     );
   }
+
   const cardStyle = {
     marginTop: "10px",
     minWidth: 275,
     marginBottom: "1rem",
-    backgroundColor: "#F0F0F0", 
+    backgroundColor: "#EDEDED",
     boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
     borderRadius: "8px",
+  };
+
+  const gridContainerStyle = {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", 
+    gap: "1rem", 
   };
 
   return (
@@ -68,46 +75,49 @@ export default function ModuleDemo() {
       <div>
         <ModuleDialogue loadData={() => Moduledisplay()} />
 
-        {Mtitle?.map((moduledata) => (
-          <Card sx={cardStyle}>
-            <CardActionArea>
-              <CardContent>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <Typography
-                    sx={{ fontSize: 15, marginRight: "16px" }}
-                    color="text.secondary"
-                  >
-                    Module Name :
-                  </Typography>
-                  <Typography variant="h6">{moduledata.module_name}</Typography>
-                </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <Typography
-                    sx={{ fontSize: 15, marginRight: "16px" }}
-                    color="text.secondary"
-                  >
-                    Module Description :
-                  </Typography>
-                  <Typography variant="h6">
-                    {moduledata.module_description}
-                  </Typography>
-                </div>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => handleEdit(moduledata)}>
-                  Edit
-                </Button>
+        <div style={gridContainerStyle}>
+          {Mtitle?.map((moduledata) => (
+            <Card sx={cardStyle} key={moduledata._id}>
+              <CardActionArea>
+                <CardContent>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      sx={{ fontSize: 15, marginRight: "16px" }}
+                      color="text.secondary"
+                    >
+                      Module Name :
+                    </Typography>
+                    <Typography variant="h6">{moduledata.module_name}</Typography>
+                  </div>
 
-                <Button
-                  size="small"
-                  onClick={() => handleDelete(moduledata._id)}
-                >
-                  Delete
-                </Button>
-              </CardActions>
-            </CardActionArea>
-          </Card>
-        ))}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      sx={{ fontSize: 15, marginRight: "16px" }}
+                      color="text.secondary"
+                    >
+                      Module Description :
+                    </Typography>
+                    <Typography variant="h6">
+                      {moduledata.module_description}
+                    </Typography>
+                  </div>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => handleEdit(moduledata)}>
+                    Edit
+                  </Button>
+
+                  <Button
+                    size="small"
+                    onClick={() => handleDelete(moduledata._id)}
+                  >
+                    Delete
+                  </Button>
+                </CardActions>
+              </CardActionArea>
+            </Card>
+          ))}
+        </div>
 
         <EditModule
           setOpen={setOpen}
