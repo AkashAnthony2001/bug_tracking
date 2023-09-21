@@ -202,7 +202,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                         }}
                         tabIndex={-1}
                       >
-                        <TableCell sx={{ textAlign: "center", alignItems: "center", maxWidth:"240px"  }}>
+                        <TableCell sx={{ textAlign: "center", alignItems: "center", maxWidth:"220px"  }}>
                           <div
                             style={{ display: "flex", flexDirection: "row" }}
                           >
@@ -244,10 +244,6 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                         >
                           {row?.assignedTo?.username}
                         </TableCell>
-                        <TableCell>{row?.projectId?.title}</TableCell>
-                        <TableCell>{row?.moduleId?.module_name}</TableCell>
-                        <TableCell>{row?.assignedTo?.username}</TableCell>
-                        <TableCell>{row?.reportedBy?.name}</TableCell>
                         <TableCell>
                         <FormControl sx={{ m: 2 }} size="small">
                           <InputLabel></InputLabel>
@@ -270,13 +266,6 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                           </Select>
                         </FormControl>
                       </TableCell>{" "}
-                        <TableCell
-                          sx={{ textAlign: "center" }}
-                          component="th"
-                          scope="row"
-                        >
-                          {row?.sprint}
-                        </TableCell>
                         <TableCell
                           sx={{ textAlign: "center" }}
                           component="th"

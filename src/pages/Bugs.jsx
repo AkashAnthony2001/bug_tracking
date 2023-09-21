@@ -399,7 +399,6 @@ export default function Bugs({ handleClick }) {
                       >
                         {formattedDate}
                       </TableCell>
-                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <Select
                           defaultValue={databug?.status}

@@ -210,7 +210,7 @@ export default function BasicTableSub({ row, headers, handleClick, submitted }) 
                           sx={{
                             textAlign: "center",
                             alignItems: "center",
-                            maxWidth: "240px",
+                            maxWidth: "220px",
                           }}
                         >
                           <div
@@ -261,9 +261,7 @@ export default function BasicTableSub({ row, headers, handleClick, submitted }) 
                         >
                           {row?.assignedTo?.username}
                         </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.reportedBy?.username}
-                        </TableCell>
+                        
                         <TableCell component="th" scope="row">
                         <FormControl sx={{ m: 2 }} size="small">
                           <InputLabel></InputLabel>
