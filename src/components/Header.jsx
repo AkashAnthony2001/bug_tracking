@@ -47,14 +47,15 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
             display: "flex",
             alignItems: "center",
           }}
-        >
-          <NotificationBell
-          sx={{color:"white"}}
-            anchorEl={anchorEl}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            open={open}
-          />
+        > <Typography
+        variant="h6"
+        noWrap
+        component="div"
+        sx={{ color: "black" }}
+      >
+        Welcome {username}
+      </Typography>
+        
           <UserAvatar>{name}</UserAvatar>
         </Box>
       </Toolbar>
