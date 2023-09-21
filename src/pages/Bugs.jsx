@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Button,
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -52,6 +53,7 @@ export default function Bugs({ handleClick }) {
       setChangemsg(statusData);
     }
   };
+
   const handleChange = async (event, _id) => {
     let obj = {
       data: event.target.value,
@@ -134,9 +136,7 @@ export default function Bugs({ handleClick }) {
     setFilteredResponse(filteredData);
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
+ 
   const header = [
     "BugId",
     "BugDescription",
@@ -149,6 +149,9 @@ export default function Bugs({ handleClick }) {
   const navigate = useNavigate();
   const handleIconClick = (databug) => {
     navigate(`/dashboard/details/${databug.bug_id}`, { state: databug });
+  };
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
   };
   const sprints = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -310,10 +313,6 @@ export default function Bugs({ handleClick }) {
                         {databug?.assignedTo?.username}
                       </TableCell>
                       <TableCell style={styles}>
-                        {databug?.reportedBy?.username}
-                      </TableCell>
-                      <TableCell style={styles}>{databug?.severity}</TableCell>
-                      <TableCell style={styles}>
                         <FormControl sx={{ m: 2 }} size="small">
                           <InputLabel></InputLabel>
                           <Select
@@ -334,14 +333,9 @@ export default function Bugs({ handleClick }) {
                             <MenuItem value="10">10</MenuItem>
                           </Select>
                         </FormControl>
-                      </TableCell>{" "}
-                      <TableCell style={styles}>
-                        {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
                       <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
-                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
-                        <InputLabel></InputLabel>
                         <Select
                           defaultValue={databug?.status}
                           onChange={(e) => {
