@@ -1,32 +1,18 @@
 import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { Typography } from "@mui/material";
 
 const DetailedBugs = () => {
   const location = useLocation();
   const data = location.state;
-    console.log(data, "dddd");
-  const headers = [
-    "projectName",
-    "moduleName",
-    "bugType",
-    "createdBy",
-    "assignedTo",
-    "reportedBy",
-    "severity",
-    "sprint",
-    "status",
-    "createdAt",
-    "updatedAt",
-  ];
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -38,120 +24,63 @@ const DetailedBugs = () => {
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
+
   const originalDateString = data.estimate_date;
   const formattedDate = formatDate(originalDateString);
   const isoDateString = data.createdAt;
   const isoformattedDate = formatDate(isoDateString);
+  const updatedDtate = data.updatedAt;
+  const isUpdatated = formatDate(updatedDtate)
+
+  const details = [
+    { label: "Bug Id  :", value: data?.bug_id },
+    { label: "Bug Description  :", value: data?.bug_description },
+    { label: "Project Name  :", value: data?.projectId?.title },
+    { label: "Module Name  :", value: data?.moduleId?.module_name },
+    { label: "Bug Type  :", value: data?.bug_type },
+    { label: "Created By  :", value: data?.createdby },
+    { label: "Assigned To  :", value: data?.assignedTo?.username },
+    { label: "Reported By  :", value: data?.reportedBy?.username },
+    { label: "Severity  :", value: data?.severity },
+    { label: "Sprint  :", value: data?.sprint },
+    { label: "Customer Found  :", value: data?.customerfound ? "Yes" : "No" },
+    { label: "Status  :", value: data?.status },
+    { label: "Created At  :", value: isoformattedDate },
+    { label: "Estimated Date  :", value: formattedDate },
+    { label: "Updated Date  :", value: isUpdatated },
+  ];
+
   return (
     <>
-      <TableContainer
-        component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
-      >
-        <Typography variant="h6" sx={{m:2}} color="initial">Bug Id : {data?.bug_id}</Typography>
-        <Table
-          aria-label="tickets table"
-          stickyHeader
-          sx={{ border: "1px solid #ccc", width: "100%" }}
-        >
-          <TableHead>
-            <TableRow>
-              {headers &&
-                headers.map((data) => (
-                  <TableCell sx={{ textAlign: "center" }} key={data}>
-                    {data}
-                  </TableCell>
-                ))}
-            </TableRow>
-          </TableHead>
+      <Typography variant="h6" sx={{ m: 2 }} color="initial">
+        Detailed Bug Information
+      </Typography>
+      <TableContainer component={Paper} sx={{ padding: "16px" }}>
+        <Table aria-label="detailed bug table">
           <TableBody>
-            <TableRow
-              key={data._id}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                cursor: "pointer",
-                border: "1px solid #ccc",
-                padding: "8px",
-              }}
-            >
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.projectId?.title}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.moduleId?.module_name}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.bug_type}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.createdby}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.assignedTo?.username}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.reportedBy?.username}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.severity}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.sprint}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {data?.status}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {isoformattedDate}
-              </TableCell>
-              <TableCell
-                sx={{ textAlign: "center" }}
-                component="th"
-                scope="row"
-              >
-                {formattedDate}
-              </TableCell>
-            </TableRow>
+            {details.map((detail, index) => (
+              <TableRow key={index}>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{
+                    fontWeight: "bold",
+                    borderBottom: "1px solid #e0e0e0",
+                    paddingRight: "20px",
+                  }}
+                >
+                  {detail.label}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    borderBottom: "1px solid #e0e0e0",
+                    paddingLeft: "20px",
+                  }}
+                >
+                  {detail.value}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -160,3 +89,4 @@ const DetailedBugs = () => {
 };
 
 export default DetailedBugs;
+

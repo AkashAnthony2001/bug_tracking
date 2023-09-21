@@ -171,6 +171,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                               backgroundColor: "#596e79",
                               color: "white",
                               padding: "4px 8px",
+                              textTransform: "lowercase",
                             }}
                           >
                             {row?.bug_id}

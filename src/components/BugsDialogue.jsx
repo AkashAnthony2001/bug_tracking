@@ -121,11 +121,9 @@ export default function BugsDialogue({ loadData }) {
       };
       try {
         const result = await apiService.createBugs(data);
-        console.log(result);
         if (result) {
           loadData();
           setOpen(false);
-          // setBugData(initialValues);
         }
       } catch (error) {
         console.error("Error creating bug:", error);
@@ -142,7 +140,6 @@ export default function BugsDialogue({ loadData }) {
     if (response) {
       setBugData({ ...bugData, bug_id: response.response, moduleId: data });
     }
-    console.log(response);
   };
 
   const handleReset = () => {

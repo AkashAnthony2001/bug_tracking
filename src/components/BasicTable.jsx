@@ -168,6 +168,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
                               backgroundColor: "#596e79",
                               color: "white",
                               padding: "4px 8px",
+                              textTransform: "lowercase",
                             }}
                           >
                             {row?.bug_id}

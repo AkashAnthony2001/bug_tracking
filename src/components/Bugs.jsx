@@ -38,7 +38,6 @@ export default function Bugs() {
   const bugDisplay = async () => {
     const data = await apiService.getBugs();
     setBugdata(data);
-    // console.log(data, "res");
   };
 
   useEffect(() => {

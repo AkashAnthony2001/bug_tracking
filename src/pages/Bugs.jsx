@@ -45,7 +45,6 @@ export default function Bugs({ handleClick }) {
       ...bugStatusData,
       comment,
     };
-    console.log(obj);
 
     const statusData = await apiService.putStatus(obj);
     if (!statusData.error) {
@@ -99,7 +98,6 @@ export default function Bugs({ handleClick }) {
         (selectedStatus === "" || item.status === selectedStatus)
     );
     setFilteredData(filteredItems);
-    console.log(filteredData);
   }, [selectedUser, selectedSprint, selectedStatus, bugData]);
 
   const styles = {
@@ -161,12 +159,10 @@ export default function Bugs({ handleClick }) {
 
   const handleSelectedSprint = (event) => {
     setSelectedSprint(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleSelectedStatus = (event) => {
     setSelectedStatus(event.target.value);
-    console.log(event.target.value);
   }
   return (
     <>
@@ -264,8 +260,8 @@ export default function Bugs({ handleClick }) {
           </TableHead>
 
           <TableBody>
-            {bugData.length ? (
-              bugData?.map((databug, index) => {
+            {filteredData.length ? (
+              filteredData?.map((databug, index) => {
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
@@ -287,7 +283,7 @@ export default function Bugs({ handleClick }) {
                       }}
                       tabIndex={-1}
                     >
-                      <TableCell sx={{ textAlign: "center" }}>
+                      <TableCell sx={{ textAlign: "center", alignItems:"center"}}>
                         <Button
                           variant="text"
                           onClick={() => collapseRow(index, databug?.bug_id)}
@@ -295,6 +291,7 @@ export default function Bugs({ handleClick }) {
                             backgroundColor: "#596e79",
                             color: "white",
                             padding: "4px 8px",
+                            textTransform: "lowercase",
                           }}
                         >
                           {databug?.bug_id}
