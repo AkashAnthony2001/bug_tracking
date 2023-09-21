@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Button,
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -19,10 +20,11 @@ import CustomizedSnackbars from "../components/CustomizedSnackbars";
 import Collapse from "@mui/material/Collapse";
 import BugStatusTable from "../components/BugStatusTable";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import StatusChangeDialog from "../components/StatusChangeDialog";
-
-export default function Bugs() {
+import CustomizedMenus from "../components/CustomizedMenus";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { Link, useNavigate } from "react-router-dom";
+export default function Bugs({ handleClick }) {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
@@ -43,7 +45,6 @@ export default function Bugs() {
       ...bugStatusData,
       comment,
     };
-    console.log(obj);
 
     const statusData = await apiService.putStatus(obj);
     if (!statusData.error) {
@@ -51,6 +52,7 @@ export default function Bugs() {
       setChangemsg(statusData);
     }
   };
+
   const handleChange = async (event, _id) => {
     let obj = {
       data: event.target.value,
@@ -96,7 +98,6 @@ export default function Bugs() {
         (selectedStatus === "" || item.status === selectedStatus)
     );
     setFilteredData(filteredItems);
-    console.log(filteredData);
   }, [selectedUser, selectedSprint, selectedStatus, bugData]);
 
   const styles = {
@@ -132,6 +133,21 @@ export default function Bugs() {
     });
     setFilteredResponse(filteredData);
   };
+
+ 
+  const header = [
+    "BugId",
+    "BugDescription",
+    "AssignedTo",
+    "Sprint",
+    "EstimateDate",
+    "Status",
+    "MoreInfo",
+  ];
+  const navigate = useNavigate();
+  const handleIconClick = (databug) => {
+    navigate(`/dashboard/details/${databug.bug_id}`, { state: databug });
+  };
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
@@ -143,12 +159,10 @@ export default function Bugs() {
 
   const handleSelectedSprint = (event) => {
     setSelectedSprint(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleSelectedStatus = (event) => {
     setSelectedStatus(event.target.value);
-    console.log(event.target.value);
   }
   return (
     <>
@@ -231,47 +245,45 @@ export default function Bugs() {
         {" "}
         <Table
           aria-label="simple table"
+          stickyHeader
           sx={{ border: "1px solid #ccc", width: "100%" }}
         >
           <TableHead>
             <TableRow>
-              <TableCell style={styles}>BugId</TableCell>
-              <TableCell style={styles}>Bug Description</TableCell>
-              <TableCell style={styles}>Bug Type</TableCell>
-              <TableCell style={styles}>Project Name</TableCell>
-              <TableCell style={styles}>Module Name</TableCell>
-              <TableCell style={styles}>Assigned To</TableCell>
-              <TableCell style={styles}>Reported By</TableCell>
-              <TableCell style={styles}>Serviertiy</TableCell>
-              <TableCell style={styles}>Sprint</TableCell>
-              <TableCell style={styles}>Customer Found</TableCell>
-              <TableCell style={styles}>Estimate_date</TableCell>
-              <TableCell style={styles}>CreatedBy</TableCell>
-              <TableCell>Status</TableCell>
+              {header &&
+                header.map((val) => (
+                  <TableCell sx={{ textAlign: "center" }} key={val}>
+                    {val}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {filteredData.length ? (
               filteredData?.map((databug, index) => {
-                const rowStyles =
-                  index % 2 === 0
-                    ? { backgroundColor: "#FFFFFF" }
-                    : { backgroundColor: "#F0F0F0" };
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
+                const isEvenRow = index % 2 === 0;
+
                 return (
                   <>
                     <TableRow
                       key={databug.bug_id}
                       sx={{
-                        "& > *": { borderBottom: "unset" },
-                        ...rowStyles,
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        cursor: "pointer",
+                        backgroundColor: isEvenRow ? "#f2f2f2" : "white",
                         border: "1px solid #ccc",
                         padding: "8px",
                       }}
+                      onClick={() => {
+                        handleClick(databug.id);
+                      }}
+                      tabIndex={-1}
                     >
-                      <TableCell>
+                      <TableCell sx={{ textAlign: "center", alignItems:"center"}}>
                         <Button
                           variant="text"
                           onClick={() => collapseRow(index, databug?.bug_id)}
@@ -279,28 +291,24 @@ export default function Bugs() {
                             backgroundColor: "#596e79",
                             color: "white",
                             padding: "4px 8px",
+                            textTransform: "lowercase",
                           }}
                         >
                           {databug?.bug_id}
                         </Button>
+                        <span>
+                          <ArrowOutwardIcon
+                            sx={{ color: "#596e79" }}
+                            onClick={() => handleIconClick(databug)}
+                          />
+                        </span>
                       </TableCell>
-                      <TableCell style={styles}>
+                      <TableCell style={styles} sx={{ maxWidth: "500px" }}>
                         {databug?.bug_description}
-                      </TableCell>
-                      <TableCell style={styles}>{databug?.bug_type}</TableCell>
-                      <TableCell style={styles}>
-                        {databug?.projectId?.title}
-                      </TableCell>
-                      <TableCell style={styles}>
-                        {databug?.moduleId?.module_name}
                       </TableCell>
                       <TableCell style={styles}>
                         {databug?.assignedTo?.username}
                       </TableCell>
-                      <TableCell style={styles}>
-                        {databug?.reportedBy?.username}
-                      </TableCell>
-                      <TableCell style={styles}>{databug?.severity}</TableCell>
                       <TableCell style={styles}>
                         <FormControl sx={{ m: 2 }} size="small">
                           <InputLabel></InputLabel>
@@ -322,14 +330,9 @@ export default function Bugs() {
                             <MenuItem value="10">10</MenuItem>
                           </Select>
                         </FormControl>
-                      </TableCell>{" "}
-                      <TableCell style={styles}>
-                        {databug?.customerfound ? "Yes" : "No"}
                       </TableCell>
                       <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
-                      <TableCell style={styles}>{databug?.createdby}</TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
-                        <InputLabel></InputLabel>
                         <Select
                           defaultValue={databug?.status}
                           onChange={(e) => {
@@ -354,6 +357,9 @@ export default function Bugs() {
                           )}
                         </Select>
                       </FormControl>
+                      <TableCell style={styles}>
+                        <CustomizedMenus data={databug} />
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell

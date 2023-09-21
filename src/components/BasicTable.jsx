@@ -11,7 +11,6 @@ import Collapse from "@mui/material/Collapse";
 import AssiStatusTable from "./AssiStatusTable";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 import StatusChangeDialog from "../components/StatusChangeDialog";
-
 import {
   Button,
   FormControl,
@@ -21,6 +20,9 @@ import {
   Typography,
 } from "@mui/material";
 import apiService from "../services/apiService";
+import CustomizedMenus from "./CustomizedMenus";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { useNavigate} from "react-router-dom";
 
 export default function BasicTable({ rows, heading, handleClick }) {
   const [page, setPage] = React.useState(0);
@@ -33,21 +35,20 @@ export default function BasicTable({ rows, heading, handleClick }) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
 
-  const handleComment = async() => {
+  const handleComment = async () => {
     const obj = {
-        ...bugStatusData,
-        comment
-    }
-    console.log(obj)
-    
+      ...bugStatusData,
+      comment,
+    };
+
     const statusData = await apiService.putStatus(obj);
-    if(!statusData.error){
-      handleCloseDialog()
+    if (!statusData.error) {
+      handleCloseDialog();
       setChangemsg(statusData);
     }
-}
+  };
 
-  const headers = ["Bug_id", "Comments" , "Status", "Updated By", "Updated On"];
+  const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -69,16 +70,14 @@ export default function BasicTable({ rows, heading, handleClick }) {
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
-    setComment("")
+    setComment("");
 
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setBugStatusData(obj)
-
-    
+    setBugStatusData(obj);
   };
 
   const handleCloseDialog = () => {
@@ -109,7 +108,10 @@ export default function BasicTable({ rows, heading, handleClick }) {
   React.useEffect(() => {
     bugStatusApi();
   }, [changemsg]);
-
+  const navigate = useNavigate();
+  const handleIconClick = (row) => {
+    navigate(`/dashboard/details/${row.bug_id}`, { state: row  });
+  };
   return (
     <>
       <TableContainer
@@ -124,7 +126,11 @@ export default function BasicTable({ rows, heading, handleClick }) {
           <TableHead>
             <TableRow>
               {heading &&
-                heading.map((data) => <TableCell key={data}>{data}</TableCell>)}
+                heading.map((data) => (
+                  <TableCell sx={{ textAlign: "center" }} key={data}>
+                    {data}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -134,6 +140,8 @@ export default function BasicTable({ rows, heading, handleClick }) {
                 .map((row, index) => {
                   const originalDateString = row.estimate_date;
                   const formattedDate = formatDate(originalDateString);
+                  const isoDateString = row.createdAt;
+                  const isoformattedDate = formatDate(isoDateString);
                   const isOddRow = index % 2 === 0;
                   const isRowExpanded = index === expandedRow;
                   return (
@@ -152,31 +160,62 @@ export default function BasicTable({ rows, heading, handleClick }) {
                         }}
                         tabIndex={-1}
                       >
-                        <TableCell>
-                        <Button
-                          variant="text"
-                          onClick={() => collapseRow(index, row?.bug_id)}
-                          style={{
-                            backgroundColor: "#596e79",
-                            color: "white",
-                            padding: "4px 8px",
-                          }}
+                        <TableCell sx={{ textAlign: "center" }}>
+                          <Button
+                            variant="text"
+                            onClick={() => collapseRow(index, row?.bug_id)}
+                            style={{
+                              backgroundColor: "#596e79",
+                              color: "white",
+                              padding: "4px 8px",
+                              textTransform: "lowercase",
+                            }}
+                          >
+                            {row?.bug_id}
+                          </Button>{" "}
+                          <span >
+                            <ArrowOutwardIcon sx={{ color: "#596e79" }} onClick={() => handleIconClick(row)} />
+                          </span>
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "center" }}
+                          component="th"
+                          scope="row"
                         >
-                          {row?.bug_id}
-                        </Button>
+                          {row?.assignedTo?.username}
                         </TableCell>
-                        <TableCell>{row?.projectId?.title}</TableCell>
-                        <TableCell>{row?.moduleId?.module_name}</TableCell>
-                        <TableCell>{row?.assignedTo?.username}</TableCell>
-                        <TableCell>{row?.reportedBy?.name}</TableCell>
-                        <TableCell>{row?.sprint}</TableCell>
-                        <TableCell>
-                          {row?.customerfound ? "Yes" : "No"}
+                        <TableCell
+                          sx={{ textAlign: "center" }}
+                          component="th"
+                          scope="row"
+                        >
+                          {row?.sprint}
                         </TableCell>
-                        <TableCell>{formattedDate}</TableCell>
-                        <FormControl sx={{ m: 2 }} size="small">
+                        <TableCell
+                          sx={{ textAlign: "center" }}
+                          component="th"
+                          scope="row"
+                        >
+                          {formattedDate}
+                        </TableCell>
+                        <TableCell
+                          sx={{ textAlign: "center" }}
+                          component="th"
+                          scope="row"
+                        >
+                          {isoformattedDate}
+                        </TableCell>
+                        <FormControl
+                          sx={{
+                            m: 2,
+                            textAlign: "center",
+                            paddingLeft: "170px",
+                          }}
+                          size="small"
+                        >
                           <InputLabel></InputLabel>
                           <Select
+                            sx={{ textAlign: "center" }}
                             defaultValue={row?.status}
                             onChange={(e) => {
                               handleStatus(e, row?._id);
@@ -200,6 +239,12 @@ export default function BasicTable({ rows, heading, handleClick }) {
                             )}
                           </Select>
                         </FormControl>
+                        <TableCell sx={{ textAlign: "center" }}>
+                          <CustomizedMenus
+                            data={row}
+                            sx={{ textAlign: "center" }}
+                          />
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell
@@ -247,7 +292,14 @@ export default function BasicTable({ rows, heading, handleClick }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+      <StatusChangeDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        bugData={bugStatusData}
+        setComment={setComment}
+        comment={comment}
+        handleComment={handleComment}
+      />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}

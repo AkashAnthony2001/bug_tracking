@@ -20,7 +20,9 @@ import apiService from "../services/apiService";
 import SubStatusTable from "./SubStatusTable";
 import CustomizedSnackbars from "./CustomizedSnackbars";
 import StatusChangeDialog from "../components/StatusChangeDialog";
-
+import CustomizedMenus from "./CustomizedMenus";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { useNavigate} from "react-router-dom";
 
 export default function BasicTableSub({ row, headers, handleClick }) {
   const [page, setPage] = React.useState(0);
@@ -33,21 +35,18 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
 
+  const handleComment = async () => {
+    const obj = {
+      ...bugStatusData,
+      comment,
+    };
 
-
-  const handleComment = async() => {
-      const obj = {
-          ...bugStatusData,
-          comment
-      }
-      console.log(obj)
-      
-      const statusData = await apiService.putStatus(obj);
-      if(!statusData.error){
-        handleCloseDialog()
-        setChangemsg(statusData)
-      }
-  }
+    const statusData = await apiService.putStatus(obj);
+    if (!statusData.error) {
+      handleCloseDialog();
+      setChangemsg(statusData);
+    }
+  };
 
   const heading = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -69,12 +68,6 @@ export default function BasicTableSub({ row, headers, handleClick }) {
     setPage(0);
   };
 
-  function formatDate(dateString) {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, options);
-  }
-
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -88,16 +81,14 @@ export default function BasicTableSub({ row, headers, handleClick }) {
 
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
-    setComment("")
+    setComment("");
 
     let obj = {
       status: event.target.value,
       updatedby: localStorage.getItem("name"),
       _id: id,
     };
-    setBugStatusData(obj)
-
-
+    setBugStatusData(obj);
   };
 
   const handleCloseDialog = () => {
@@ -119,6 +110,10 @@ export default function BasicTableSub({ row, headers, handleClick }) {
     bugStatusApi();
   }, [changemsg]);
 
+  const navigate = useNavigate();
+  const handleIconClick = (row) => {
+    navigate(`/dashboard/details/${row.bug_id}`, { state: row  });
+  };
   return (
     <>
       <TableContainer
@@ -133,7 +128,11 @@ export default function BasicTableSub({ row, headers, handleClick }) {
           <TableHead>
             <TableRow>
               {headers &&
-                headers.map((val) => <TableCell key={val}>{val}</TableCell>)}
+                headers.map((val) => (
+                  <TableCell sx={{ textAlign: "center" }} key={val}>
+                    {val}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
 
@@ -164,7 +163,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                         }}
                         tabIndex={-1}
                       >
-                        <TableCell>
+                        <TableCell sx={{ textAlign: "center" }}>
                           <Button
                             variant="text"
                             onClick={() => collapseRow(index, row?.bug_id)}
@@ -172,39 +171,35 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                               backgroundColor: "#596e79",
                               color: "white",
                               padding: "4px 8px",
+                              textTransform: "lowercase",
                             }}
                           >
                             {row?.bug_id}
                           </Button>
+                          <span >
+                            <ArrowOutwardIcon sx={{ color: "#596e79" }} onClick={() => handleIconClick(row)} />
+                          </span>
                         </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.projectId?.title}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.moduleId?.module_name}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell sx={{ textAlign: "center" }} component="th" scope="row">
                           {row?.assignedTo?.username}
                         </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.reportedBy?.username}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell sx={{ textAlign: "center" }} component="th" scope="row">
                           {row?.sprint}
                         </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.customerfound ? "Yes" : "No yet"}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell sx={{ textAlign: "center" }} component="th" scope="row">
                           {formattedDate}
                         </TableCell>
-                        <TableCell component="th" scope="row">
-                          {row?.createdby}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
+                        <TableCell sx={{ textAlign: "center" }} component="th" scope="row">
                           {isoformattedDate}
                         </TableCell>
-                        <FormControl sx={{ m: 2 }} size="small">
+                        <FormControl
+                          sx={{
+                            m: 2,
+                            textAlign: "center",
+                            paddingLeft: "170px",
+                          }}
+                          size="small"
+                        >
                           <InputLabel></InputLabel>
                           <Select
                             defaultValue={row?.status}
@@ -230,6 +225,9 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                             )}
                           </Select>
                         </FormControl>
+                        <TableCell sx={{ textAlign: "center" }}>
+                          <CustomizedMenus data={row} />
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell
@@ -277,7 +275,14 @@ export default function BasicTableSub({ row, headers, handleClick }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
-      <StatusChangeDialog isOpen={isDialogOpen} onClose={handleCloseDialog} bugData={bugStatusData} setComment={setComment} comment={comment} handleComment={handleComment}/>
+      <StatusChangeDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        bugData={bugStatusData}
+        setComment={setComment}
+        comment={comment}
+        handleComment={handleComment}
+      />
       <CustomizedSnackbars
         error={changemsg.error}
         message={changemsg.message}
