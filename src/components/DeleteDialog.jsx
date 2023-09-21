@@ -23,7 +23,7 @@ function DeleteDialog({ item, openDelete, setOpenDelete, setCorrect, load }) {
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
-      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+      <DialogTitle style={{ backgroundColor:"#398EED", color: "white" }}>
         Delete Project
         </DialogTitle>
         <DialogTitle id="alert-dialog-title">

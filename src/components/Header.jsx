@@ -25,7 +25,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
       sx={{
         width: `calc(100% - ${drawerWidth}px)`,
         ml: `${drawerWidth}px`,
-        backgroundColor: "#e7e6e1",
+        backgroundColor: "#398EED",
       }}
     >
       <Toolbar
@@ -46,7 +46,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ color: "black" }}
+            sx={{ color: "white" }}
           >
             Hello, {username}
           </Typography>
@@ -58,6 +58,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
           }}
         >
           <NotificationBell
+          sx={{color:"white"}}
             anchorEl={anchorEl}
             handleOpen={handleOpen}
             handleClose={handleClose}
