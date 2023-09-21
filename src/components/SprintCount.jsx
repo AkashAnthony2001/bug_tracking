@@ -3,7 +3,16 @@ import React, { useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 
 import apiService from "../services/apiService";
-import SprintCount from "./SprintCount";
+
+import {
+  Card,
+  CardContent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material"; // Import necessary Material-UI components
 
 const chartSetting = {
   xAxis: [
@@ -19,7 +28,7 @@ const chartSetting = {
 
 const valueFormatter = (value) => `${value}`;
 
-const SprintBarGraph = () => {
+const SprintCount = () => {
   const [sprintData, setSprintData] = useState([]);
 
   const [selectedSprint, setSelectedSprint] = useState("sprint1");
@@ -110,9 +119,17 @@ const SprintBarGraph = () => {
     [selectedSprint]: item[selectedSprint],
   }));
 
+  const cardStyle = {
+    minWidth: 275,
+    margin: "20px",
+    marginBottom: "1rem",
+    backgroundColor: "#EDEDED",
+    boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
+    borderRadius: "8px",
+  };
   return (
-    <div>
-      <div style={{ textAlign: "center" }}>
+    <>
+     <div style={{ textAlign: "center" }}>
         <label style={{ fontWeight: "bold", marginRight: "10px" }}>
           Select Sprint:
         </label>
@@ -137,28 +154,18 @@ const SprintBarGraph = () => {
           ))}
         </select>
       </div>
-      {sprintData.length > 0 ? (
-        <BarChart
-          dataset={mappedSprintData}
-          yAxis={[{ scaleType: "band", dataKey: "user" }]}
-          series={[
-            {
-              dataKey: selectedSprint,
-
-              label: `${selectedSprint} bugs`,
-
-              valueFormatter,
-            },
-          ]}
-          layout="horizontal"
-          {...chartSetting}
-          sx={{ maxHeight: "350px" }}
-        />
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+      {statusCounts &&
+        Object.entries(
+          statusCounts.find(([sprint]) => sprint === selectedSprint)[1]
+        ).map(([status, count]) => (
+          <Card style={cardStyle} key={status}>
+            <Typography>
+              {status}:{count}
+            </Typography>
+          </Card>
+        ))}
+    </>
   );
 };
 
-export default SprintBarGraph;
+export default SprintCount;

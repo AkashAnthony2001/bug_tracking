@@ -20,7 +20,7 @@ const Submitted = () => {
 
   return (
     <>
-      <BasicTableSub row={submitedValue} headers={headers} submitted={SubmitedDisplay()}/>
+      <BasicTableSub row={submitedValue} headers={headers} SubmitedDisplay={SubmitedDisplay}/>
     </>
   );
 };

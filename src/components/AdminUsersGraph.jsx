@@ -33,6 +33,10 @@ const AdminUsersGraph = () => {
       data: adminUser && adminUser?.map((item) => item.Assigned),
       label: 'Assigned',
     },
+    {
+      data: adminUser && adminUser?.map((item)=> item.InProgress),
+      label: 'InProgress'
+    }
   ];
 
   return (

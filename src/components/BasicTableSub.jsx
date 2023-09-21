@@ -25,7 +25,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
-export default function BasicTableSub({ row, headers, handleClick, submitted }) {
+export default function BasicTableSub({ row, headers, handleClick, SubmitedDisplay }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [bugResponse, setBugResponse] = React.useState([]);
@@ -129,8 +129,7 @@ export default function BasicTableSub({ row, headers, handleClick, submitted }) 
         ...sprintData,
         message,
       })
-      submitted()
-    }
+      SubmitedDisplay()    }
   }
   const navigate = useNavigate();
   const handleIconClick = (row) => {

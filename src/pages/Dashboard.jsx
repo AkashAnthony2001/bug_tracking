@@ -28,6 +28,7 @@ import SprintBarGraph from "../components/SprintBarGraph";
 import UserBarGraph from "../components/UserBarGraph";
 import UserSprintGraph from "../components/UserSprintGraph";
 import AdminUsersGraph from "../components/AdminUsersGraph";
+import SprintCount from "../components/SprintCount";
 
 const drawerWidth = 190;
 
@@ -349,7 +350,7 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
-
+<SprintCount/>
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
                         <Card style={{ ...cardStyle, height: '600px' }}>
