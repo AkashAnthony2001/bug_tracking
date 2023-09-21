@@ -22,7 +22,8 @@ import {
 import apiService from "../services/apiService";
 import CustomizedMenus from "./CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
 export default function BasicTable({ rows, heading, handleClick }) {
   const [page, setPage] = React.useState(0);
@@ -34,6 +35,9 @@ export default function BasicTable({ rows, heading, handleClick }) {
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
+  const [copiedStates, setCopiedStates] = React.useState(
+    Array(rows.length).fill(false)
+  );
 
   const handleComment = async () => {
     const obj = {
@@ -110,10 +114,30 @@ export default function BasicTable({ rows, heading, handleClick }) {
   }, [changemsg]);
   const navigate = useNavigate();
   const handleIconClick = (row) => {
-    navigate(`/dashboard/details/${row.bug_id}`, { state: row  });
+    navigate(`/dashboard/details/${row.bug_id}/#assigned`, { state: row });
+  };
+  const copyToClipboard = (text, index) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        const updatedCopiedStates = [...copiedStates];
+        updatedCopiedStates[index] = true;
+        setCopiedStates(updatedCopiedStates);
+        setTimeout(() => {
+          const resetCopiedStates = [...updatedCopiedStates];
+          resetCopiedStates[index] = false;
+          setCopiedStates(resetCopiedStates);
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("Copy failed: ", error);
+      });
   };
   return (
     <>
+    <Typography variant="h6" sx={{ m: 1 }} color="initial">
+        Bugs Assigned To Me
+      </Typography>
       <TableContainer
         component={Paper}
         sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
@@ -160,22 +184,40 @@ export default function BasicTable({ rows, heading, handleClick }) {
                         }}
                         tabIndex={-1}
                       >
-                        <TableCell sx={{ textAlign: "center" }}>
-                          <Button
-                            variant="text"
-                            onClick={() => collapseRow(index, row?.bug_id)}
-                            style={{
-                              backgroundColor: "#596e79",
-                              color: "white",
-                              padding: "4px 8px",
-                              textTransform: "lowercase",
-                            }}
+                        <TableCell sx={{ textAlign: "center", alignItems: "center", maxWidth:"240px"  }}>
+                          <div
+                            style={{ display: "flex", flexDirection: "row" }}
                           >
-                            {row?.bug_id}
-                          </Button>{" "}
-                          <span >
-                            <ArrowOutwardIcon sx={{ color: "#596e79" }} onClick={() => handleIconClick(row)} />
-                          </span>
+                            <Button
+                              variant="text"
+                              onClick={() => collapseRow(index, row?.bug_id)}
+                              style={{
+                                backgroundColor: "#596e79",
+                                color: "white",
+                                padding: "4px 8px",
+                                textTransform: "lowercase",
+                              }}
+                            >
+                              {row?.bug_id}
+                            </Button>
+                            <span style={{display:"flex", flexDirection:"column"}}>
+                              <ArrowOutwardIcon
+                                sx={{ color: "#596e79" }}
+                                onClick={() => handleIconClick(row)}
+                              />
+                              <ContentCopyRoundedIcon
+                                sx={{ color: "#596e79", fontSize: "large" }}
+                                onClick={() =>
+                                  copyToClipboard(row?.bug_id, index)
+                                }
+                              />
+                            </span>
+                            {copiedStates[index] && (
+                            <span style={{ marginLeft: "4px", color: "green" }}>
+                              ID Copied!
+                            </span>
+                          )}
+                          </div>
                         </TableCell>
                         <TableCell
                           sx={{ textAlign: "center" }}
