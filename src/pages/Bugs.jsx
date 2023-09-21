@@ -23,7 +23,8 @@ import Typography from "@mui/material/Typography";
 import StatusChangeDialog from "../components/StatusChangeDialog";
 import CustomizedMenus from "../components/CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 export default function Bugs({ handleClick }) {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
@@ -38,7 +39,9 @@ export default function Bugs({ handleClick }) {
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
-  const [updateSprint, setUpdateSprint] = useState({});
+  const [copiedStates, setCopiedStates] = useState(
+    Array(filteredData.length).fill(false)
+  );
 
   const handleComment = async () => {
     const obj = {
@@ -58,9 +61,8 @@ export default function Bugs({ handleClick }) {
       data: event.target.value,
       id: _id,
     };
-    setUpdateSprint(event.target.value);
-    const sprintData = await apiService.editSprint(obj);
-    bugDisplay()
+    await apiService.editSprint(obj);
+    bugDisplay();
   };
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -134,7 +136,6 @@ export default function Bugs({ handleClick }) {
     setFilteredResponse(filteredData);
   };
 
- 
   const header = [
     "BugId",
     "BugDescription",
@@ -146,7 +147,7 @@ export default function Bugs({ handleClick }) {
   ];
   const navigate = useNavigate();
   const handleIconClick = (databug) => {
-    navigate(`/dashboard/details/${databug.bug_id}`, { state: databug });
+    navigate(`/dashboard/details/${databug.bug_id}/#bugs`, { state: databug });
   };
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -163,7 +164,25 @@ export default function Bugs({ handleClick }) {
 
   const handleSelectedStatus = (event) => {
     setSelectedStatus(event.target.value);
-  }
+  };
+  const copyToClipboard = (text, index) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        const updatedCopiedStates = [...copiedStates];
+        updatedCopiedStates[index] = true;
+        setCopiedStates(updatedCopiedStates);
+        setTimeout(() => {
+          const resetCopiedStates = [...updatedCopiedStates];
+          resetCopiedStates[index] = false;
+          setCopiedStates(resetCopiedStates);
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("Copy failed: ", error);
+      });
+  };
+
   return (
     <>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -283,7 +302,10 @@ export default function Bugs({ handleClick }) {
                       }}
                       tabIndex={-1}
                     >
-                      <TableCell sx={{ textAlign: "center", alignItems:"center"}}>
+                      <TableCell
+                        sx={{ textAlign: "center", alignItems: "center", maxWidth:"252px" }}
+                      >
+                        <div style={{display:"flex", flexDirection:"row"}}>
                         <Button
                           variant="text"
                           onClick={() => collapseRow(index, databug?.bug_id)}
@@ -296,12 +318,24 @@ export default function Bugs({ handleClick }) {
                         >
                           {databug?.bug_id}
                         </Button>
-                        <span>
+                        <span style={{display:"flex", flexDirection:"column"}}>
                           <ArrowOutwardIcon
                             sx={{ color: "#596e79" }}
                             onClick={() => handleIconClick(databug)}
                           />
+                          <ContentCopyRoundedIcon
+                            sx={{ color: "#596e79", fontSize:"large",  }}
+                            onClick={() =>
+                              copyToClipboard(databug?.bug_id, index)
+                            }
+                          />
                         </span>
+                        {copiedStates[index] && (
+                            <span style={{ marginLeft: "4px", color: "green" }}>
+                              ID Copied!
+                            </span>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell style={styles} sx={{ maxWidth: "500px" }}>
                         {databug?.bug_description}
@@ -331,7 +365,17 @@ export default function Bugs({ handleClick }) {
                           </Select>
                         </FormControl>
                       </TableCell>
-                      <TableCell style={{...styles, color:new Date(databug?.estimate_date) <= new Date() ? 'red' : 'black'}} >{formattedDate}</TableCell>
+                      <TableCell
+                        style={{
+                          ...styles,
+                          color:
+                            new Date(databug?.estimate_date) <= new Date()
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {formattedDate}
+                      </TableCell>
                       <FormControl sx={{ m: 2 }} size="small">
                         <Select
                           defaultValue={databug?.status}

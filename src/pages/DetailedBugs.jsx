@@ -7,13 +7,16 @@ import {
   TableRow,
   Paper,
   Typography,
+  Button,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DetailedBugs = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const data = location.state;
-
+  const hash = location.hash;
+  console.log(hash);
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -30,7 +33,7 @@ const DetailedBugs = () => {
   const isoDateString = data.createdAt;
   const isoformattedDate = formatDate(isoDateString);
   const updatedDtate = data.updatedAt;
-  const isUpdatated = formatDate(updatedDtate)
+  const isUpdatated = formatDate(updatedDtate);
 
   const details = [
     { label: "Bug Id  :", value: data?.bug_id },
@@ -52,6 +55,27 @@ const DetailedBugs = () => {
 
   return (
     <>
+      <Button
+        onClick={() =>
+          navigate(
+            hash === "#bugs"
+              ? "/dashboard/bugs"
+              : hash === "#submitted"
+              ? "/dashboard/submitted"
+              : "/dashboard/assigned"
+          )
+        }
+        variant="outlined"
+        size="small"
+        style={{
+          marginBottom: "0px",
+          background: "#596e79",
+          color: "#ffffff",
+          boxShadow: "3px 2px 10px 0px gray",
+        }}
+      >
+        Back
+      </Button>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>
@@ -59,7 +83,13 @@ const DetailedBugs = () => {
         <Table aria-label="detailed bug table">
           <TableBody>
             {details.map((detail, index) => (
-              <TableRow key={index}>
+              <TableRow key={index}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                backgroundColor: index % 2 === 0 ? "#EDEDED" : "#FFFFFF",
+                borderBottom: "1px solid #e0e0e0",
+                padding: "8px",
+              }}>
                 <TableCell
                   component="th"
                   scope="row"
@@ -89,4 +119,3 @@ const DetailedBugs = () => {
 };
 
 export default DetailedBugs;
-
