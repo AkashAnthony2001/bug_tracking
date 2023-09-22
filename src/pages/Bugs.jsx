@@ -12,7 +12,6 @@ import {
   TableRow,
   Button,
   Box,
-  TablePagination,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -25,6 +24,7 @@ import StatusChangeDialog from "../components/StatusChangeDialog";
 import CustomizedMenus from "../components/CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
+import TablePagination from "@mui/material/TablePagination";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 export default function Bugs({ handleClick }) {
   const [bugData, setBugdata] = useState([]);
@@ -89,6 +89,14 @@ export default function Bugs({ handleClick }) {
     const usersData = await apiService.getUsers();
     setUsers(usersData);
   };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   const statusColors = {
     Opened: "	#32cd32",
     Assigned: "blue",
@@ -128,17 +136,6 @@ export default function Bugs({ handleClick }) {
       _id: id,
     };
     setBugStatusData(obj);
-  };
-  const startIndex = page * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   function formatDate(isoDateString) {
@@ -284,7 +281,6 @@ export default function Bugs({ handleClick }) {
         component={Paper}
         sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
-        {" "}
         <Table
           aria-label="simple table"
           stickyHeader
@@ -303,7 +299,9 @@ export default function Bugs({ handleClick }) {
 
           <TableBody>
             {filteredData.length ? (
-              filteredData?.map((databug, index) => {
+              filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((databug, index) => {
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
@@ -326,34 +324,40 @@ export default function Bugs({ handleClick }) {
                       tabIndex={-1}
                     >
                       <TableCell
-                        sx={{ textAlign: "center", alignItems: "center", maxWidth:"252px" }}
+                        sx={{
+                          textAlign: "center",
+                          alignItems: "center",
+                          maxWidth: "252px",
+                        }}
                       >
-                        <div style={{display:"flex", flexDirection:"row"}}>
-                        <Button
-                          variant="text"
-                          onClick={() => collapseRow(index, databug?.bug_id)}
-                          style={{
-                            backgroundColor: "#398EED",
-                            color: "white",
-                            padding: "4px 8px",
-                            textTransform: "lowercase",
-                          }}
-                        >
-                          {databug?.bug_id}
-                        </Button>
-                        <span style={{display:"flex", flexDirection:"column"}}>
-                          <ArrowOutwardIcon
-                            sx={{ color: "#398EED" }}
-                            onClick={() => handleIconClick(databug)}
-                          />
-                          <ContentCopyRoundedIcon
-                            sx={{ color: "#398EED", fontSize:"large",  }}
-                            onClick={() =>
-                              copyToClipboard(databug?.bug_id, index)
-                            }
-                          />
-                        </span>
-                        {copiedStates[index] && (
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <Button
+                            variant="text"
+                            onClick={() => collapseRow(index, databug?.bug_id)}
+                            style={{
+                              backgroundColor: "#398EED",
+                              color: "white",
+                              padding: "4px 8px",
+                              textTransform: "lowercase",
+                            }}
+                          >
+                            {databug?.bug_id}
+                          </Button>
+                          <span
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <ArrowOutwardIcon
+                              sx={{ color: "#398EED" }}
+                              onClick={() => handleIconClick(databug)}
+                            />
+                            <ContentCopyRoundedIcon
+                              sx={{ color: "#398EED", fontSize: "large" }}
+                              onClick={() =>
+                                copyToClipboard(databug?.bug_id, index)
+                              }
+                            />
+                          </span>
+                          {copiedStates[index] && (
                             <span style={{ marginLeft: "4px", color: "green" }}>
                               ID Copied!
                             </span>
@@ -464,6 +468,15 @@ export default function Bugs({ handleClick }) {
             )}
           </TableBody>
         </Table>
+        <TablePagination
+  rowsPerPageOptions={[10, 25, 50]}
+  component="div"
+  count={filteredData.length}
+  page={page}
+  rowsPerPage={rowsPerPage}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage} 
+/>
       </TableContainer>
       <StatusChangeDialog
         isOpen={isDialogOpen}
@@ -478,16 +491,6 @@ export default function Bugs({ handleClick }) {
         message={changemsg.message}
         setChangemsg={setChangemsg}
       />
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={filteredData.length} 
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </>
-    
   );
 }

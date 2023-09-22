@@ -95,6 +95,8 @@ const SprintCount = () => {
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr 1fr",
     gap: "16px",
+    paddingBottom:"15px"
+
   };
 
   return (
@@ -132,6 +134,7 @@ const SprintCount = () => {
       </select>
     </div>
     <br />
+    
     <div style={gridContainerStyle}>
       {statusCounts &&
         Object.entries(
@@ -139,11 +142,9 @@ const SprintCount = () => {
         ).map(([status, count]) => (
           <Card style={cardStyle} key={status}>
             <Typography>
-              <div>
-                <div>{count}</div>
-                <div>{status}</div>
+                <Typography gutterBottom variant="h5" component="div">{count}</Typography>
+                <Typography variant="h7">{status}</Typography>
 
-              </div>
             </Typography>
           </Card>
         ))}
