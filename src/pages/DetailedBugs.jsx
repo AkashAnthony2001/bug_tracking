@@ -10,13 +10,15 @@ import {
   Button,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import DeleteBug from "../components/DeleteBug";
 
 const DetailedBugs = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const data = location.state;
   const hash = location.hash;
-  console.log(hash);
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -76,6 +78,7 @@ const DetailedBugs = () => {
       >
         Back
       </Button>
+      <DeleteBug data={data} hash={hash}/>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>

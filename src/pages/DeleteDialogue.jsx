@@ -19,7 +19,6 @@ const DeleteConfirmationDialog = ({ moduledata, load, openDelete, setOpenDelete 
   const handleClose = () => {
     setOpenDelete(false);
     load()
-    setOpenDelete(false);
   };
  
   return (

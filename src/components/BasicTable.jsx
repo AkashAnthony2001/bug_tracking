@@ -35,7 +35,6 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
-  const [updateSprint, setUpdateSprint] =  React.useState({});
 
   const [copiedStates, setCopiedStates] = React.useState(
     Array(rows.length).fill(false)
@@ -119,7 +118,6 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
       data: event.target.value,
       id: _id,
     };
-    setUpdateSprint(event.target.value);
     const sprintData = await apiService.editSprint(obj);
     if (!sprintData.error) {
       const message = `Sprint updated to ${event.target.value}.`;
@@ -210,13 +208,12 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                               variant="text"
                               onClick={() => collapseRow(index, row?.bug_id)}
                               style={{
-                                backgroundColor: "#398EED",
-                                color: "white",
+                                color: "#398EED",
                                 padding: "4px 8px",
                                 textTransform: "lowercase",
                               }}
                             >
-                              {row?.bug_id}
+                              {row?.bug_id}               
                             </Button>
                             <span style={{display:"flex", flexDirection:"column"}}>
                               <ArrowOutwardIcon

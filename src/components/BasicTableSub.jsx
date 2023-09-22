@@ -25,7 +25,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
-export default function BasicTableSub({ row, headers, handleClick, SubmitedDisplay }) {
+export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [bugResponse, setBugResponse] = React.useState([]);
@@ -35,7 +35,6 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
-  const [updateSprint, setUpdateSprint] = React.useState("");
 
   const [copiedStates, setCopiedStates] = React.useState(
     Array(row.length).fill(false)
@@ -120,7 +119,6 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
       data: event.target.value,
       id: _id,
     };
-    setUpdateSprint(event.target.value);
     const sprintData = await apiService.editSprint(obj);
     if (!sprintData.error) {
       
@@ -200,9 +198,6 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}
-                        onClick={() => {
-                          handleClick(row.id);
-                        }}
                         tabIndex={-1}
                       >
                         <TableCell
@@ -219,8 +214,7 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
                               variant="text"
                               onClick={() => collapseRow(index, row?.bug_id)}
                               style={{
-                                backgroundColor: "#398EED",
-                                color: "white",
+                                color: "#398EED",
                                 padding: "4px 8px",
                                 textTransform: "lowercase",
                               }}
