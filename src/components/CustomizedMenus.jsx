@@ -23,7 +23,7 @@ const StyledMenu = styled((props) => (
   "& .MuiPaper-root": {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    minWidth: 380,
+    minWidth: 300,
     color:
       theme.palette.mode === "light"
         ? "rgb(55, 65, 81)"
@@ -58,7 +58,9 @@ export default function CustomizedMenus({data}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const menuItemStyle = {
+    fontSize: 20, 
+  };
   return (
     <div>
       <Button
@@ -69,7 +71,7 @@ export default function CustomizedMenus({data}) {
         disableElevation
         onClick={handleClick}
       >
-        <MoreHorizIcon  sx={{color:"#596e79"}}/>
+        <MoreHorizIcon  sx={{color:"#398EED"}}/>
       </Button>
       <StyledMenu
         id="demo-customized-menu"
@@ -80,12 +82,12 @@ export default function CustomizedMenus({data}) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem disableRipple>Project Name : {data?.projectId?.title}</MenuItem>
-        <MenuItem disableRipple>Module Name : {data?.moduleId?.module_name}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>Project Name : {data?.projectId?.title}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>Module Name : {data?.moduleId?.module_name}</MenuItem>
         <Divider sx={{ my: 0.5 }} />
-        <MenuItem disableRipple>Reported By : {data?.reportedBy?.username}</MenuItem>
-        <MenuItem disableRipple>Customer Found : {data?.customerfound ? "Yes" : "No"}</MenuItem>
-        <MenuItem disableRipple>CreatedBy : {data?.createdby}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>Reported By : {data?.reportedBy?.username}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>Customer Found : {data?.customerfound ? "Yes" : "No"}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>CreatedBy : {data?.createdby}</MenuItem>
       </StyledMenu>
     </div>
   );

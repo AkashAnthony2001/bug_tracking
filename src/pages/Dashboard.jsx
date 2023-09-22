@@ -180,7 +180,7 @@ const Dashboard = () => {
                           <Typography gutterBottom variant="h5" component="div">
                             {open}
                           </Typography>
-                          <Typography variant="h7" color="black">
+                          <Typography variant="h7" color="#1b2b4e">
                             Assigned Bugs
                           </Typography>
                         </CardContent>
@@ -194,7 +194,7 @@ const Dashboard = () => {
                           <Typography gutterBottom variant="h5" component="div">
                             {close}
                           </Typography>
-                          <Typography variant="h7" color="black">
+                          <Typography variant="h7" color="#1b2b4e">
                             Closed Bugs
                           </Typography>
                         </CardContent>
@@ -208,7 +208,7 @@ const Dashboard = () => {
                           <Typography gutterBottom variant="h5" component="div">
                             {inProcess}
                           </Typography>
-                          <Typography variant="h7" color="black">
+                          <Typography variant="h7" color="#1b2b4e">
                             In Progress
                           </Typography>
                         </CardContent>
@@ -222,7 +222,7 @@ const Dashboard = () => {
                           <Typography gutterBottom variant="h5" component="div">
                             {hold}
                           </Typography>
-                          <Typography variant="h7" color="black">
+                          <Typography variant="h7" color="#1b2b4e">
                             Hold
                           </Typography>
                         </CardContent>
@@ -236,7 +236,17 @@ const Dashboard = () => {
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
-                            <h3>{<BugReportIcon />} My Bugs </h3>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                padding: "3px",
+                              }}
+                            >
+                              <BugReportIcon sx={{ color: "#2F96FC" }} />
+                              <h3 style={{ marginLeft: "15px" }}> My Bugs</h3>
+                            </div>
                             <TableContainer
                               sx={{
                                 maxHeight: "220px",
@@ -299,7 +309,20 @@ const Dashboard = () => {
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
-                            <h2>{<WorkIcon />} My Work Items Due Today</h2>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                padding: "3px",
+                              }}
+                            >
+                              <WorkIcon sx={{ color: "#2F96FC" }} />
+                              <h3 style={{ marginLeft: "15px" }}>
+                                {" "}
+                                My Work Items Due Today
+                              </h3>
+                            </div>
                             <TableContainer
                               sx={{
                                 maxHeight: "220px",
