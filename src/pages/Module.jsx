@@ -66,7 +66,7 @@ export default function ModuleDemo() {
 
   const gridContainerStyle = {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", 
+    gridTemplateColumns: "1fr  1fr 1fr 1fr", 
     gap: "1rem", 
   };
 

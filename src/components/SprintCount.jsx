@@ -84,7 +84,7 @@ const SprintCount = () => {
     minWidth: 275,
     marginBottom: "16px",
     marginLeft: "50px",
-    marginRight: "75px",
+    marginRight: "70px",
 
     backgroundColor: "#F8F9FA",
     borderRadius: "8px",
@@ -109,43 +109,47 @@ const SprintCount = () => {
         marginTop: "16px",
       }}
     >
-      <div style={{ textAlign: "center" }}>
-        <label style={{ fontWeight: "bold", marginRight: "10px" }}>
-          Select Sprint:
-        </label>
-        <select
-          value={selectedSprint}
-          onChange={handleSprintChange}
-          style={{
-            padding: "8px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            marginRight: "10px",
-            marginTop: "16px",
-          }}
-        >
-          {sprintOptions.map((val) => (
-            <option key={val.value} value={val.value}>
-              {val.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <br />
-      <div style={gridContainerStyle}>
-        {statusCounts &&
-          Object.entries(
-            statusCounts.find(([sprint]) => sprint === selectedSprint)[1]
-          ).map(([status, count]) => (
-            <Card style={cardStyle} key={status}>
-              <Typography>
-                {status}:{count}
-              </Typography>
-            </Card>
-          ))}
-      </div>
-    </Card>
-  );
+        <div style={{ textAlign: "center" }}>
+      <label style={{ fontWeight: "bold", marginRight: "10px" }}>
+        Select Sprint:
+      </label>
+      <select
+        value={selectedSprint}
+        onChange={handleSprintChange}
+        style={{
+          padding: "8px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          marginRight: "10px",
+          marginTop: "16px",
+        }}
+      >
+        {sprintOptions.map((val) => (
+          <option key={val.value} value={val.value}>
+            {val.label}
+          </option>
+        ))}
+      </select>
+    </div>
+    <br />
+    <div style={gridContainerStyle}>
+      {statusCounts &&
+        Object.entries(
+          statusCounts.find(([sprint]) => sprint === selectedSprint)[1]
+        ).map(([status, count]) => (
+          <Card style={cardStyle} key={status}>
+            <Typography>
+              <div>
+                <div>{count}</div>
+                <div>{status}</div>
+
+              </div>
+            </Typography>
+          </Card>
+        ))}
+    </div>
+  </Card>
+);
 };
 
 export default SprintCount;
