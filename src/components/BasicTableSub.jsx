@@ -25,7 +25,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 
-export default function BasicTableSub({ row, headers, handleClick }) {
+export default function BasicTableSub({ row, headers, handleClick, SubmitedDisplay }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [bugResponse, setBugResponse] = React.useState([]);
@@ -35,6 +35,8 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   const [bugStatusData, setBugStatusData] = React.useState({});
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [comment, setComment] = React.useState("");
+  const [updateSprint, setUpdateSprint] = React.useState("");
+
   const [copiedStates, setCopiedStates] = React.useState(
     Array(row.length).fill(false)
   );
@@ -113,7 +115,22 @@ export default function BasicTableSub({ row, headers, handleClick }) {
   React.useEffect(() => {
     bugStatusApi();
   }, [changemsg]);
-
+  const handleChange = async (event, _id) => {
+    let obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    if (!sprintData.error) {
+      
+      const message = `Sprint updated to ${event.target.value}.`;
+      setChangemsg({
+        ...sprintData,
+        message,
+      })
+      SubmitedDisplay()    }
+  }
   const navigate = useNavigate();
   const handleIconClick = (row) => {
     navigate(`/dashboard/details/${row.bug_id}/#submitted`, { state: row });
@@ -143,7 +160,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
       </Typography>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#FFFFFF", padding: "13px" }}
+        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
         <Table
           aria-label="tickets table"
@@ -179,7 +196,7 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
-                          backgroundColor: isEvenRow ? "#F1F6F9" : "white",
+                          backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}
@@ -243,13 +260,30 @@ export default function BasicTableSub({ row, headers, handleClick }) {
                         >
                           {row?.assignedTo?.username}
                         </TableCell>
-                        <TableCell
-                          sx={{ textAlign: "center" }}
-                          component="th"
-                          scope="row"
-                        >
-                          {row?.sprint}
-                        </TableCell>
+                        
+                        <TableCell component="th" scope="row">
+                        <FormControl sx={{ m: 2 }} size="small">
+                          <InputLabel></InputLabel>
+                          <Select
+                            value={row?.sprint}
+                            onChange={(e) => {
+                              handleChange(e, row?._id);
+                            }}
+                          >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
+                            <MenuItem value="4">4</MenuItem>
+                            <MenuItem value="5">5</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                            <MenuItem value="7">7</MenuItem>
+                            <MenuItem value="8">8</MenuItem>
+                            <MenuItem value="9">9</MenuItem>
+                            <MenuItem value="10">10</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </TableCell>
+                        
                         <TableCell
                           sx={{ textAlign: "center" }}
                           component="th"

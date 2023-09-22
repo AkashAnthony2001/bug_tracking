@@ -7,8 +7,6 @@ import PestControlIcon from '@mui/icons-material/PestControl';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 
-
-
 const navbarItems = [
   {
     id: 0,
@@ -23,31 +21,30 @@ const navbarItems = [
     link: '/dashboard/projects',color:"#aee9f9"
   }, {
     id: 2,
+    text: 'Modules',
+    icon: <ViewModuleIcon />,
+    link: '/dashboard/module',color:"#f26139"
+  }, {
+    id: 3,
     text: 'Assigned to me',
     icon: <AssignmentIcon />,
     link: '/dashboard/assigned',color:"#1b2b4e"
-  }, {
-    id: 3,
+  },{
+    id: 4,
     text: 'Submitted by me',
     icon: <AutoAwesomeMotionIcon />,
     link: '/dashboard/submitted',color:"#f47e5d"
   },{
-    id: 4,
-    text: 'Modules',
-    icon: <ViewModuleIcon />,
-    link: '/dashboard/module',color:"#4fce87"
-  },{
     id: 5,
     text: 'Bugs',
     icon: <PestControlIcon />,
-    link: '/dashboard/bugs',color:"#f26139"
+    link: '/dashboard/bugs',color:"#4fce87"
   },{
     id: 6,
     text: 'Users',
     icon: <PeopleAltOutlinedIcon />,
     link: '/dashboard/users',color:"#ee5273"
   }
+];
 
-]
-
-export default navbarItems
+export default navbarItems;

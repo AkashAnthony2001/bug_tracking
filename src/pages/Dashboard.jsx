@@ -28,6 +28,7 @@ import SprintBarGraph from "../components/SprintBarGraph";
 import UserBarGraph from "../components/UserBarGraph";
 import UserSprintGraph from "../components/UserSprintGraph";
 import AdminUsersGraph from "../components/AdminUsersGraph";
+import SprintCount from "../components/SprintCount";
 
 const drawerWidth = 190;
 
@@ -54,7 +55,7 @@ const Dashboard = () => {
     minWidth: 275,
     margin: "20px",
     marginBottom: "1rem",
-    backgroundColor: "#F1F6F9",
+    backgroundColor: "#F8F9FA",
     boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
   };
@@ -379,7 +380,9 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
-
+                    {localStorage.getItem("role") === "admin" && (
+                      <SprintCount />
+                    )}
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
                         <Card style={{ ...cardStyle, height: "600px" }}>

@@ -20,21 +20,33 @@ const Users = () => {
     handleUsers();
   }, [correct]);
 
-  
+  const gridContainerStyle = {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+    gap: "1rem",
+  };
+
   return (
     <>
       <UserDialog load={handleUsers} />
       
-      {userData.length
-        ? userData.map((userDatas) => (
+   
+      {userData.length ? (
+        <div style={gridContainerStyle}>
+          {userData.map((userDatas) => (
             <UserCard
               key={userDatas._id}
               userData={userDatas}
               setCorrect={setCorrect}
               load={handleUsers}
             />
-          ))
-        : <Typography sx={{textAlign:'center'}} variant="h5">No Users Found</Typography>}
+          ))}
+        </div>
+      ) : (
+        <Typography sx={{ textAlign: "center" }} variant="h5">
+          No Users Found
+        </Typography>
+      )}
     </>
   );
 };

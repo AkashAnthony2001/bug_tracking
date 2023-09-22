@@ -42,6 +42,7 @@ const Navbar = () => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
+          backgroundColor: "#CAEDFF"
         },
         display: "flex",
         flexDirection: "column",
@@ -70,7 +71,13 @@ const Navbar = () => {
           filterarr.map((item) => (
             <ListItem key={item.id} disablePadding>
               <ListItemButton
-                sx={{ width: "239px", padding: "auto" }}
+                sx={{
+                  width: "239px",
+                  padding: "auto",
+                  "&.Mui-selected": {
+                    backgroundColor: "#ADC4CE",
+                  },
+                }}
                 selected={item.id === selectedItem.id}
                 onClick={() => {
                   setSelectedItem(item);
@@ -87,11 +94,7 @@ const Navbar = () => {
           ))}
       </List>
       <Divider />
-      <BasicDialog
-        action={logout}
-        buttonMsg="Logout"
-        sx={{ width: "100%"  }}
-      >
+      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "100%" }}>
         Are you sure you want to log out?
       </BasicDialog>
     </Drawer>

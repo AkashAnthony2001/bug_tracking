@@ -12,6 +12,7 @@ import {
   TableRow,
   Button,
   Box,
+  TablePagination,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -39,6 +40,9 @@ export default function Bugs({ handleClick }) {
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
+  const [updateSprint, setUpdateSprint] = useState({});
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [copiedStates, setCopiedStates] = useState(
     Array(filteredData.length).fill(false)
   );
@@ -61,8 +65,16 @@ export default function Bugs({ handleClick }) {
       data: event.target.value,
       id: _id,
     };
-    await apiService.editSprint(obj);
-    bugDisplay();
+    setUpdateSprint(event.target.value);
+    const sprintData = await apiService.editSprint(obj);
+    if (!sprintData.error) {
+      const message = `Sprint updated to ${event.target.value}.`;
+      setChangemsg({
+        ...sprintData,
+        message,
+      });
+      bugDisplay();
+    }
   };
   const headers = ["Bug_id", "Comments", "Status", "Updated By", "Updated On"];
 
@@ -116,6 +128,17 @@ export default function Bugs({ handleClick }) {
       _id: id,
     };
     setBugStatusData(obj);
+  };
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   function formatDate(isoDateString) {
@@ -259,7 +282,7 @@ export default function Bugs({ handleClick }) {
       </Box>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#FFFFFF", padding: "13px" }}
+        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
         {" "}
         <Table
@@ -293,7 +316,7 @@ export default function Bugs({ handleClick }) {
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         cursor: "pointer",
-                        backgroundColor: isEvenRow ? "#F1F6F9" : "white",
+                        backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                         border: "1px solid #ccc",
                         padding: "8px",
                       }}
@@ -455,6 +478,16 @@ export default function Bugs({ handleClick }) {
         message={changemsg.message}
         setChangemsg={setChangemsg}
       />
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50, 100]}
+        component="div"
+        count={filteredData.length} 
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
+    
   );
 }
