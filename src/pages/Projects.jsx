@@ -1,29 +1,24 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import apiService from "../services/apiService";
 import ProjectCard from "../components/ProjectCard";
 import FormDialog from "../components/FormDialog";
-import { Typography } from "@mui/material";
+import { Typography, Grid, Box } from "@mui/material";
 
-const ProjectList = ({ projects, setCorrect,load }) => {
-  const gridContainerStyle = {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", 
-    gap: "1rem", 
-  };
+const ProjectList = ({ projects, setCorrect, load }) => {
   return (
     <>
-     {projects.length ? (
-        <div style={gridContainerStyle}>
+      {projects.length ? (
+        <Grid container spacing={4}>
           {projects.map((project) => (
-            <ProjectCard
-              key={project._id}
-              project={project}
-              setCorrect={setCorrect}
-              load={load}
-            />
+            <Grid item xs={12} sm={6} md={4} lg={3} key={project._id}>
+              <ProjectCard
+                project={project}
+                setCorrect={setCorrect}
+                load={load}
+              />
+            </Grid>
           ))}
-        </div>
+        </Grid>
       ) : (
         <Typography sx={{ textAlign: "center" }} variant="h5">
           No Projects Found
@@ -33,34 +28,33 @@ const ProjectList = ({ projects, setCorrect,load }) => {
   );
 };
 
-
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [correct, setCorrect] = useState(false);
 
   const handleProjects = async () => {
-    const result = await apiService.getProjects();
-    setProjects(result);
+    try {
+      const result = await apiService.getProjects();
+      setProjects(result);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
   };
 
   useEffect(() => {
     handleProjects();
   }, [correct]);
- 
+
   return (
-    <>
-      <div>
-        <FormDialog  setCorrect={setCorrect} />
-       
-      
-          <ProjectList
-            projects={projects}
-            setCorrect={setCorrect}
-            load={handleProjects}
-          />
-      
-      </div>
-    </>
+    <div>
+      <FormDialog setCorrect={setCorrect} />
+
+      <ProjectList
+        projects={projects}
+        setCorrect={setCorrect}
+        load={handleProjects}
+      />
+    </div>
   );
 };
 

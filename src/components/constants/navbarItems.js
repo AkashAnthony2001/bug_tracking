@@ -10,15 +10,15 @@ import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 const navbarItems = [
   {
     id: 0,
-    text: 'Home',
+    text: 'Home', 
     icon: <HomeIcon/>,
-    link: '/dashboard',color:"#6373e7"
+    link: '/dashboard',color:"#0E2954",
   },
   {
     id: 1,
     text: 'Projects',
     icon: <DashboardIcon />,
-    link: '/dashboard/projects',color:"#aee9f9"
+    link: '/dashboard/projects',color:"#9E4784"
   }, {
     id: 2,
     text: 'Modules',
@@ -28,22 +28,22 @@ const navbarItems = [
     id: 3,
     text: 'Assigned to me',
     icon: <AssignmentIcon />,
-    link: '/dashboard/assigned',color:"#1b2b4e"
+    link: '/dashboard/assigned',color:"#6E85B2"
   },{
     id: 4,
     text: 'Submitted by me',
     icon: <AutoAwesomeMotionIcon />,
-    link: '/dashboard/submitted',color:"#f47e5d"
+    link: '/dashboard/submitted',color:"#790252"
   },{
     id: 5,
     text: 'Bugs',
     icon: <PestControlIcon />,
-    link: '/dashboard/bugs',color:"#4fce87"
+    link: '/dashboard/bugs',color:"#03C988"
   },{
     id: 6,
     text: 'Users',
     icon: <PeopleAltOutlinedIcon />,
-    link: '/dashboard/users',color:"#ee5273"
+    link: '/dashboard/users',color:"#1B2430"
   }
 ];
 

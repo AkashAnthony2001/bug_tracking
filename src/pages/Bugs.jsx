@@ -12,7 +12,6 @@ import {
   TableRow,
   Button,
   Box,
-  TablePagination,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -25,6 +24,7 @@ import StatusChangeDialog from "../components/StatusChangeDialog";
 import CustomizedMenus from "../components/CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
+import TablePagination from "@mui/material/TablePagination";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -87,6 +87,7 @@ export default function Bugs() {
     const usersData = await apiService.getUsers();
     setUsers(usersData);
   };
+
   const statusColors = {
     Opened: "	#32cd32",
     Assigned: "blue",
@@ -280,7 +281,6 @@ export default function Bugs() {
         component={Paper}
         sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
-        {" "}
         <Table
           aria-label="simple table"
           stickyHeader
@@ -299,7 +299,9 @@ export default function Bugs() {
 
           <TableBody>
             {filteredData.length ? (
-              filteredData?.map((databug, index) => {
+              filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((databug, index) => {
                 const originalDateString = databug.estimate_date;
                 const formattedDate = formatDate(originalDateString);
                 const isRowExpanded = index === expandedRow;
@@ -319,7 +321,11 @@ export default function Bugs() {
                       tabIndex={-1}
                     >
                       <TableCell
-                        sx={{ textAlign: "center", alignItems: "center", maxWidth:"252px" }}
+                        sx={{
+                          textAlign: "center",
+                          alignItems: "center",
+                          maxWidth: "252px",
+                        }}
                       >
                         <div style={{display:"flex", flexDirection:"row"}}>
                         <Button
@@ -456,6 +462,15 @@ export default function Bugs() {
             )}
           </TableBody>
         </Table>
+        <TablePagination
+  rowsPerPageOptions={[10, 25, 50]}
+  component="div"
+  count={filteredData.length}
+  page={page}
+  rowsPerPage={rowsPerPage}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage} 
+/>
       </TableContainer>
       <StatusChangeDialog
         isOpen={isDialogOpen}
@@ -470,16 +485,6 @@ export default function Bugs() {
         message={changemsg.message}
         setChangemsg={setChangemsg}
       />
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={filteredData.length} 
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </>
-    
   );
 }

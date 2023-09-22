@@ -2,49 +2,45 @@ import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
 import UserDialog from "../components/usersDialog";
 import UserCard from "../components/UserCard";
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 const Users = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState([]);
   const [correct, setCorrect] = useState(false);
 
   const handleUsers = async () => {
-    const result = await apiService.getUsers();
-    const uData = result.filter((data)=>{
-      return data.role === "developer" 
-    })
-    setUserData(uData);
+    try {
+      const result = await apiService.getUsers();
+      const developerUsers = result.filter((user) => user.role === "developer");
+      setUserData(developerUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   useEffect(() => {
     handleUsers();
   }, [correct]);
 
-  const gridContainerStyle = {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-    gap: "1rem",
-  };
-
   return (
     <>
       <UserDialog load={handleUsers} />
       
-   
       {userData.length ? (
-        <div style={gridContainerStyle}>
-          {userData.map((userDatas) => (
-            <UserCard
-              key={userDatas._id}
-              userData={userDatas}
-              setCorrect={setCorrect}
-              load={handleUsers}
-            />
+        <Grid container spacing={4}>
+          {userData.map((user) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={user._id}>
+              <UserCard
+                userData={user}
+                setCorrect={setCorrect}
+                load={handleUsers}
+              />
+            </Grid>
           ))}
-        </div>
+        </Grid>
       ) : (
         <Typography sx={{ textAlign: "center" }} variant="h5">
-          No Users Found
+          No Developer Users Found
         </Typography>
       )}
     </>
