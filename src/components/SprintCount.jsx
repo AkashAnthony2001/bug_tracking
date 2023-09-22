@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
-import { Card, Typography } from "@mui/material";
+import { Card, Typography, Grid } from "@mui/material";
 const chartSetting = {
   xAxis: [
     {
@@ -83,11 +83,10 @@ const SprintCount = () => {
   const cardStyle = {
     minWidth: 275,
     marginBottom: "16px",
-    marginLeft:"50px",
-    marginRight:"75px",
+    marginLeft: "50px",
+    marginRight: "75px",
 
     backgroundColor: "#F8F9FA",
-    boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
     padding: "16px",
   };
@@ -99,7 +98,17 @@ const SprintCount = () => {
   };
 
   return (
-    <div>
+    <Card
+      sx={{
+        marginLeft: "30px",
+        marginRight: "20px",
+        backgroundColor: "#F8F9FA",
+        boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
+        borderRadius: "8px",
+        marginBottom: "16px",
+        marginTop: "16px",
+      }}
+    >
       <div style={{ textAlign: "center" }}>
         <label style={{ fontWeight: "bold", marginRight: "10px" }}>
           Select Sprint:
@@ -112,6 +121,7 @@ const SprintCount = () => {
             border: "1px solid #ccc",
             borderRadius: "4px",
             marginRight: "10px",
+            marginTop: "16px",
           }}
         >
           {sprintOptions.map((val) => (
@@ -134,7 +144,7 @@ const SprintCount = () => {
             </Card>
           ))}
       </div>
-    </div>
+    </Card>
   );
 };
 

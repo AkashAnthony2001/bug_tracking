@@ -110,7 +110,6 @@ const Dashboard = () => {
     }
   }, [assignedValue]);
 
-
   const username = localStorage.getItem("name");
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -237,9 +236,13 @@ const Dashboard = () => {
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
-                          <h3>{<BugReportIcon />} My Bugs </h3> 
+                            <h3>{<BugReportIcon />} My Bugs </h3>
                             <TableContainer
-                              sx={{ maxHeight: "220px", overflowY: "scroll", height: "220px" }}
+                              sx={{
+                                maxHeight: "220px",
+                                overflowY: "scroll",
+                                height: "220px",
+                              }}
                             >
                               <Table>
                                 <TableHead
@@ -298,7 +301,11 @@ const Dashboard = () => {
                           <CardContent>
                             <h2>{<WorkIcon />} My Work Items Due Today</h2>
                             <TableContainer
-                              sx={{ maxHeight: "220px", overflowY: "scroll", height: "220px" }}
+                              sx={{
+                                maxHeight: "220px",
+                                overflowY: "scroll",
+                                height: "220px",
+                              }}
                             >
                               <Table>
                                 <TableHead
@@ -350,25 +357,12 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
-<SprintCount/>
+                    {localStorage.getItem("role") === "admin" && (
+                      <SprintCount />
+                    )}
                     <Grid item xs={6}>
                       <div style={{ padding: 2 }}>
-                        <Card style={{ ...cardStyle, height: '600px' }}>
-                          <CardContent sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100%",
-                            width: "100%",
-                          }}>
-                            {localStorage.getItem("role") === "admin" ? <SprintBarGraph /> : <UserSprintGraph />}
-                          </CardContent>
-                        </Card>
-                      </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <div style={{ padding: 2 }}>
-                        <Card style={{ ...cardStyle, height: '600px' }}>
+                        <Card style={{ ...cardStyle, height: "600px" }}>
                           <CardContent
                             sx={{
                               display: "flex",
@@ -378,12 +372,36 @@ const Dashboard = () => {
                               width: "100%",
                             }}
                           >
-                            {localStorage.getItem('role') === 'admin' ? <AdminUsersGraph /> : <UserBarGraph opened={open} closed={close} />}
+                            {localStorage.getItem("role") === "admin" ? (
+                              <SprintBarGraph />
+                            ) : (
+                              <UserSprintGraph />
+                            )}
                           </CardContent>
                         </Card>
                       </div>
                     </Grid>
-
+                    <Grid item xs={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={{ ...cardStyle, height: "600px" }}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            {localStorage.getItem("role") === "admin" ? (
+                              <AdminUsersGraph />
+                            ) : (
+                              <UserBarGraph opened={open} closed={close} />
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
                   </Grid>
                 </div>
               </>
