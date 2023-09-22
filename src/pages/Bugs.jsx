@@ -26,7 +26,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
-export default function Bugs({ handleClick }) {
+export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
@@ -40,7 +40,6 @@ export default function Bugs({ handleClick }) {
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
-  const [updateSprint, setUpdateSprint] = useState({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [copiedStates, setCopiedStates] = useState(
@@ -65,7 +64,6 @@ export default function Bugs({ handleClick }) {
       data: event.target.value,
       id: _id,
     };
-    setUpdateSprint(event.target.value);
     const sprintData = await apiService.editSprint(obj);
     if (!sprintData.error) {
       const message = `Sprint updated to ${event.target.value}.`;
@@ -89,14 +87,7 @@ export default function Bugs({ handleClick }) {
     const usersData = await apiService.getUsers();
     setUsers(usersData);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
   const statusColors = {
     Opened: "	#32cd32",
     Assigned: "blue",
@@ -136,6 +127,15 @@ export default function Bugs({ handleClick }) {
       _id: id,
     };
     setBugStatusData(obj);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   function formatDate(isoDateString) {
@@ -318,9 +318,6 @@ export default function Bugs({ handleClick }) {
                         border: "1px solid #ccc",
                         padding: "8px",
                       }}
-                      onClick={() => {
-                        handleClick(databug.id);
-                      }}
                       tabIndex={-1}
                     >
                       <TableCell
@@ -330,34 +327,31 @@ export default function Bugs({ handleClick }) {
                           maxWidth: "252px",
                         }}
                       >
-                        <div style={{ display: "flex", flexDirection: "row" }}>
-                          <Button
-                            variant="text"
-                            onClick={() => collapseRow(index, databug?.bug_id)}
-                            style={{
-                              backgroundColor: "#398EED",
-                              color: "white",
-                              padding: "4px 8px",
-                              textTransform: "lowercase",
-                            }}
-                          >
-                            {databug?.bug_id}
-                          </Button>
-                          <span
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <ArrowOutwardIcon
-                              sx={{ color: "#398EED" }}
-                              onClick={() => handleIconClick(databug)}
-                            />
-                            <ContentCopyRoundedIcon
-                              sx={{ color: "#398EED", fontSize: "large" }}
-                              onClick={() =>
-                                copyToClipboard(databug?.bug_id, index)
-                              }
-                            />
-                          </span>
-                          {copiedStates[index] && (
+                        <div style={{display:"flex", flexDirection:"row"}}>
+                        <Button
+                          variant="text"
+                          onClick={() => collapseRow(index, databug?.bug_id)}
+                          style={{
+                            color: "#398EED",
+                            padding: "4px 8px",
+                            textTransform: "lowercase",
+                          }}
+                        >
+                          {databug?.bug_id}
+                        </Button>
+                        <span style={{display:"flex", flexDirection:"column"}}>
+                          <ArrowOutwardIcon
+                            sx={{ color: "#398EED" }}
+                            onClick={() => handleIconClick(databug)}
+                          />
+                          <ContentCopyRoundedIcon
+                            sx={{ color: "#398EED", fontSize:"large",  }}
+                            onClick={() =>
+                              copyToClipboard(databug?.bug_id, index)
+                            }
+                          />
+                        </span>
+                        {copiedStates[index] && (
                             <span style={{ marginLeft: "4px", color: "green" }}>
                               ID Copied!
                             </span>
