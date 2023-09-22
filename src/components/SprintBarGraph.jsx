@@ -33,10 +33,12 @@ const SprintBarGraph = () => {
     {
       label: "Sprint 1",
       value: "sprint1",
+      
     },
     {
       label: "Sprint 2",
       value: "sprint2",
+      color: "#6273E7"
     },
     {
       label: "Sprint 3",

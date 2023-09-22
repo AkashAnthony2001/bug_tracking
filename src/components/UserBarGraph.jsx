@@ -5,7 +5,7 @@ const UserBarGraph = ({opened,closed}) => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <h3>My Bugs</h3>
+            <h3>Bugs</h3>
             <BarChart
                 xAxis={[{ scaleType: 'band', data: ['Assigned', 'Closed'] }]}
                 series={[{ data: [opened,closed]}]}

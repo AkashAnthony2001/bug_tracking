@@ -30,7 +30,7 @@ function DeleteUser({ userData, setCorrect, load, openDelete, setOpenDelete}) {
   return (
     <div>
       <Dialog open={openDelete} onClose={handleClose}>
-      <DialogTitle style={{ backgroundColor:"#596e79", color: "white" }}>
+      <DialogTitle style={{ backgroundColor:"#398EED", color: "white" }}>
         Dekete User
         </DialogTitle>
         <DialogTitle id="alert-dialog-title">

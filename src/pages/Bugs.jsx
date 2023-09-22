@@ -259,7 +259,7 @@ export default function Bugs({ handleClick }) {
       </Box>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+        sx={{ backgroundColor: "#FFFFFF", padding: "13px" }}
       >
         {" "}
         <Table

@@ -140,7 +140,7 @@ export default function BasicTable({ rows, heading, handleClick }) {
       </Typography>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+        sx={{ backgroundColor: "#FFFFFF", padding: "13px" }}
       >
         <Table
           aria-label="tickets table"
