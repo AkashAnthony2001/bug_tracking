@@ -51,7 +51,7 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
         variant="h6"
         noWrap
         component="div"
-        sx={{ color: "black" }}
+        sx={{ color: "white" }}
       >
         Welcome {username}
       </Typography>

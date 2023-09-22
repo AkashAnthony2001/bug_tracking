@@ -160,7 +160,7 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
       </Typography>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
         <Table
           aria-label="tickets table"
@@ -196,7 +196,7 @@ export default function BasicTableSub({ row, headers, handleClick, SubmitedDispl
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
-                          backgroundColor: isEvenRow ? "#F1F6F9" : "white",
+                          backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}

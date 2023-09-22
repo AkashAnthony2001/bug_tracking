@@ -282,7 +282,7 @@ export default function Bugs({ handleClick }) {
       </Box>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
         {" "}
         <Table
@@ -316,7 +316,7 @@ export default function Bugs({ handleClick }) {
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         cursor: "pointer",
-                        backgroundColor: isEvenRow ? "#F1F6F9" : "white",
+                        backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                         border: "1px solid #ccc",
                         padding: "8px",
                       }}

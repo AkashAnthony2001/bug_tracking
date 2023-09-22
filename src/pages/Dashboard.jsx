@@ -55,7 +55,7 @@ const Dashboard = () => {
     minWidth: 275,
     margin: "20px",
     marginBottom: "1rem",
-    backgroundColor: "#F1F6F9",
+    backgroundColor: "#F8F9FA",
     boxShadow: "0 7px 7px rgba(0, 0, 0.2, 0.2)",
     borderRadius: "8px",
   };

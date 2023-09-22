@@ -10,7 +10,7 @@ export default function ProjectCard({ project, setCorrect, load }) {
     marginTop: "10px",
     minWidth: 275,
     marginBottom: "1rem",
-    backgroundColor: "#F1F6F9", 
+    backgroundColor: "#F8F9FA", 
     boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
     borderRadius: "8px",
   };

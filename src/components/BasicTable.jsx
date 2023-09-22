@@ -158,7 +158,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
       </Typography>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#EFEFEF", padding: "16px" }}
+        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
       >
         <Table
           aria-label="tickets table"
@@ -193,7 +193,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                           cursor: "pointer",
-                          backgroundColor: isOddRow ? "#F1F6F9" : "#FFFFFF",
+                          backgroundColor: isOddRow ? "#F8F9FA" : "#FFFFFF",
                           border: "1px solid #ccc",
                           padding: "8px",
                         }}
