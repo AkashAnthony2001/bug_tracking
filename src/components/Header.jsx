@@ -1,6 +1,5 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
-import NotificationBell from "./NotificationBell";
 import UserAvatar from "./UserAvatar";
 
 const Header = ({ drawerWidth, tmpbar = false, username }) => {
@@ -38,32 +37,25 @@ const Header = ({ drawerWidth, tmpbar = false, username }) => {
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            justifyContent: "flex-end",
           }}
         >
          
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ color: "white" }}
-          >
-            Hello, {username}
-          </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
           }}
-        >
-          <NotificationBell
-          sx={{color:"white"}}
-            anchorEl={anchorEl}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            open={open}
-          />
+        > <Typography
+        variant="h6"
+        noWrap
+        component="div"
+        sx={{ color: "white" }}
+      >
+        Welcome {username}
+      </Typography>
+        
           <UserAvatar>{name}</UserAvatar>
         </Box>
       </Toolbar>

@@ -8,10 +8,17 @@ import {
   TextField,
   Grid,
   FormHelperText,
-  Box, Typography,
+  Box,
+  Typography,
+  FormLabel,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import FormControl from "@mui/material/FormControl";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import apiService from "../services/apiService";
@@ -48,7 +55,6 @@ export default function BugsDialogue({ loadData, bugStatus }) {
   const [idData, setIDData] = useState({ projectId: "" });
 
   const handleOpenDialog = () => {
-
     setBugData({
       ...bugData,
       createdby: userName,
@@ -120,7 +126,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
         const result = await apiService.createBugs(data);
         if (result) {
           loadData();
-          bugStatus()
+          bugStatus();
           handleReset();
         }
         setOpen(false);
@@ -140,6 +146,9 @@ export default function BugsDialogue({ loadData, bugStatus }) {
       setBugData({ ...bugData, bug_id: response.response, moduleId: data });
     }
   };
+  const handleCustomerFoundChange = (event) => {
+    setBugData({ ...bugData, customerfound: event.target.value === "true" });
+  };
 
   const handleReset = () => {
     resetDate();
@@ -150,31 +159,27 @@ export default function BugsDialogue({ loadData, bugStatus }) {
     setUsername(localStorage.getItem("name"));
   }, []);
 
-
   const resetDate = () => {
     setDate(null);
   };
   return (
     <>
+      <Button
+        variant="outlined"
+        size="small"
+        onClick={handleOpenDialog}
+        style={{
+          marginBottom: "20px",
+          background: "#398EED",
+          color: "#ffffff",
+          boxShadow: "1px 1px 8px 1px gray",
+        }}
+      >
+        Create Bug
+      </Button>
 
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleOpenDialog}
-          style={{
-            marginBottom: "20px",
-            background: "#398EED",
-            color: "#ffffff",
-            boxShadow: "1px 1px 8px 1px gray",
-          }}
-        >
-          Create Bug
-        </Button>
-        
       <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle
-          style={{ backgroundColor: "#398EED", color: "white" }}
-        >
+        <DialogTitle style={{ backgroundColor: "#398EED", color: "white" }}>
           Create Bugs
         </DialogTitle>{" "}
         <DialogContent>
@@ -374,23 +379,27 @@ export default function BugsDialogue({ loadData, bugStatus }) {
             <br />
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="bug-type-label">Customer Found</InputLabel>
+                <InputLabel id="bug-type-label">Status</InputLabel>
                 <Select
-                  label="Customer Found"
-                  value={bugData.customerfound}
+                  label="Status"
+                  value={bugData.status}
                   onChange={(event) =>
-                    setBugData({
-                      ...bugData,
-                      customerfound: event.target.value,
-                    })
+                    setBugData({ ...bugData, status: event.target.value })
                   }
                 >
-                  <MenuItem value={true}> Yes</MenuItem>
-                  <MenuItem value={false}>No</MenuItem>
+                  <MenuItem value="Opened">Opened</MenuItem>
+                  <MenuItem value="Assigned">Assigned</MenuItem>
+                  <MenuItem value="InProgress">InProgress</MenuItem>
+                  <MenuItem value="Resolved">Resolved</MenuItem>
+                  <MenuItem value="Testing">Testing</MenuItem>
+                  <MenuItem value="Verified">Verified</MenuItem>
+                  <MenuItem value="Closed">Closed</MenuItem>
+                  <MenuItem value="Hold">Hold</MenuItem>
                 </Select>
-                <FormHelperText error>{errors.customerfound}</FormHelperText>
+                <FormHelperText error>{errors.status}</FormHelperText>
               </FormControl>
             </Grid>
+          
             <br />
             <br />
             <Grid item xs={6}>
@@ -414,28 +423,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
                 )}
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="bug-type-label">Status</InputLabel>
-                <Select
-                  label="Status"
-                  value={bugData.status}
-                  onChange={(event) =>
-                    setBugData({ ...bugData, status: event.target.value })
-                  }
-                >
-                  <MenuItem value="Opened">Opened</MenuItem>
-                  <MenuItem value="Assigned">Assigned</MenuItem>
-                  <MenuItem value="InProgress">InProgress</MenuItem>
-                  <MenuItem value="Resolved">Resolved</MenuItem>
-                  <MenuItem value="Testing">Testing</MenuItem>
-                  <MenuItem value="Verified">Verified</MenuItem>
-                  <MenuItem value="Closed">Closed</MenuItem>
-                  <MenuItem value="Hold">Hold</MenuItem>
-                </Select>
-                <FormHelperText error>{errors.status}</FormHelperText>
-              </FormControl>
-            </Grid>
+        
             <br />
             <br />
             <Grid item xs={6}>
@@ -461,6 +449,28 @@ export default function BugsDialogue({ loadData, bugStatus }) {
                   <MenuItem value="10">10</MenuItem>
                 </Select>
                 <FormHelperText error>{errors.sprint}</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+            <FormControl component="fieldset">
+        <FormLabel component="legend">Customer Found</FormLabel>              <RadioGroup
+                  row
+                  name="customerfound"
+                  value={bugData.customerfound.toString()} 
+                  onChange={handleCustomerFoundChange}
+                >
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio />}
+                    label="Yes"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio />}
+                    label="No"
+                  />
+                </RadioGroup>
+                <FormHelperText error>{errors.customerfound}</FormHelperText>
               </FormControl>
             </Grid>
           </Grid>

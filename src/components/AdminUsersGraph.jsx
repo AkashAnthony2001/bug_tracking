@@ -33,11 +33,15 @@ const AdminUsersGraph = () => {
       data: adminUser && adminUser?.map((item) => item.Assigned),
       label: 'Assigned',
     },
+    {
+      data: adminUser && adminUser?.map((item)=> item.InProgress),
+      label: 'InProgress'
+    }
   ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h3>My Bugs</h3>
+      <h3>Overall Bugs</h3>
       <BarChart
         xAxis={[{ scaleType: 'band', data: xAxisData }]}
         series={seriesData}
