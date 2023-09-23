@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box'
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function BasicDialog({ action, children, buttonMsg, sx }) {
   const [open, setOpen] = React.useState(false);
@@ -29,10 +30,10 @@ export default function BasicDialog({ action, children, buttonMsg, sx }) {
         alignItems: "center"
       }}
     >
-      <Button variant="outlined" color="error" onClick={handleClickOpen}
+      <Button variant="outlined" size='small'  onClick={handleClickOpen}
         sx={sx}
       >
-        {buttonMsg}
+       <LogoutIcon size='small'/> {buttonMsg}
       </Button>
       <Dialog
         open={open}

@@ -13,6 +13,8 @@ import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
 import apiService from "../services/apiService";
 import MeyiLogo from  "../assets/logo.png"
+import { Link } from "react-router-dom";
+
 
 const drawerWidth = 190;
 
@@ -35,6 +37,7 @@ const Navbar = () => {
     : navbarItems;
 
   return (
+    
     <Drawer
       sx={{
         width: drawerWidth,
@@ -42,7 +45,7 @@ const Navbar = () => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          backgroundColor: "#CAEDFF"
+          backgroundColor: "#D0E8F2"
         },
         display: "flex",
         flexDirection: "column",
@@ -57,16 +60,16 @@ const Navbar = () => {
           padding: "1rem",
           textDecoration: "none",
           color: "black",
-          background: "#ffffff",
+          background: "#D0E8F2",
         }}
         href="/dashboard"
       >
         <div style={{display:"flex", flexDirection:"row" ,alignItems:"center"}}>
         <img src={MeyiLogo} alt="logo" style={{height:"25px",width:"35px",}}/>
-        <Typography  sx={{color:"#398EED", fontWeight:"bold", paddingLeft:"3px"}}>Bug Tracker</Typography>
+        <Typography  sx={{color:"#black", fontWeight:"bold", paddingLeft:"3px"}}>Bug Tracker</Typography>
         </div>
       </Box>
-      <List sx={{ background: "#ffffff", height: "100%", color: "black" }}>
+      <List sx={{ background: "#D0E8F2", height: "100%", color: "black" }}>
         {filterarr &&
           filterarr.map((item) => (
             <ListItem key={item.id} disablePadding>
@@ -87,16 +90,14 @@ const Navbar = () => {
                 <ListItemIcon sx={{color:item.color}}>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.text}
-                  sx={{ marginLeft: "-25px",color:"#6e6e6e" }}
+                  sx={{ marginLeft: "-25px",color:"#black" }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
       </List>
       <Divider />
-      <BasicDialog action={logout} buttonMsg="Logout" sx={{ width: "100%" }}>
-        Are you sure you want to log out?
-      </BasicDialog>
+      
     </Drawer>
   );
 };

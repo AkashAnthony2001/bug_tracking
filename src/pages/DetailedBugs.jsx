@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditBugDialog from "../components/EditBugDialog";
+import DeleteBug from "../components/DeleteBug";
 
 const DetailedBugs = () => {
   const location = useLocation();
@@ -85,6 +86,7 @@ const DetailedBugs = () => {
         Back
       </Button>
       <Button onClick={()=>setOpen(true)}>Edit</Button>
+      <DeleteBug data={data} hash={hash}/>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>

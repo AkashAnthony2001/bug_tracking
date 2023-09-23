@@ -356,6 +356,16 @@ const updateAllBug = async (data,id) => {
 
   return parsedResponse;
 }
+const deleteBug = async (id) => {
+  const response = await fetch(`${baseUrl}/issuetracker/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  const parsedResponse = await response.json();
+  return parsedResponse;
+};
 
 const apiService = {
   editComment,
@@ -385,7 +395,8 @@ const apiService = {
   getUserSprint,
   adminUserData,
   editSprint,
-  updateAllBug
+  updateAllBug,
+  deleteBug,
 };
 
 export default apiService;
