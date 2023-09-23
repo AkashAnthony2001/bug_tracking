@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,17 +8,32 @@ import {
   Paper,
   Typography,
   Button,
+  TableHead,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditBugDialog from "../components/EditBugDialog";
 import DeleteBug from "../components/DeleteBug";
+import apiService from "../services/apiService";
 
 const DetailedBugs = () => {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [bugStatusData, setBugStatusData] = useState([]);
   const data = location.state;
   const hash = location.hash;
 
+  const bugid = data.bug_id;
+  const bugStatusApi = async () => {
+    const bugStatusResponse = await apiService.bugStatus();
+    const filteredData = bugStatusResponse.response.filter((data) => {
+      return data.bug_id === bugid;
+    });
+    setBugStatusData(filteredData);
+  };
+  useEffect(() => {
+    bugStatusApi();
+  }, []);
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -29,6 +44,9 @@ const DetailedBugs = () => {
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
 
   const originalDateString = data.estimate_date;
   const formattedDate = formatDate(originalDateString);
@@ -55,30 +73,63 @@ const DetailedBugs = () => {
     { label: "Updated Date  :", value: isUpdatated },
   ];
 
+  const headers = ["Bug_id", "Status", "Updated By", "Updated On"];
+
+  function formatsDate(isoDateString) {
+    const date = new Date(isoDateString);
+    return `${date.toLocaleDateString()} ${convertTo12HourFormat(
+      date.getHours(),
+      date.getMinutes()
+    )}`;
+  }
+
+  function convertTo12HourFormat(hours, mins) {
+    if (hours >= 0 && hours <= 11) {
+      return `${hours === 0 ? 12 : hours}:${mins} AM`;
+    } else {
+      return `${hours === 12 ? 12 : hours - 12}:${mins} PM`;
+    }
+  }
+
+  const isAdmin = localStorage.getItem("role") === "admin" ? false : true;
   return (
     <>
-      <Button
-        onClick={() =>
-          navigate(
-            hash === "#bugs"
-              ? "/dashboard/bugs"
-              : hash === "#submitted"
-              ? "/dashboard/submitted"
-              : "/dashboard/assigned"
-          )
-        }
-        variant="outlined"
-        size="small"
+      <div
         style={{
-          marginBottom: "0px",
-          background: "#398EED",
-          color: "#ffffff",
-          boxShadow: "3px 2px 10px 0px gray",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        Back
-      </Button>
-      <DeleteBug data={data} hash={hash}/>
+        <div>
+          <Button
+            onClick={() =>
+              navigate(
+                hash === "#bugs"
+                  ? "/dashboard/bugs"
+                  : hash === "#submitted"
+                  ? "/dashboard/submitted"
+                  : "/dashboard/assigned"
+              )
+            }
+            variant="outlined"
+            size="small"
+            sx={{
+              marginBottom: "0px",
+              background: "#398EED",
+              color: "#ffffff",
+              boxShadow: "3px 2px 10px 0px gray",
+            }}
+          >
+            Back
+          </Button>
+        </div>
+        <div>
+          <Button onClick={() => setOpen(true)}>Edit</Button>
+          {isAdmin ? "" : <DeleteBug data={data} hash={hash} />}
+        </div>
+      </div>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>
@@ -86,13 +137,15 @@ const DetailedBugs = () => {
         <Table aria-label="detailed bug table">
           <TableBody>
             {details.map((detail, index) => (
-              <TableRow key={index}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                backgroundColor: index % 2 === 0 ? "#F1F6F9" : "#FFFFFF",
-                borderBottom: "1px solid #e0e0e0",
-                padding: "8px",
-              }}>
+              <TableRow
+                key={index}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  backgroundColor: index % 2 === 0 ? "#F1F6F9" : "#FFFFFF",
+                  borderBottom: "1px solid #e0e0e0",
+                  padding: "8px",
+                }}
+              >
                 <TableCell
                   component="th"
                   scope="row"
@@ -114,6 +167,58 @@ const DetailedBugs = () => {
                 </TableCell>
               </TableRow>
             ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <EditBugDialog
+        open={open}
+        handleDialogClose={handleDialogClose}
+        data={data}
+      />
+      <Typography variant="h6" sx={{ m: 2 }} color="initial">
+        Bug Status History
+      </Typography>
+      <TableContainer component={Paper} sx={{ width: "100%", p: 2 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headers.map((heading) => (
+                <TableCell key={heading}>{heading}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bugStatusData.length ? (
+              bugStatusData?.map((statusData, index) => {
+                const originalDateString = statusData?.createdAt;
+                const formattedDate = formatsDate(originalDateString);
+                return (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      backgroundColor: index % 2 === 0 ? "#F1F6F9" : "#FFFFFF",
+                      borderBottom: "1px solid #e0e0e0",
+                      padding: "8px",
+                    }}
+                  >
+                    <TableCell>{statusData?.bug_id}</TableCell>
+                    <TableCell>{statusData?.status}</TableCell>
+                    <TableCell>{statusData?.updatedby}</TableCell>
+                    <TableCell>{formattedDate}</TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} sx={{ textAlign: "center" }}>
+                  <Typography variant="h6" color="initial">
+                    No Records Found
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -36,9 +36,11 @@ export default function Bugs() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [users, setUsers] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedProject, setSelectedProject] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -86,6 +88,8 @@ export default function Bugs() {
     setBugdata(data);
     const usersData = await apiService.getUsers();
     setUsers(usersData);
+    const projectsData = await apiService.getProjects();
+    setProjects(projectsData);
   };
 
   const statusColors = {
@@ -108,10 +112,11 @@ export default function Bugs() {
       (item) =>
         (selectedUser === "" || item.assignedTo.username === selectedUser) &&
         (selectedSprint === "" || item.sprint === selectedSprint) &&
-        (selectedStatus === "" || item.status === selectedStatus)
+        (selectedStatus === "" || item.status === selectedStatus) &&
+        (selectedProject === "" || item.projectId.title === selectedProject)
     );
     setFilteredData(filteredItems);
-  }, [selectedUser, selectedSprint, selectedStatus, bugData]);
+  }, [selectedUser,selectedProject, selectedSprint, selectedStatus, bugData]);
 
   const styles = {
     textAlign: "center",
@@ -155,7 +160,6 @@ export default function Bugs() {
     });
     setFilteredResponse(filteredData);
   };
-
   const header = [
     "BugId",
     "BugDescription",
@@ -176,6 +180,10 @@ export default function Bugs() {
 
   const handleSelectedUsers = (event) => {
     setSelectedUser(event.target.value);
+  };
+
+  const handleSelectedProject = (event) => {
+    setSelectedProject(event.target.value);
   };
 
   const handleSelectedSprint = (event) => {
@@ -215,6 +223,24 @@ export default function Bugs() {
           >
             Filter :{" "}
           </Typography>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
+            <Select
+              value={selectedProject}
+              onChange={(event) => handleSelectedProject(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="">
+                <em>Projects</em>
+              </MenuItem>
+              {projects &&
+                projects?.map((data) => (
+                  <MenuItem key={data._id} value={data?.title}>
+                    {data?.title}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
           <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
               value={selectedUser}
@@ -315,7 +341,7 @@ export default function Bugs() {
                           cursor: "pointer",
                           backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                           border: "1px solid #ccc",
-                          padding: "0px",
+                          padding: "8px",
                         }}
                         tabIndex={-1}
                       >
@@ -324,7 +350,6 @@ export default function Bugs() {
                             textAlign: "center",
                             alignItems: "center",
                             maxWidth: "252px",
-                            padding: "4px"
                           }}
                         >
                           <div
@@ -376,10 +401,9 @@ export default function Bugs() {
                           {databug?.assignedTo?.username}
                         </TableCell>
                         <TableCell style={styles}>
-                          <FormControl sx={{ m: 2 }} >
+                          <FormControl sx={{ m: 2 }} size="small">
                             <InputLabel></InputLabel>
                             <Select
-                            size="small"
                               value={databug?.sprint}
                               onChange={(e) => {
                                 handleChange(e, databug?._id);
@@ -409,9 +433,8 @@ export default function Bugs() {
                         >
                           {formattedDate}
                         </TableCell>
-                        <FormControl sx={{ m: 3 }} >
+                        <FormControl sx={{ m: 2 }} size="small">
                           <Select
-                          size="small"
                             defaultValue={databug?.status}
                             onChange={(e) => {
                               handleStatus(e, databug?._id);

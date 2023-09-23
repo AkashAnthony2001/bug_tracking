@@ -30,11 +30,7 @@ export default function BasicDialog({ action, children, buttonMsg, sx }) {
         alignItems: "center"
       }}
     >
-      <Button variant="outlined" size='small'  onClick={handleClickOpen}
-        sx={sx}
-      >
-       <LogoutIcon size='small'/> {buttonMsg}
-      </Button>
+      <LogoutIcon size='small' sx={{color:"black"}} onClick={handleClickOpen} />
       <Dialog
         open={open}
         onClose={handleClose}
