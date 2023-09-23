@@ -19,7 +19,7 @@ import DeleteBug from "../components/DeleteBug";
 import apiService from "../services/apiService";
 
 const DetailedBugs = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [bugStatusData, setBugStatusData] = useState([]);
@@ -36,7 +36,7 @@ const DetailedBugs = () => {
   };
   useEffect(() => {
     bugStatusApi();
-  },[]);
+  }, []);
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -47,9 +47,9 @@ const DetailedBugs = () => {
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
-  const handleDialogClose = () =>{
-    setOpen(false)
-  }
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
 
   const originalDateString = data.estimate_date;
   const formattedDate = formatDate(originalDateString);
@@ -57,7 +57,6 @@ const DetailedBugs = () => {
   const isoformattedDate = formatDate(isoDateString);
   const updatedDtate = data.updatedAt;
   const isUpdatated = formatDate(updatedDtate);
-
 
   const details = [
     { label: "Bug Id  :", value: data?.bug_id },
@@ -95,31 +94,45 @@ const DetailedBugs = () => {
     }
   }
 
+  const isAdmin = localStorage.getItem("role") === "admin" ? false : true;
   return (
     <>
-      <Button
-        onClick={() =>
-          navigate(
-            hash === "#bugs"
-              ? "/dashboard/bugs"
-              : hash === "#submitted"
-              ? "/dashboard/submitted"
-              : "/dashboard/assigned"
-          )
-        }
-        variant="outlined"
-        size="small"
-        sx={{
-          marginBottom: "0px",
-          background: "#398EED",
-          color: "#ffffff",
-          boxShadow: "3px 2px 10px 0px gray",
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        Back
-      </Button>
-      <Button onClick={()=>setOpen(true)}>Edit</Button>
-      <DeleteBug data={data} hash={hash} />
+        <div>
+          <Button
+            onClick={() =>
+              navigate(
+                hash === "#bugs"
+                  ? "/dashboard/bugs"
+                  : hash === "#submitted"
+                  ? "/dashboard/submitted"
+                  : "/dashboard/assigned"
+              )
+            }
+            variant="outlined"
+            size="small"
+            sx={{
+              marginBottom: "0px",
+              background: "#398EED",
+              color: "#ffffff",
+              boxShadow: "3px 2px 10px 0px gray",
+            }}
+          >
+            Back
+          </Button>
+        </div>
+        <div>
+          <Button onClick={() => setOpen(true)}>Edit</Button>
+          {isAdmin ? "" : <DeleteBug data={data} hash={hash} />}
+        </div>
+      </div>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>
@@ -161,7 +174,11 @@ const DetailedBugs = () => {
         </Table>
       </TableContainer>
 
-      <EditBugDialog open={open} handleDialogClose={handleDialogClose} data={data}/>
+      <EditBugDialog
+        open={open}
+        handleDialogClose={handleDialogClose}
+        data={data}
+      />
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Bug Status History
       </Typography>
@@ -176,12 +193,12 @@ const DetailedBugs = () => {
           </TableHead>
           <TableBody>
             {bugStatusData.length ? (
-              bugStatusData?.map((statusData,index) => {
+              bugStatusData?.map((statusData, index) => {
                 const originalDateString = statusData?.createdAt;
                 const formattedDate = formatsDate(originalDateString);
                 return (
                   <TableRow
-                  key={index}
+                    key={index}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       backgroundColor: index % 2 === 0 ? "#F1F6F9" : "#FFFFFF",
