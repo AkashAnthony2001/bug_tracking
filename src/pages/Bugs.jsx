@@ -305,13 +305,12 @@ export default function Bugs() {
       </Box>
       <TableContainer
         component={Paper}
-        sx={{ backgroundColor: "#F8F9FA", padding: "16px" }}
+        sx={{
+          backgroundColor: "#F8F9FA",
+          padding: "16px",
+        }}
       >
-        <Table
-          aria-label="simple table"
-          stickyHeader
-          sx={{ border: "1px solid #ccc", width: "100%" }}
-        >
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               {header &&

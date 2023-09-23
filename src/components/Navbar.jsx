@@ -66,7 +66,7 @@ const Navbar = () => {
       >
         <div style={{display:"flex", flexDirection:"row" ,alignItems:"center"}}>
         <img src={MeyiLogo} alt="logo" style={{height:"25px",width:"35px",}}/>
-        <Typography  sx={{color:"#black", fontWeight:"bold", paddingLeft:"3px"}}>Bug Tracker</Typography>
+        <Typography  sx={{color:"#black", fontWeight:"bold", paddingLeft:"3px"}}>Meyi Tracker</Typography>
         </div>
       </Box>
       <List sx={{ background: "#D0E8F2", height: "100%", color: "black" }}>

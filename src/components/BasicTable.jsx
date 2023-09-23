@@ -279,7 +279,7 @@ export default function BasicTable({ rows, heading, handleClick, Assigneddisplay
                         </TableCell>
                         <FormControl
                           sx={{
-                            m: 2,
+                            m: 4,
                             textAlign: "center",
                             paddingLeft: "170px",
                           }}
