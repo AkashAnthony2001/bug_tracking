@@ -155,7 +155,6 @@ export default function Bugs() {
     });
     setFilteredResponse(filteredData);
   };
-
   const header = [
     "BugId",
     "BugDescription",
