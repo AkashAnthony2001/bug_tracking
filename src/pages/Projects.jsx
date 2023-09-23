@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import apiService from "../services/apiService";
 import ProjectCard from "../components/ProjectCard";
 import FormDialog from "../components/FormDialog";
-import { Typography, Grid, Box } from "@mui/material";
+import { Typography, Grid,  } from "@mui/material";
 
 const ProjectList = ({ projects, setCorrect, load }) => {
   return (
     <>
       {projects.length ? (
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           {projects.map((project) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={project._id}>
+            <Grid  key={project._id}>
               <ProjectCard
                 project={project}
                 setCorrect={setCorrect}

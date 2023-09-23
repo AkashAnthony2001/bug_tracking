@@ -205,7 +205,8 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
                             textAlign: "center",
                             alignItems: "center",
                             maxWidth: "220px",
-                          }}
+                            }}
+                          
                         >
                           <div
                             style={{ display: "flex", flexDirection: "row" }}
@@ -294,7 +295,7 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
                         </TableCell>
                         <FormControl
                           sx={{
-                            m: 2,
+                            m: 4,
                             textAlign: "center",
                             paddingLeft: "170px",
                           }}

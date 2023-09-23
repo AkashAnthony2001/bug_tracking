@@ -88,6 +88,7 @@ export default function CustomizedMenus({data}) {
         <MenuItem disableRipple sx={menuItemStyle}>Reported By : {data?.reportedBy?.username}</MenuItem>
         <MenuItem disableRipple sx={menuItemStyle}>Customer Found : {data?.customerfound ? "Yes" : "No"}</MenuItem>
         <MenuItem disableRipple sx={menuItemStyle}>CreatedBy : {data?.createdby}</MenuItem>
+        <MenuItem disableRipple sx={menuItemStyle}>Bug Type : {data?.bug_type}</MenuItem>
       </StyledMenu>
     </div>
   );

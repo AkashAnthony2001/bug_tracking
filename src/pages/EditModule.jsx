@@ -69,11 +69,13 @@ function EditModule({ moduledata, load, open, setOpen }) {
           <TextField
             margin="dense"
             id="name"
-            label="Enter new UserName"
-            type="email"
+            label="Enter new Module Descrption"
+            type="text"
             fullWidth
             variant="standard"
             value={editedModuleDes}
+            onChange={(e) => setEditedModuleDes(e.target.value)}
+
           />
           <DialogActions>
             <Button size="small" onClick={handleClose}>

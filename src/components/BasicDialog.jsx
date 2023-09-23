@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import Box from '@mui/material/Box'
-import LogoutIcon from '@mui/icons-material/Logout';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function BasicDialog({ action, children, buttonMsg, sx }) {
   const [open, setOpen] = React.useState(false);
@@ -18,28 +18,30 @@ export default function BasicDialog({ action, children, buttonMsg, sx }) {
   };
 
   const handleAction = () => {
-    action()
-  }
+    action();
+  };
 
   return (
     <Box
       sx={{
-        marginTop: 'auto',
-        width: '100%',
-        display: 'flex',
-        alignItems: "center"
+        marginTop: "auto",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <LogoutIcon size='small' sx={{color:"black"}} onClick={handleClickOpen} />
+      <LogoutIcon
+        size="small"
+        sx={{ color: "black", cursor: "pointer" }}
+        onClick={handleClickOpen}
+      />
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {children}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{children}</DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleAction} autoFocus>
