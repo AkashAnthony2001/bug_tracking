@@ -75,7 +75,7 @@ export default function ModuleDemo() {
                 <CardActionArea>
                 <CardContent>
   <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-    <Typography sx={{ fontSize: 13, marginRight: "16px" }} color="text.secondary">
+    <Typography sx={{ fontSize: 15, marginRight: "16px" }} color="text.secondary">
       Module Name:
     </Typography>
     <Typography variant="body1" style={{ flex: "1" }}>
@@ -84,7 +84,7 @@ export default function ModuleDemo() {
   </div>
 
   <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-    <Typography sx={{ fontSize: 13, marginRight: "16px" }} color="text.secondary">
+    <Typography sx={{ fontSize: 15, marginRight: "16px" }} color="text.secondary">
       Module Description:
     </Typography>
     <Typography variant="body1" style={{ flex: "1" }}>
