@@ -36,9 +36,11 @@ export default function Bugs() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [users, setUsers] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedProject, setSelectedProject] = useState("");
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -86,6 +88,8 @@ export default function Bugs() {
     setBugdata(data);
     const usersData = await apiService.getUsers();
     setUsers(usersData);
+    const projectsData = await apiService.getProjects();
+    setProjects(projectsData);
   };
 
   const statusColors = {
@@ -108,10 +112,11 @@ export default function Bugs() {
       (item) =>
         (selectedUser === "" || item.assignedTo.username === selectedUser) &&
         (selectedSprint === "" || item.sprint === selectedSprint) &&
-        (selectedStatus === "" || item.status === selectedStatus)
+        (selectedStatus === "" || item.status === selectedStatus) &&
+        (selectedProject === "" || item.projectId.title === selectedProject)
     );
     setFilteredData(filteredItems);
-  }, [selectedUser, selectedSprint, selectedStatus, bugData]);
+  }, [selectedUser,selectedProject, selectedSprint, selectedStatus, bugData]);
 
   const styles = {
     textAlign: "center",
@@ -177,6 +182,10 @@ export default function Bugs() {
     setSelectedUser(event.target.value);
   };
 
+  const handleSelectedProject = (event) => {
+    setSelectedProject(event.target.value);
+  };
+
   const handleSelectedSprint = (event) => {
     setSelectedSprint(event.target.value);
   };
@@ -214,6 +223,24 @@ export default function Bugs() {
           >
             Filter :{" "}
           </Typography>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
+            <Select
+              value={selectedProject}
+              onChange={(event) => handleSelectedProject(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="">
+                <em>Projects</em>
+              </MenuItem>
+              {projects &&
+                projects?.map((data) => (
+                  <MenuItem key={data._id} value={data?.title}>
+                    {data?.title}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
           <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
               value={selectedUser}
@@ -299,157 +326,168 @@ export default function Bugs() {
           <TableBody>
             {filteredData.length ? (
               filteredData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((databug, index) => {
-                const originalDateString = databug.estimate_date;
-                const formattedDate = formatDate(originalDateString);
-                const isRowExpanded = index === expandedRow;
-                const isEvenRow = index % 2 === 0;
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((databug, index) => {
+                  const originalDateString = databug.estimate_date;
+                  const formattedDate = formatDate(originalDateString);
+                  const isRowExpanded = index === expandedRow;
+                  const isEvenRow = index % 2 === 0;
 
-                return (
-                  <>
-                    <TableRow
-                      key={databug.bug_id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        cursor: "pointer",
-                        backgroundColor: isEvenRow ? "#F8F9FA" : "white",
-                        border: "1px solid #ccc",
-                        padding: "8px",
-                      }}
-                      tabIndex={-1}
-                    >
-                      <TableCell
+                  return (
+                    <>
+                      <TableRow
+                        key={databug.bug_id}
                         sx={{
-                          textAlign: "center",
-                          alignItems: "center",
-                          maxWidth: "252px",
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          cursor: "pointer",
+                          backgroundColor: isEvenRow ? "#F8F9FA" : "white",
+                          border: "1px solid #ccc",
+                          padding: "8px",
                         }}
+                        tabIndex={-1}
                       >
-                        <div style={{display:"flex", flexDirection:"row"}}>
-                        <Button
-                          variant="text"
-                          onClick={() => collapseRow(index, databug?.bug_id)}
-                          style={{
-                            color: "#398EED",
-                            padding: "4px 8px",
-                            textTransform: "lowercase",
+                        <TableCell
+                          sx={{
+                            textAlign: "center",
+                            alignItems: "center",
+                            maxWidth: "252px",
                           }}
                         >
-                          {databug?.bug_id}
-                        </Button>
-                        <span style={{display:"flex", flexDirection:"column"}}>
-                          <ArrowOutwardIcon
-                            sx={{ color: "#398EED" }}
-                            onClick={() => handleIconClick(databug)}
-                          />
-                          <ContentCopyRoundedIcon
-                            sx={{ color: "#398EED", fontSize:"large",  }}
-                            onClick={() =>
-                              copyToClipboard(databug?.bug_id, index)
-                            }
-                          />
-                        </span>
-                        {copiedStates[index] && (
-                            <span style={{ marginLeft: "4px", color: "green" }}>
-                              ID Copied!
+                          <div
+                            style={{ display: "flex", flexDirection: "row" }}
+                          >
+                            <Button
+                              variant="text"
+                              onClick={() =>
+                                collapseRow(index, databug?.bug_id)
+                              }
+                              style={{
+                                color: "#398EED",
+                                padding: "4px 8px",
+                                textTransform: "lowercase",
+                              }}
+                            >
+                              {databug?.bug_id}
+                            </Button>
+                            <span
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <ArrowOutwardIcon
+                                sx={{ color: "#398EED" }}
+                                onClick={() => handleIconClick(databug)}
+                              />
+                              <ContentCopyRoundedIcon
+                                sx={{ color: "#398EED", fontSize: "large" }}
+                                onClick={() =>
+                                  copyToClipboard(databug?.bug_id, index)
+                                }
+                              />
                             </span>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell style={styles} sx={{ maxWidth: "400px" }}>
-                        {databug?.bug_description}
-                      </TableCell>
-                      <TableCell style={styles}>
-                        {databug?.assignedTo?.username}
-                      </TableCell>
-                      <TableCell style={styles}>
+                            {copiedStates[index] && (
+                              <span
+                                style={{ marginLeft: "4px", color: "green" }}
+                              >
+                                ID Copied!
+                              </span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell style={styles} sx={{ maxWidth: "400px" }}>
+                          {databug?.bug_description}
+                        </TableCell>
+                        <TableCell style={styles}>
+                          {databug?.assignedTo?.username}
+                        </TableCell>
+                        <TableCell style={styles}>
+                          <FormControl sx={{ m: 2 }} size="small">
+                            <InputLabel></InputLabel>
+                            <Select
+                              value={databug?.sprint}
+                              onChange={(e) => {
+                                handleChange(e, databug?._id);
+                              }}
+                            >
+                              <MenuItem value="1">1</MenuItem>
+                              <MenuItem value="2">2</MenuItem>
+                              <MenuItem value="3">3</MenuItem>
+                              <MenuItem value="4">4</MenuItem>
+                              <MenuItem value="5">5</MenuItem>
+                              <MenuItem value="6">6</MenuItem>
+                              <MenuItem value="7">7</MenuItem>
+                              <MenuItem value="8">8</MenuItem>
+                              <MenuItem value="9">9</MenuItem>
+                              <MenuItem value="10">10</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            ...styles,
+                            color:
+                              new Date(databug?.estimate_date) <= new Date()
+                                ? "red"
+                                : "black",
+                          }}
+                        >
+                          {formattedDate}
+                        </TableCell>
                         <FormControl sx={{ m: 2 }} size="small">
-                          <InputLabel></InputLabel>
                           <Select
-                            value={databug?.sprint}
+                            defaultValue={databug?.status}
                             onChange={(e) => {
-                              handleChange(e, databug?._id);
+                              handleStatus(e, databug?._id);
+                              setExpandedRow(null);
                             }}
                           >
-                            <MenuItem value="1">1</MenuItem>
-                            <MenuItem value="2">2</MenuItem>
-                            <MenuItem value="3">3</MenuItem>
-                            <MenuItem value="4">4</MenuItem>
-                            <MenuItem value="5">5</MenuItem>
-                            <MenuItem value="6">6</MenuItem>
-                            <MenuItem value="7">7</MenuItem>
-                            <MenuItem value="8">8</MenuItem>
-                            <MenuItem value="9">9</MenuItem>
-                            <MenuItem value="10">10</MenuItem>
+                            {Object.entries(statusColors).map(
+                              ([status, color]) => (
+                                <MenuItem
+                                  key={status}
+                                  value={status}
+                                  style={{
+                                    width: "100%",
+                                    marginTop: "5px",
+                                    marginBottom: "5px",
+                                  }}
+                                >
+                                  <span style={{ color }}>{status}</span>
+                                </MenuItem>
+                              )
+                            )}
                           </Select>
                         </FormControl>
-                      </TableCell>
-                      <TableCell
-                        style={{
-                          ...styles,
-                          color:
-                            new Date(databug?.estimate_date) <= new Date()
-                              ? "red"
-                              : "black",
-                        }}
-                      >
-                        {formattedDate}
-                      </TableCell>
-                      <FormControl sx={{ m: 2 }} size="small">
-                        <Select
-                          defaultValue={databug?.status}
-                          onChange={(e) => {
-                            handleStatus(e, databug?._id);
-                            setExpandedRow(null);
-                          }}
+                        <TableCell style={styles}>
+                          <CustomizedMenus data={databug} />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          style={{ paddingBottom: 0, paddingTop: 0 }}
+                          colSpan={13}
                         >
-                          {Object.entries(statusColors).map(
-                            ([status, color]) => (
-                              <MenuItem
-                                key={status}
-                                value={status}
-                                style={{
-                                  width: "100%",
-                                  marginTop: "5px",
-                                  marginBottom: "5px",
-                                }}
-                              >
-                                <span style={{ color }}>{status}</span>
-                              </MenuItem>
-                            )
-                          )}
-                        </Select>
-                      </FormControl>
-                      <TableCell style={styles}>
-                        <CustomizedMenus data={databug} />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={13}
-                      >
-                        <Collapse
-                          in={isRowExpanded}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <Typography variant="h6" color="initial">
-                            Status History
-                          </Typography>
-                          <BugStatusTable
-                            bugStatusData={filteredResponse}
-                            headers={headers}
-                            load={bugStatusApi}
-                            setExpandedRow={setExpandedRow}
-                          />
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                );
-              })
+                          <Collapse
+                            in={isRowExpanded}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Typography variant="h6" color="initial">
+                              Status History
+                            </Typography>
+                            <BugStatusTable
+                              bugStatusData={filteredResponse}
+                              headers={headers}
+                              load={bugStatusApi}
+                              setExpandedRow={setExpandedRow}
+                            />
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  );
+                })
             ) : (
               <TableRow>
                 <TableCell colSpan={13}>
@@ -462,14 +500,14 @@ export default function Bugs() {
           </TableBody>
         </Table>
         <TablePagination
-  rowsPerPageOptions={[10, 25, 50]}
-  component="div"
-  count={filteredData.length}
-  page={page}
-  rowsPerPage={rowsPerPage}
-  onPageChange={handleChangePage}
-  onRowsPerPageChange={handleChangeRowsPerPage} 
-/>
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={filteredData.length}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
       <StatusChangeDialog
         isOpen={isDialogOpen}

@@ -8,13 +8,18 @@ import {
   Paper,
   Typography,
   Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
   TableHead,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditBugDialog from "../components/EditBugDialog";
 import DeleteBug from "../components/DeleteBug";
 import apiService from "../services/apiService";
 
 const DetailedBugs = () => {
+  const [open, setOpen] = useState(false)
   const location = useLocation();
   const navigate = useNavigate();
   const [bugStatusData, setBugStatusData] = useState([]);
@@ -31,7 +36,7 @@ const DetailedBugs = () => {
   };
   useEffect(() => {
     bugStatusApi();
-  });
+  },[]);
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -42,6 +47,9 @@ const DetailedBugs = () => {
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
+  const handleDialogClose = () =>{
+    setOpen(false)
+  }
 
   const originalDateString = data.estimate_date;
   const formattedDate = formatDate(originalDateString);
@@ -49,6 +57,7 @@ const DetailedBugs = () => {
   const isoformattedDate = formatDate(isoDateString);
   const updatedDtate = data.updatedAt;
   const isUpdatated = formatDate(updatedDtate);
+
 
   const details = [
     { label: "Bug Id  :", value: data?.bug_id },
@@ -100,7 +109,7 @@ const DetailedBugs = () => {
         }
         variant="outlined"
         size="small"
-        style={{
+        sx={{
           marginBottom: "0px",
           background: "#398EED",
           color: "#ffffff",
@@ -109,6 +118,7 @@ const DetailedBugs = () => {
       >
         Back
       </Button>
+      <Button onClick={()=>setOpen(true)}>Edit</Button>
       <DeleteBug data={data} hash={hash} />
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
@@ -150,6 +160,8 @@ const DetailedBugs = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <EditBugDialog open={open} handleDialogClose={handleDialogClose} data={data}/>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Bug Status History
       </Typography>
