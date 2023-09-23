@@ -20,6 +20,7 @@ import {
 import apiService from "../services/apiService";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 const EditBugDialog = ({ open, handleDialogClose, data }) => {
   const [users, setUsers] = useState([]);
@@ -242,6 +243,8 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 <DatePicker
                   name="estimate_date"
                   label="Estimate Date"
+                  minDate={dayjs()}
+
                   onChange={(newValue) =>
                     setEditData({
                       ...editData,
