@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,15 +8,19 @@ import {
   Paper,
   Typography,
   Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditBugDialog from "../components/EditBugDialog";
 
 const DetailedBugs = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [open,setOpen] = useState(false)
   const data = location.state;
   const hash = location.hash;
-  console.log(hash);
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = date.getDate();
@@ -27,6 +31,9 @@ const DetailedBugs = () => {
     const formattedMonth = month < 10 ? `0${month}` : month;
     return `${formattedDay}-${formattedMonth}-${year}`;
   }
+  const handleDialogClose = () =>{
+    setOpen(false)
+  }
 
   const originalDateString = data.estimate_date;
   const formattedDate = formatDate(originalDateString);
@@ -34,6 +41,7 @@ const DetailedBugs = () => {
   const isoformattedDate = formatDate(isoDateString);
   const updatedDtate = data.updatedAt;
   const isUpdatated = formatDate(updatedDtate);
+
 
   const details = [
     { label: "Bug Id  :", value: data?.bug_id },
@@ -67,7 +75,7 @@ const DetailedBugs = () => {
         }
         variant="outlined"
         size="small"
-        style={{
+        sx={{
           marginBottom: "0px",
           background: "#398EED",
           color: "#ffffff",
@@ -76,6 +84,7 @@ const DetailedBugs = () => {
       >
         Back
       </Button>
+      <Button onClick={()=>setOpen(true)}>Edit</Button>
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Detailed Bug Information
       </Typography>
@@ -114,6 +123,8 @@ const DetailedBugs = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <EditBugDialog open={open} handleDialogClose={handleDialogClose} data={data}/>
     </>
   );
 };

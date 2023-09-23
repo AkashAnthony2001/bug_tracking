@@ -342,6 +342,21 @@ const editComment = async (commentData,_id) => {
     return parsedResponse;
 }
 
+const updateAllBug = async (data,id) => {
+  console.log(data,"Data",id,"Id");
+  const response = await fetch(`${baseUrl}/issuetracker/updateAll/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const parsedResponse = await response.json();
+
+  return parsedResponse;
+}
+
 const apiService = {
   editComment,
   createUser,
@@ -369,7 +384,8 @@ const apiService = {
   getBySprint,
   getUserSprint,
   adminUserData,
-  editSprint
+  editSprint,
+  updateAllBug
 };
 
 export default apiService;
