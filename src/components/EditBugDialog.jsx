@@ -23,7 +23,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
 const EditBugDialog = ({ open, handleDialogClose, data }) => {
   const [users, setUsers] = useState([]);
-  const [editData, setEditData] = useState(data); 
+  const [editData, setEditData] = useState(data);
 
   const formatDate = (isoDateString) => {
     const date = new Date(isoDateString);
@@ -56,11 +56,13 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
     getDetails();
   }, []);
 
-
-  const handleSubmit = async() => {
-    const editBugResponse = await apiService.updateAllBug(editData,editData._id)
+  const handleSubmit = async () => {
+    const editBugResponse = await apiService.updateAllBug(
+      editData,
+      editData._id
+    );
     console.log(editBugResponse?.response);
-  } 
+  };
 
   return (
     <Dialog open={open} onClose={handleDialogClose}>
@@ -109,7 +111,9 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 name="bug_type"
                 label="Bug Type"
                 value={editData?.bug_type || ""}
-                onChange={(e) => setEditData({ ...editData, bug_type: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, bug_type: e.target.value })
+                }
               >
                 <MenuItem value="Bug">Bug</MenuItem>
                 <MenuItem value="CR">CR</MenuItem>
@@ -130,11 +134,37 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
               name="bug_description"
               variant="outlined"
               value={editData?.bug_description || ""}
-              onChange={(e) => setEditData({ ...editData, bug_description: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, bug_description: e.target.value })
+              }
             />
           </Grid>
 
-          <Grid item xs={6}>
+          {localStorage.getItem("role") === 'developer' ? (
+            <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel id="assigned-to-label">Assigned To</InputLabel>
+              <Select
+                name="assignedTo"
+                label="Assigned To"
+                value={editData?.assignedTo?._id || ""}
+                onChange={handleAssignedToChange}
+                disabled
+              >
+                {users?.map((assignedvalues) => (
+                  <MenuItem
+                    key={assignedvalues._id}
+                    value={assignedvalues._id}
+                  >
+                    {assignedvalues.username}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          ) : (
+            
+            <Grid item xs={6}>
             <FormControl fullWidth>
               <InputLabel id="assigned-to-label">Assigned To</InputLabel>
               <Select
@@ -144,13 +174,17 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 onChange={handleAssignedToChange}
               >
                 {users?.map((assignedvalues) => (
-                  <MenuItem key={assignedvalues._id} value={assignedvalues._id}>
+                  <MenuItem
+                    key={assignedvalues._id}
+                    value={assignedvalues._id}
+                  >
                     {assignedvalues.username}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
+          )}
 
           <Grid item xs={6}>
             <FormControl fullWidth>
@@ -190,7 +224,9 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 name="severity"
                 label="Severity"
                 value={editData?.severity || ""}
-                onChange={(e) => setEditData({ ...editData, severity: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, severity: e.target.value })
+                }
               >
                 <MenuItem value="Minor">Minor</MenuItem>
                 <MenuItem value="Major">Major</MenuItem>
@@ -207,7 +243,9 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 name="status"
                 label="Status"
                 value={editData?.status || ""}
-                onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, status: e.target.value })
+                }
               >
                 <MenuItem value="Opened">Opened</MenuItem>
                 <MenuItem value="Assigned">Assigned</MenuItem>
@@ -228,7 +266,12 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                   name="estimate_date"
                   label="Estimate Date"
                   value={formatDate(editData?.estimate_date) || ""}
-                  onChange={(newValue) => setEditData({ ...editData, estimate_date: new Date(newValue.$d).toISOString() })}
+                  onChange={(newValue) =>
+                    setEditData({
+                      ...editData,
+                      estimate_date: new Date(newValue.$d).toISOString(),
+                    })
+                  }
                 />
               </LocalizationProvider>
             </FormControl>
@@ -241,7 +284,9 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 name="sprint"
                 label="Sprint"
                 value={editData?.sprint || ""}
-                onChange={(e) => setEditData({ ...editData, sprint: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, sprint: e.target.value })
+                }
               >
                 <MenuItem value="1">1</MenuItem>
                 <MenuItem value="2">2</MenuItem>
@@ -264,7 +309,9 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 row
                 name="customerfound"
                 value={editData?.customerfound || ""}
-                onChange={(e) => setEditData({ ...editData, customerfound: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, customerfound: e.target.value })
+                }
               >
                 <FormControlLabel
                   value="true"
@@ -285,7 +332,7 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
         <Button onClick={handleDialogClose}>Cancel</Button>
         <Button
           onClick={() => {
-            handleSubmit()
+            handleSubmit();
             handleDialogClose();
           }}
         >
