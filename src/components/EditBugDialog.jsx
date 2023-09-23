@@ -64,6 +64,8 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
     console.log(editBugResponse?.response);
   };
 
+  const isAdmin = localStorage.getItem('role') === 'admin' ? false : true ;
+
   return (
     <Dialog open={open} onClose={handleDialogClose}>
       <DialogTitle>Edit Bugs</DialogTitle>
@@ -139,8 +141,6 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
               }
             />
           </Grid>
-
-          {localStorage.getItem("role") === 'developer' ? (
             <Grid item xs={6}>
             <FormControl fullWidth>
               <InputLabel id="assigned-to-label">Assigned To</InputLabel>
@@ -149,7 +149,7 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 label="Assigned To"
                 value={editData?.assignedTo?._id || ""}
                 onChange={handleAssignedToChange}
-                disabled
+                disabled={isAdmin}
               >
                 {users?.map((assignedvalues) => (
                   <MenuItem
@@ -162,29 +162,6 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
               </Select>
             </FormControl>
           </Grid>
-          ) : (
-            
-            <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="assigned-to-label">Assigned To</InputLabel>
-              <Select
-                name="assignedTo"
-                label="Assigned To"
-                value={editData?.assignedTo?._id || ""}
-                onChange={handleAssignedToChange}
-              >
-                {users?.map((assignedvalues) => (
-                  <MenuItem
-                    key={assignedvalues._id}
-                    value={assignedvalues._id}
-                  >
-                    {assignedvalues.username}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          )}
 
           <Grid item xs={6}>
             <FormControl fullWidth>
@@ -265,7 +242,6 @@ const EditBugDialog = ({ open, handleDialogClose, data }) => {
                 <DatePicker
                   name="estimate_date"
                   label="Estimate Date"
-                  value={formatDate(editData?.estimate_date) || ""}
                   onChange={(newValue) =>
                     setEditData({
                       ...editData,
