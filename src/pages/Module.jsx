@@ -55,57 +55,43 @@ export default function ModuleDemo() {
       </>
     );
   }
-
   const cardStyle = {
-    marginTop: "10px",
     minWidth: 275,
+    marginTop: "10px",
     marginBottom: "1rem",
     backgroundColor: "#F8F9FA",
     boxShadow: "0 4px 6px rgba(0, 0, 0.1, 0.1)",
     borderRadius: "8px",
+    margin: "10px",
   };
-
-  const gridContainerStyle = {
-    display: "grid",
-    gridTemplateColumns: "1fr  1fr 1fr 1fr",
-    gap: "1rem",
-  };
-
   return (
     <>
       <div>
         <ModuleDialogue loadData={() => Moduledisplay()} />
-
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           {Mtitle?.map((moduledata) => (
-            <Grid item lg={3} key={moduledata._id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={moduledata._id}>
               <Card sx={cardStyle} key={moduledata._id}>
                 <CardActionArea>
-                  <CardContent>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Typography
-                        sx={{ fontSize: 15, marginRight: "16px" }}
-                        color="text.secondary"
-                      >
-                        Module Name :
-                      </Typography>
-                      <Typography >
-                        {moduledata.module_name}
-                      </Typography>
-                    </div>
+                <CardContent>
+  <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+    <Typography sx={{ fontSize: 13, marginRight: "16px" }} color="text.secondary">
+      Module Name:
+    </Typography>
+    <Typography variant="body1" style={{ flex: "1" }}>
+      {moduledata.module_name}
+    </Typography>
+  </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Typography
-                        sx={{ fontSize: 15, marginRight: "16px" }}
-                        color="text.secondary"
-                      >
-                        Module Description :
-                      </Typography>
-                      <Typography variant="h6">
-                        {moduledata.module_description}
-                      </Typography>
-                    </div>
-                  </CardContent>
+  <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+    <Typography sx={{ fontSize: 13, marginRight: "16px" }} color="text.secondary">
+      Module Description:
+    </Typography>
+    <Typography variant="body1" style={{ flex: "1" }}>
+      {moduledata.module_description}
+    </Typography>
+  </div>
+</CardContent>
                   <CardActions>
                     <Button size="small" onClick={() => handleEdit(moduledata)}>
                       Edit

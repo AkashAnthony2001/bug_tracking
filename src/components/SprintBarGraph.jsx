@@ -115,7 +115,7 @@ const SprintBarGraph = () => {
   return (
     <div>
       <div style={{ textAlign: "center" }}>
-        <label style={{ fontWeight: "bold", marginRight: "10px" }}>
+        <label style={{ fontWeight: "bold", marginRight: "10px", marginBottom: "20px" }}>
           Select Sprint:
         </label>
 
@@ -130,6 +130,7 @@ const SprintBarGraph = () => {
             borderRadius: "4px",
 
             marginRight: "10px",
+            marginTop: "40px"
           }}
         >
           {sprintOptions.map((val) => (
