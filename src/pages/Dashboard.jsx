@@ -378,6 +378,7 @@ const Dashboard = () => {
                         <SprintCount />
                       </>
                     )}
+
                     <Grid item xs={12} md={6}>
                       <div style={{ padding: 2 }}>
                         <Card style={{ ...cardStyle, height: "500px" }}>
