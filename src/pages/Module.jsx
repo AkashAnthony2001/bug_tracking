@@ -73,25 +73,51 @@ export default function ModuleDemo() {
             <Grid item xs={12} sm={6} md={4} lg={3} key={moduledata._id}>
               <Card sx={cardStyle} key={moduledata._id}>
                 <CardActionArea>
-                <CardContent>
-  <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-    <Typography sx={{ fontSize: 15, marginRight: "16px" }} color="text.secondary">
-      Module Name:
-    </Typography>
-    <Typography variant="body1" style={{ flex: "1" }}>
-      {moduledata.module_name}
-    </Typography>
-  </div>
+                  <CardContent>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Typography
+                        sx={{ fontSize: 15, marginRight: "16px" }}
+                        color="text.secondary"
+                      >
+                        Module Name:
+                      </Typography>
+                      <Typography variant="body1" style={{ flex: "1" }}>
+                        {moduledata.module_name}
+                      </Typography>
+                    </div>
 
-  <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-    <Typography sx={{ fontSize: 15, marginRight: "16px" }} color="text.secondary">
-      Module Description:
-    </Typography>
-    <Typography variant="body1" style={{ flex: "1" }}>
-      {moduledata.module_description}
-    </Typography>
-  </div>
-</CardContent>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Typography
+                        sx={{ fontSize: 15, marginRight: "16px" }}
+                        color="text.secondary"
+                      >
+                        Module Description:
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{
+                          flex: "1",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {moduledata.module_description}
+                      </Typography>
+                    </div>
+                  </CardContent>
                   <CardActions>
                     <Button size="small" onClick={() => handleEdit(moduledata)}>
                       Edit
