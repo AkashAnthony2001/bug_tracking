@@ -39,6 +39,7 @@ export default function Bugs() {
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
+  const [selectedType, setSelectedType] = useState("");
   const [selectedSprint, setSelectedSprint] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedProject, setSelectedProject] = useState("");
@@ -109,16 +110,16 @@ export default function Bugs() {
   }, [changemsg]);
 
   useEffect(() => {
-    debugger
     const filteredItems = bugData?.filter(
       (item) =>
       (selectedUser=== "" || selectedUser.join('')=='' || selectedUser.join('').includes(item.assignedTo.username))  && 
         (selectedSprint=== "" || selectedSprint.join('')=='' || selectedSprint.join('').includes(item.sprint))  &&
         (selectedStatus=== "" || selectedStatus.join('')=='' || selectedStatus.join('').includes(item.status)) &&
+        (selectedType=== "" || selectedType.join('')=='' || selectedType.join('').includes(item.bug_type))  && 
         (selectedProject === "" || item.projectId.title === selectedProject)
     );
     setFilteredData(filteredItems);
-  }, [selectedUser,selectedProject, selectedSprint, selectedStatus, bugData]);
+  }, [selectedUser,selectedProject, selectedSprint, selectedStatus, bugData,selectedType]);
 
   const styles = {
     textAlign: "center",
@@ -185,6 +186,13 @@ export default function Bugs() {
       target: { value }
     } = event;
     setSelectedUser(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const handleSelectedType = (event) => {
+    const {
+      target: { value }
+    } = event;
+    setSelectedType(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSelectedProject = (event) => {
@@ -282,7 +290,6 @@ export default function Bugs() {
               multiple
               inputProps={{ "aria-label": "Without label" }}
               renderValue={(selected) => { 
-                debugger
                 return selected && selected.join('')?selected.join(',').replace(",",''):'All Sprints'
               }}
             >
@@ -323,6 +330,36 @@ export default function Bugs() {
                 >
                   <Checkbox checked={selectedStatus.indexOf(status) > -1} />
                   <span style={{ color }}>{status}</span>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
+            <Select
+              value={typeof selectedType === "string" ? selectedType.split(",") : selectedType}
+              onChange={(event) => handleSelectedType(event)}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              multiple
+              renderValue={(selected) => { 
+                return selected && selected.join(',')?selected.join(',').replace(",",''):'All Type'
+              }}
+            >
+              <MenuItem value=""> 
+                <em>All Type</em>
+              </MenuItem>
+              {["Bug","CR"].map((type) => (
+                <MenuItem
+                  key={type}
+                  value={type}
+                  style={{
+                    width: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  <Checkbox checked={selectedType.indexOf(type) > -1} />
+                  <span>{type}</span>
                 </MenuItem>
               ))}
             </Select>
