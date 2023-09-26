@@ -166,77 +166,62 @@ const Dashboard = () => {
             ) : location.pathname === "/dashboard" ? (
               <>
                 <Grid container>
-                    <Grid item md={6} lg={3}>
-                      <Card style={cardStyle}>
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography
-                              variant="h5"
-                              component="div"
-                            >
-                              {open}
-                            </Typography>
-                            <Typography variant="h7" color="#1b2b4e">
-                              Assigned Bugs
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                    <Grid item md={6} lg={3}>
-                      <Card style={cardStyle}>
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              {close}
-                            </Typography>
-                            <Typography variant="h7" color="#1b2b4e">
-                              Closed Bugs
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                    <Grid item md={6} lg={3}>
-                      <Card style={cardStyle}>
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              {inProcess}
-                            </Typography>
-                            <Typography variant="h7" color="#1b2b4e">
-                              In Progress
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                    <Grid item md={6} lg={3}>
-                      <Card style={cardStyle}>
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              {hold}
-                            </Typography>
-                            <Typography variant="h7" color="#1b2b4e">
-                              Hold
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
+                  <Grid item md={6} lg={3}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography variant="h5" component="div">
+                            {open}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            Assigned Bugs
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid item md={6} lg={3}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {close}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            Closed Bugs
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid item md={6} lg={3}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {inProcess}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            In Progress
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid item md={6} lg={3}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {hold}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            Hold
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
                 </Grid>
                 <div className="bigCards">
                   <Grid container>
@@ -314,128 +299,128 @@ const Dashboard = () => {
                       </div>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <div>
-                          <Card style={cardStyle}>
-                            <CardContent>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                  padding: "3px",
-                                }}
-                              >
-                                <WorkIcon sx={{ color: "#2F96FC" }} />
-                                <h3 style={{ marginLeft: "15px" }}>
-                                  {" "}
-                                  My Work Items Due Today
-                                </h3>
-                              </div>
-                              <TableContainer
-                                sx={{
-                                  maxHeight: "220px",
-                                  overflowY: "scroll",
-                                  height: "220px",
-                                }}
-                              >
-                                <Table>
-                                  <TableHead
-                                    sx={{
-                                      position: "sticky",
-                                      top: 0,
-                                      bgcolor: "white",
-                                    }}
-                                  >
-                                    <TableRow>
-                                      <TableCell>Bug</TableCell>
-                                      <TableCell>Date</TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    {filterData.length ? (
-                                      filterData.map((val) => {
-                                        return (
-                                          <TableRow
-                                            key={filterData.bug_id}
-                                            sx={{ background: "white" }}
-                                          >
-                                            <TableCell>{val.bug_id}</TableCell>
-                                            <TableCell>
-                                              {formatDate(val.createdAt)}
-                                            </TableCell>
-                                          </TableRow>
-                                        );
-                                      })
-                                    ) : (
-                                      <TableRow>
-                                        <TableCell
-                                          colSpan={2}
-                                          sx={{ textAlign: "center" }}
+                      <div>
+                        <Card style={cardStyle}>
+                          <CardContent>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                padding: "3px",
+                              }}
+                            >
+                              <WorkIcon sx={{ color: "#2F96FC" }} />
+                              <h3 style={{ marginLeft: "15px" }}>
+                                {" "}
+                                My Work Items Due Today
+                              </h3>
+                            </div>
+                            <TableContainer
+                              sx={{
+                                maxHeight: "220px",
+                                overflowY: "scroll",
+                                height: "220px",
+                              }}
+                            >
+                              <Table>
+                                <TableHead
+                                  sx={{
+                                    position: "sticky",
+                                    top: 0,
+                                    bgcolor: "white",
+                                  }}
+                                >
+                                  <TableRow>
+                                    <TableCell>Bug</TableCell>
+                                    <TableCell>Date</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {filterData.length ? (
+                                    filterData.map((val) => {
+                                      return (
+                                        <TableRow
+                                          key={filterData.bug_id}
+                                          sx={{ background: "white" }}
                                         >
-                                          <Typography
-                                            variant="h6"
-                                            color="initial"
-                                          >
-                                            No Records Found
-                                          </Typography>
-                                        </TableCell>
-                                      </TableRow>
-                                    )}
-                                  </TableBody>
-                                </Table>
-                              </TableContainer>
-                            </CardContent>
-                          </Card>
-                        </div>
-                      </Grid>
+                                          <TableCell>{val.bug_id}</TableCell>
+                                          <TableCell>
+                                            {formatDate(val.createdAt)}
+                                          </TableCell>
+                                        </TableRow>
+                                      );
+                                    })
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan={2}
+                                        sx={{ textAlign: "center" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          color="initial"
+                                        >
+                                          No Records Found
+                                        </Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
                     {localStorage.getItem("role") === "admin" && (
                       <>
                         <SprintCount />
-
-                        <Grid item xs={12} md={6}>
-                          <div style={{ padding: 2 }}>
-                            <Card style={{ ...cardStyle, height: "500px" }}>
-                              <CardContent
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  height: "100%",
-                                  width: "100%",
-                                }}
-                              >
-                                {localStorage.getItem("role") === "admin" ? (
-                                  <SprintBarGraph />
-                                ) : (
-                                  <UserSprintGraph />
-                                )}
-                              </CardContent>
-                            </Card>
-                          </div>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <div style={{ padding: 2 }}>
-                            <Card style={{ ...cardStyle, height: "500px" }}>
-                              <CardContent
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  height: "100%",
-                                  width: "100%",
-                                }}
-                              >
-                                {localStorage.getItem("role") === "admin" ? (
-                                  <AdminUsersGraph />
-                                ) : (
-                                  <UserBarGraph opened={open} closed={close} />
-                                )}
-                              </CardContent>
-                            </Card>
-                          </div>
-                        </Grid>
                       </>
                     )}
+
+                    <Grid item xs={12} md={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={{ ...cardStyle, height: "500px" }}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            {localStorage.getItem("role") === "admin" ? (
+                              <SprintBarGraph />
+                            ) : (
+                              <UserSprintGraph />
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <div style={{ padding: 2 }}>
+                        <Card style={{ ...cardStyle, height: "500px" }}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                              width: "100%",
+                            }}
+                          >
+                            {localStorage.getItem("role") === "admin" ? (
+                              <AdminUsersGraph />
+                            ) : (
+                              <UserBarGraph opened={open} closed={close} />
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
                   </Grid>
                 </div>
               </>
