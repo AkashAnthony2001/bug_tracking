@@ -12,7 +12,7 @@ import {
   TableRow,
   Button,
   Box,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import apiService from "../services/apiService";
@@ -64,7 +64,7 @@ export default function Bugs() {
   };
 
   const handleChange = async (event, _id) => {
-    let obj = {
+    const obj = {
       data: event.target.value,
       id: _id,
     };
@@ -73,6 +73,24 @@ export default function Bugs() {
       const message = `Sprint updated to ${event.target.value}.`;
       setChangemsg({
         ...sprintData,
+        message,
+      });
+      bugDisplay();
+    }
+  };
+  console.log(filteredData, "sam");
+  const handleAssiUserChange = async (event, _id) => {
+    const selectedUserId = event.target.value;
+    const selectedUser = users.find((user) => user._id === selectedUserId);
+    const obj = {
+      data: event.target.value,
+      id: _id,
+    };
+    const assiUserData = await apiService.updateAssiUser(obj);
+    if (!assiUserData.error) {
+      const message = `Assigned user updated to ${selectedUser?.username}.`;
+      setChangemsg({
+        ...assiUserData,
         message,
       });
       bugDisplay();
@@ -112,14 +130,29 @@ export default function Bugs() {
   useEffect(() => {
     const filteredItems = bugData?.filter(
       (item) =>
-      (selectedUser=== "" || selectedUser.join('')=='' || selectedUser.join('').includes(item.assignedTo.username))  && 
-        (selectedSprint=== "" || selectedSprint.join('')=='' || selectedSprint.join('').includes(item.sprint))  &&
-        (selectedStatus=== "" || selectedStatus.join('')=='' || selectedStatus.join('').includes(item.status)) &&
-        (selectedType=== "" || selectedType.join('')=='' || selectedType.join('').includes(item.bug_type))  && 
+        (selectedUser === "" ||
+          selectedUser.join("") === "" ||
+          selectedUser.join("").includes(item.assignedTo.username)) &&
+        (selectedSprint === "" ||
+          selectedSprint.join("") === "" ||
+          selectedSprint.join("").includes(item.sprint)) &&
+        (selectedStatus === "" ||
+          selectedStatus.join("") === "" ||
+          selectedStatus.join("").includes(item.status)) &&
+        (selectedType === "" ||
+          selectedType.join("") === "" ||
+          selectedType.join("").includes(item.bug_type)) &&
         (selectedProject === "" || item.projectId.title === selectedProject)
     );
     setFilteredData(filteredItems);
-  }, [selectedUser,selectedProject, selectedSprint, selectedStatus, bugData,selectedType]);
+  }, [
+    selectedUser,
+    selectedProject,
+    selectedSprint,
+    selectedStatus,
+    bugData,
+    selectedType,
+  ]);
 
   const styles = {
     textAlign: "center",
@@ -183,14 +216,14 @@ export default function Bugs() {
 
   const handleSelectedUsers = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setSelectedUser(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSelectedType = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setSelectedType(typeof value === "string" ? value.split(",") : value);
   };
@@ -201,14 +234,14 @@ export default function Bugs() {
 
   const handleSelectedSprint = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
-    setSelectedSprint(typeof value === "string" ? value.split(",") : value); 
+    setSelectedSprint(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSelectedStatus = (event) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setSelectedStatus(typeof value === "string" ? value.split(",") : value);
   };
@@ -261,13 +294,19 @@ export default function Bugs() {
             </Select>
           </FormControl>
           <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
-            <Select 
-              value={typeof selectedUser === "string" ? selectedUser.split(",") : selectedUser}
+            <Select
+              value={
+                typeof selectedUser === "string"
+                  ? selectedUser.split(",")
+                  : selectedUser
+              }
               onChange={(event) => handleSelectedUsers(event)}
               multiple
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => { 
-                return selected && selected.join('')?selected.join(',').replace(",",''):'All Users'
+              renderValue={(selected) => {
+                return selected && selected.join("")
+                  ? selected.join(",").replace(",", "")
+                  : "All Users";
               }}
             >
               <MenuItem value="">
@@ -276,7 +315,7 @@ export default function Bugs() {
               {users &&
                 users?.map((data) => (
                   <MenuItem key={data._id} value={data?.username}>
-                    <Checkbox checked={selectedUser.indexOf(data?.username) > -1} />
+                    <Checkbox checked={selectedUser.includes(data?.username)} />
                     <span>{data?.username}</span>
                   </MenuItem>
                 ))}
@@ -284,13 +323,19 @@ export default function Bugs() {
           </FormControl>
           <FormControl sx={{ minWidth: 120 }} size="small">
             <Select
-              value={typeof selectedSprint === "string" ? selectedSprint.split(",") : selectedSprint} 
+              value={
+                typeof selectedSprint === "string"
+                  ? selectedSprint.split(",")
+                  : selectedSprint
+              }
               onChange={(event) => handleSelectedSprint(event)}
               displayEmpty
               multiple
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => { 
-                return selected && selected.join('')?selected.join(',').replace(",",''):'All Sprints'
+              renderValue={(selected) => {
+                return selected && selected.join("")
+                  ? selected.join(",").replace(",", "")
+                  : "All Sprints";
               }}
             >
               <MenuItem value="">
@@ -306,16 +351,22 @@ export default function Bugs() {
           </FormControl>
           <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
-              value={typeof selectedStatus === "string" ? selectedStatus.split(",") : selectedStatus}
+              value={
+                typeof selectedStatus === "string"
+                  ? selectedStatus.split(",")
+                  : selectedStatus
+              }
               onChange={(event) => handleSelectedStatus(event)}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               multiple
-              renderValue={(selected) => { 
-                return selected && selected.join(',')?selected.join(',').replace(",",''):'All Status'
+              renderValue={(selected) => {
+                return selected && selected.join(",")
+                  ? selected.join(",").replace(",", "")
+                  : "All Status";
               }}
             >
-              <MenuItem value=""> 
+              <MenuItem value="">
                 <em>All Status</em>
               </MenuItem>
               {Object.entries(statusColors).map(([status, color]) => (
@@ -336,19 +387,25 @@ export default function Bugs() {
           </FormControl>
           <FormControl sx={{ minWidth: 120, mx: 1 }} size="small">
             <Select
-              value={typeof selectedType === "string" ? selectedType.split(",") : selectedType}
+              value={
+                typeof selectedType === "string"
+                  ? selectedType.split(",")
+                  : selectedType
+              }
               onChange={(event) => handleSelectedType(event)}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               multiple
-              renderValue={(selected) => { 
-                return selected && selected.join(',')?selected.join(',').replace(",",''):'All Type'
+              renderValue={(selected) => {
+                return selected && selected.join(",")
+                  ? selected.join(",").replace(",", "")
+                  : "All Type";
               }}
             >
-              <MenuItem value=""> 
+              <MenuItem value="">
                 <em>All Type</em>
               </MenuItem>
-              {["Bug","CR"].map((type) => (
+              {["Bug", "CR"].map((type) => (
                 <MenuItem
                   key={type}
                   value={type}
@@ -468,7 +525,26 @@ export default function Bugs() {
                           {databug?.bug_description}
                         </TableCell>
                         <TableCell style={styles}>
-                          {databug?.assignedTo?.username}
+                          <FormControl
+                            sx={{ minWidth: 120, mx: 1 }}
+                            size="small"
+                          >
+                            <Select
+                              value={databug?.assignedTo?._id || ""}
+                              onChange={(e) => {
+                                handleAssiUserChange(e, databug?._id);
+                              }}
+                            >
+                              {users?.map((assignedvalues) => (
+                                <MenuItem
+                                  key={assignedvalues._id}
+                                  value={assignedvalues._id}
+                                >
+                                  {assignedvalues.username}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
                         </TableCell>
                         <TableCell style={styles}>
                           <FormControl sx={{ m: 2 }} size="small">
