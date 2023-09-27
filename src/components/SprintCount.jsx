@@ -29,43 +29,43 @@ const SprintCount = () => {
 
   const sprintOptions = [
     {
-      label: "Sprint 1",
+      label: "S1",
       value: "sprint1",
     },
     {
-      label: "Sprint 2",
+      label: "S2",
       value: "sprint2",
     },
     {
-      label: "Sprint 3",
+      label: "S3",
       value: "sprint3",
     },
     {
-      label: "Sprint 4",
+      label: "S4",
       value: "sprint4",
     },
     {
-      label: "Sprint 5",
+      label: "S5",
       value: "sprint5",
     },
     {
-      label: "Sprint 6",
+      label: "S6",
       value: "sprint6",
     },
     {
-      label: "Sprint 7",
+      label: "S7",
       value: "sprint7",
     },
     {
-      label: "Sprint 8",
+      label: "S8",
       value: "sprint8",
     },
     {
-      label: "Sprint 9",
+      label: "S9",
       value: "sprint9",
     },
     {
-      label: "Sprint 10",
+      label: "S10",
       value: "sprint10",
     },
   ];
@@ -102,7 +102,7 @@ const SprintCount = () => {
         padding: '10px'
       }}
     >
-      <Grid container alignItems="center" justifyContent="center">
+      <Grid container alignItems="center" justifyContent="flex-end">
         <Grid item>
           <Typography
             variant="h6"

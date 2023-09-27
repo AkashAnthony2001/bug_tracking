@@ -36,6 +36,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(0);
+  const [data, setData] = useState([]);
   const [close, setClose] = useState(0);
   const [inProcess, setInProcess] = useState(0);
   const [hold, setHold] = useState(0);
@@ -62,7 +63,7 @@ const Dashboard = () => {
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
-
+    setData(data);
     const setOpened = data.filter((datas) => {
       return datas.status === "Assigned";
     }).length;
@@ -166,7 +167,7 @@ const Dashboard = () => {
             ) : location.pathname === "/dashboard" ? (
               <>
                 <Grid container>
-                  <Grid item md={6} lg={3}>
+                  <Grid item md={6} lg={2}>
                     <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
@@ -180,7 +181,7 @@ const Dashboard = () => {
                       </CardActionArea>
                     </Card>
                   </Grid>
-                  <Grid item md={6} lg={3}>
+                  <Grid item md={6} lg={2}>
                     <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
@@ -194,7 +195,7 @@ const Dashboard = () => {
                       </CardActionArea>
                     </Card>
                   </Grid>
-                  <Grid item md={6} lg={3}>
+                  <Grid item md={6} lg={2}>
                     <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
@@ -208,7 +209,7 @@ const Dashboard = () => {
                       </CardActionArea>
                     </Card>
                   </Grid>
-                  <Grid item md={6} lg={3}>
+                  <Grid item md={6} lg={2}>
                     <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
@@ -217,6 +218,38 @@ const Dashboard = () => {
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
                             Hold
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid item md={6} lg={2}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {data.filter((datas) => {
+                              return datas.status === "Resolved";
+                            }).length}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            Resolved
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid item md={6} lg={2}>
+                    <Card style={cardStyle}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {data.filter((datas) => {
+                              return datas.status === "Verified";
+                            }).length}
+                          </Typography>
+                          <Typography variant="h7" color="#1b2b4e">
+                            Verified
                           </Typography>
                         </CardContent>
                       </CardActionArea>
