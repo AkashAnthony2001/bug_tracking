@@ -175,6 +175,7 @@ const DetailedBugs = () => {
         open={open}
         handleDialogClose={handleDialogClose}
         data={data}
+        hash={hash}
       />
       <Typography variant="h6" sx={{ m: 2 }} color="initial">
         Bug Status History
