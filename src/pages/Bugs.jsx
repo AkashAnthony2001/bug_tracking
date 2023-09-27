@@ -263,6 +263,8 @@ export default function Bugs() {
       });
   };
 
+  const isDeveloper = localStorage.getItem("role") === "developer" ? true : false;
+
   return (
     <>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -534,6 +536,7 @@ export default function Bugs() {
                               onChange={(e) => {
                                 handleAssiUserChange(e, databug?._id);
                               }}
+                              disabled={isDeveloper}
                             >
                               {users?.map((assignedvalues) => (
                                 <MenuItem
