@@ -19,7 +19,7 @@ const AdminUsersGraph = () => {
     getAdminUserData();
   }, []);
   if (!adminUser || adminUser.length === 0) {
-    return <div>Loading...</div>;
+    return <div>No records Found</div>;
   }
 
   const xAxisData = adminUser && adminUser?.map((item) => item.username);
