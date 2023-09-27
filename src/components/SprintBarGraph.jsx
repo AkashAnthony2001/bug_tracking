@@ -158,7 +158,7 @@ const SprintBarGraph = () => {
           sx={{ maxHeight: "350px" }}
         />
       ) : (
-        <p>Loading...</p>
+        <p>No Records Found</p>
       )}
     </div>
   );

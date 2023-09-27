@@ -64,20 +64,20 @@ const Dashboard = () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
     setData(data);
-    const setOpened = data.filter((datas) => {
+    const setOpened = data  && data.filter((datas) => {
       return datas.status === "Assigned";
     }).length;
     setOpen(setOpened);
-    const setClosed = data.filter((datas) => {
+    const setClosed = data && data.filter((datas) => {
       return datas.status === "Closed";
     }).length;
     setClose(setClosed);
-    const setIdProcessed = data.filter((datas) => {
+    const setIdProcessed = data && data.filter((datas) => {
       return datas.status === "InProgress";
     }).length;
     setInProcess(setIdProcessed);
 
-    const setHolded = data.filter((datas) => {
+    const setHolded =data && data.filter((datas) => {
       return datas.status === "Hold";
     }).length;
     setHold(setHolded);
@@ -228,9 +228,14 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            {data.filter((datas) => {
+                            {/* {data && data.filter((datas) => {
                               return datas.status === "Resolved";
-                            }).length}
+                            }).length} */}
+                             {
+                              data.length ? data.filter((datas)=>{
+                                return datas.status === "Verified";
+                              }).length:"0"
+                            }
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
                             Resolved
@@ -244,9 +249,14 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            {data.filter((datas) => {
+                            {/* {data && data.filter((datas) => {
                               return datas.status === "Verified";
-                            }).length}
+                            }).length} */}
+                            {
+                              data.length ? data.filter((datas)=>{
+                                return datas.status === "Verified";
+                              }).length:"0"
+                            }
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
                             Verified
