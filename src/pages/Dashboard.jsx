@@ -35,11 +35,12 @@ const drawerWidth = 190;
 const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [open, setOpen] = useState(0);
-  const [data, setData] = useState([]);
+  const [assigned, setAssigned] = useState(0);
   const [close, setClose] = useState(0);
   const [inProcess, setInProcess] = useState(0);
   const [hold, setHold] = useState(0);
+  const [resolved, setResolved] = useState(0);
+  const [verified, setVerified] = useState(0);
   const [assignedValue, setAssignedvalue] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const token = localStorage.getItem("token");
@@ -63,24 +64,42 @@ const Dashboard = () => {
   const displayBugs = async () => {
     const username = localStorage.getItem("username");
     const data = await apiService.getAssignments(username);
-    setData(data);
-    const setOpened = data  && data.filter((datas) => {
-      return datas.status === "Assigned";
-    }).length;
-    setOpen(setOpened);
-    const setClosed = data && data.filter((datas) => {
-      return datas.status === "Closed";
-    }).length;
-    setClose(setClosed);
-    const setIdProcessed = data && data.filter((datas) => {
-      return datas.status === "InProgress";
-    }).length;
-    setInProcess(setIdProcessed);
-
-    const setHolded =data && data.filter((datas) => {
-      return datas.status === "Hold";
-    }).length;
-    setHold(setHolded);
+    const assignedStaus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "Assigned";
+      }).length;
+    setAssigned(assignedStaus);
+    const closedStaus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "Closed";
+      }).length;
+    setClose(closedStaus);
+    const inProgressStaus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "InProgress";
+      }).length;
+    setInProcess(inProgressStaus);
+     const holdStaus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "Hold";
+      }).length;
+    setHold(holdStaus);
+    const resolvedStatus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "Resolved";
+      }).length;
+    setResolved(resolvedStatus);
+    const verifiedStatus =
+      data &&
+      data.filter((datas) => {
+        return datas.status === "Verified";
+      }).length;
+    setVerified(verifiedStatus);
   };
 
   useEffect(() => {
@@ -172,10 +191,10 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography variant="h5" component="div">
-                            {open}
+                            {assigned}
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
-                            Assigned Bugs
+                            Assigned
                           </Typography>
                         </CardContent>
                       </CardActionArea>
@@ -189,7 +208,7 @@ const Dashboard = () => {
                             {close}
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
-                            Closed Bugs
+                            Closed
                           </Typography>
                         </CardContent>
                       </CardActionArea>
@@ -228,14 +247,7 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            {/* {data && data.filter((datas) => {
-                              return datas.status === "Resolved";
-                            }).length} */}
-                             {
-                              data.length ? data.filter((datas)=>{
-                                return datas.status === "Verified";
-                              }).length:"0"
-                            }
+                            {resolved}
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
                             Resolved
@@ -249,14 +261,7 @@ const Dashboard = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            {/* {data && data.filter((datas) => {
-                              return datas.status === "Verified";
-                            }).length} */}
-                            {
-                              data.length ? data.filter((datas)=>{
-                                return datas.status === "Verified";
-                              }).length:"0"
-                            }
+                            {verified}
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">
                             Verified
@@ -458,7 +463,10 @@ const Dashboard = () => {
                             {localStorage.getItem("role") === "admin" ? (
                               <AdminUsersGraph />
                             ) : (
-                              <UserBarGraph opened={open} closed={close} />
+                              <UserBarGraph
+                                assigned={assigned}
+                                closed={close}
+                              />
                             )}
                           </CardContent>
                         </Card>
