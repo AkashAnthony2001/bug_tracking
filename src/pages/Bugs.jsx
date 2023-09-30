@@ -27,6 +27,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import CopyComponent from "../components/CopyComponent";
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
@@ -507,20 +508,10 @@ export default function Bugs() {
                                 sx={{ color: "#398EED" }}
                                 onClick={() => handleIconClick(databug)}
                               />
-                              <ContentCopyRoundedIcon
-                                sx={{ color: "#398EED", fontSize: "large" }}
-                                onClick={() =>
-                                  copyToClipboard(databug?.bug_id, index)
-                                }
+                              <CopyComponent id={databug?.bug_id}
                               />
                             </span>
-                            {copiedStates[index] && (
-                              <span
-                                style={{ marginLeft: "4px", color: "green" }}
-                              >
-                                ID Copied!
-                              </span>
-                            )}
+                            
                           </div>
                         </TableCell>
                         <TableCell style={styles} sx={{ maxWidth: "400px" }}>
