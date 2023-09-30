@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import CopyComponent from "../components/CopyComponent";
+import {store,getStoreValue,constants} from "../utils"
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
@@ -39,11 +40,11 @@ export default function Bugs() {
   const [comment, setComment] = useState("");
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [selectedUser, setSelectedUser] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedSprint, setSelectedSprint] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedUser, setSelectedUser] = useState(getStoreValue(constants.USERS));
+  const [selectedType, setSelectedType] = useState(getStoreValue(constants.TYPES));
+  const [selectedSprint, setSelectedSprint] = useState(getStoreValue(constants.SPRINT));
+  const [selectedStatus, setSelectedStatus] = useState(getStoreValue(constants.STATUS));
+  const [selectedProject, setSelectedProject] = useState(getStoreValue(constants.PROJECTS));
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -79,7 +80,7 @@ export default function Bugs() {
       bugDisplay();
     }
   };
-  console.log(filteredData, "sam");
+  //console.log(filteredData, "sam");
   const handleAssiUserChange = async (event, _id) => {
     const selectedUserId = event.target.value;
     const selectedUser = users.find((user) => user._id === selectedUserId);
@@ -219,6 +220,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
+    store(constants.USERS,value === "string" ? value.split(",") : value)
     setSelectedUser(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -226,10 +228,12 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
+    store(constants.TYPES,value === "string" ? value.split(",") : value)
     setSelectedType(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSelectedProject = (event) => {
+    store(constants.PROJECTS,event.target.value)
     setSelectedProject(event.target.value);
   };
 
@@ -237,6 +241,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
+    store(constants.SPRINT,value === "string" ? value.split(",") : value)
     setSelectedSprint(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -244,6 +249,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
+    store(constants.STATUS,value === "string" ? value.split(",") : value)
     setSelectedStatus(typeof value === "string" ? value.split(",") : value);
   };
   const copyToClipboard = (text, index) => {
@@ -306,9 +312,10 @@ export default function Bugs() {
               onChange={(event) => handleSelectedUsers(event)}
               multiple
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => {
+              renderValue={(selected) => { 
+                debugger
                 return selected && selected.join("")
-                  ? selected.join(",").replace(",", "")
+                  ? selected.join(",")
                   : "All Users";
               }}
             >
@@ -491,7 +498,7 @@ export default function Bugs() {
                                 collapseRow(index, databug?.bug_id)
                               }
                               style={{
-                                color: "#398EED",
+                                color: databug.bug_type==="CR"?"#398EED":"red",
                                 padding: "4px 8px",
                                 textTransform: "lowercase",
                               }}
