@@ -26,7 +26,7 @@ import CustomizedMenus from "../components/CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
-import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import CopyComponent from "../components/CopyComponent";
 import {store,getStoreValue,constants} from "../utils"
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -47,9 +47,6 @@ export default function Bugs() {
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [copiedStates, setCopiedStates] = useState(
-    Array(filteredData.length).fill(false)
-  );
 
   const handleComment = async () => {
     const obj = {
@@ -79,7 +76,6 @@ export default function Bugs() {
       bugDisplay();
     }
   };
-  //console.log(filteredData, "sam");
   const handleAssiUserChange = async (event, _id) => {
     const selectedUserId = event.target.value;
     const selectedUser = users.find((user) => user._id === selectedUserId);
@@ -250,23 +246,6 @@ export default function Bugs() {
     } = event;
     store(constants.STATUS,value === "string" ? value.split(",") : value)
     setSelectedStatus(typeof value === "string" ? value.split(",") : value);
-  };
-  const copyToClipboard = (text, index) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        const updatedCopiedStates = [...copiedStates];
-        updatedCopiedStates[index] = true;
-        setCopiedStates(updatedCopiedStates);
-        setTimeout(() => {
-          const resetCopiedStates = [...updatedCopiedStates];
-          resetCopiedStates[index] = false;
-          setCopiedStates(resetCopiedStates);
-        }, 1000);
-      })
-      .catch((error) => {
-        console.error("Copy failed: ", error);
-      });
   };
 
   const isDeveloper = localStorage.getItem("role") === "developer" ? true : false;
@@ -514,20 +493,10 @@ export default function Bugs() {
                                 sx={{ color: "#398EED" }}
                                 onClick={() => handleIconClick(databug)}
                               />
-                              <ContentCopyRoundedIcon
-                                sx={{ color: "#398EED", fontSize: "large" }}
-                                onClick={() =>
-                                  copyToClipboard(databug?.bug_id, index)
-                                }
+                              <CopyComponent id={databug?.bug_id}
                               />
                             </span>
-                            {copiedStates[index] && (
-                              <span
-                                style={{ marginLeft: "4px", color: "green" }}
-                              >
-                                ID Copied!
-                              </span>
-                            )}
+                            
                           </div>
                         </TableCell>
                         <TableCell style={styles} sx={{ maxWidth: "400px" }}>
