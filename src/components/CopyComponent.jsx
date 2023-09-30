@@ -1,11 +1,10 @@
 import React from 'react';
-import { useTheme,Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { Copy,TickCircle } from 'iconsax-react';
 import copy from 'copy-to-clipboard';
 const CopyComponent = ({ id }) => {
-  const theme = useTheme();
   const [flag, setFlag] = React.useState(false);
   const copyID_ToClipboard = (id) => {
     setFlag(true);
@@ -27,7 +26,7 @@ const CopyComponent = ({ id }) => {
           e.stopPropagation();
           copyID_ToClipboard(id);
         }}
-        sx={{ color:"#398EED" ,"height":"24px" }}
+        sx={{ color:"#398EED" ,"height":"24px" , fontSize:"large" }}
       >
         <Copy />
       </ContentCopyRoundedIcon>
