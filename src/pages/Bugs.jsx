@@ -27,7 +27,7 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import CopyComponent from "../components/CopyComponent";
-import { store, getStoreValue, constants } from "../utils";
+import { store, getStoreValue, constants, removeStoreValue } from "../utils";
 import Tooltip from "@mui/material/Tooltip";
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
@@ -269,9 +269,7 @@ export default function Bugs() {
     setSelectedType('')
     setSelectedSprint('')
     setSelectedStatus('')
-    localStorage.removeItem('bug-tracker')
-
-
+    removeStoreValue()
   }
 
   return (
@@ -433,7 +431,8 @@ export default function Bugs() {
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" sx={{backgroundColor: "#398EED", boxShadow: "1px 1px 8px 1px gray"}} size="small" onClick={handleClear}>
+          <Button variant="contained" sx={{backgroundColor: "#398EED", boxShadow: "1px 1px 8px 1px gray"
+        }} size="small" onClick={handleClear}>
             Clear All
           </Button>
           <Typography

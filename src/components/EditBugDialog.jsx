@@ -294,7 +294,7 @@ const EditBugDialog = ({ open, handleDialogClose, data, hash }) => {
                 <RadioGroup
                   row
                   name="customerfound"
-                  value={editData?.customerfound || ""}
+                  value={editData?.customerfound}
                   onChange={(e) =>
                     setEditData({ ...editData, customerfound: e.target.value })
                   }
