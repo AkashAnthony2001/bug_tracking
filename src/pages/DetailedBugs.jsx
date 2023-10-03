@@ -104,6 +104,8 @@ const DetailedBugs = () => {
       >
         <div>
           <Button
+            variant="outlined"
+            size="small"
             onClick={() =>
               navigate(
                 hash === "#bugs"
@@ -113,13 +115,11 @@ const DetailedBugs = () => {
                   : "/dashboard/assigned"
               )
             }
-            variant="outlined"
-            size="small"
-            sx={{
-              marginBottom: "0px",
+            style={{
+              marginBottom: "20px",
               background: "#398EED",
               color: "#ffffff",
-              boxShadow: "3px 2px 10px 0px gray",
+              boxShadow: "1px 1px 8px 1px gray",
             }}
           >
             Back
