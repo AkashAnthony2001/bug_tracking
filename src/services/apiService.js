@@ -1,4 +1,4 @@
-const baseUrl = process.env.BASE_URL || "http://13.234.30.159:3001/api";
+const baseUrl = process.env.BASE_URL || "http://localhost:3001/api";
 // http://13.234.30.159:3001/api
 // http://localhost:3001/api
 const createUser = async (userObj) => {
