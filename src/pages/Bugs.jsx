@@ -269,6 +269,8 @@ export default function Bugs() {
     setSelectedType('')
     setSelectedSprint('')
     setSelectedStatus('')
+    localStorage.removeItem('bug-tracker')
+
 
   }
 
@@ -431,7 +433,7 @@ export default function Bugs() {
               ))}
             </Select>
           </FormControl>
-          <Button variant="outlined" onClick={handleClear}>
+          <Button variant="contained" sx={{backgroundColor: "#398EED", boxShadow: "1px 1px 8px 1px gray"}} size="small" onClick={handleClear}>
             Clear All
           </Button>
           <Typography
