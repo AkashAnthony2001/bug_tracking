@@ -6,22 +6,12 @@ import { useNavigate } from "react-router-dom";
 import BasicDialog from "./BasicDialog";
 
 const Header = ({ drawerWidth, tmpbar = false, username }) => {
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const navigate = useNavigate();
 
   const logout = () => {
     apiService.logout();
     navigate("/login");
-  };
-  const handleOpen = (event) => {
-    setOpen(true);
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setAnchorEl(null);
   };
 
   const name = localStorage.getItem("name");

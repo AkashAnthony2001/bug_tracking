@@ -190,7 +190,7 @@ const Dashboard = () => {
                     <Card style={cardStyle}>
                       <CardActionArea>
                         <CardContent>
-                          <Typography variant="h5" component="div">
+                          <Typography gutterBottom variant="h5" component="div">
                             {assigned}
                           </Typography>
                           <Typography variant="h7" color="#1b2b4e">

@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { Tooltip } from "@mui/material";
 
 export default function BasicDialog({ action, children, buttonMsg, sx }) {
   const [open, setOpen] = React.useState(false);
@@ -30,11 +31,19 @@ export default function BasicDialog({ action, children, buttonMsg, sx }) {
         alignItems: "center",
       }}
     >
-      <LogoutIcon
+      <Tooltip
+        title="Log Out"
+        arrow
+        color="success"
+        placement="bottom"
+      >
+        <LogoutIcon
         size="small"
         sx={{ color: "black", cursor: "pointer" }}
         onClick={handleClickOpen}
       />
+      </Tooltip>
+      
       <Dialog
         open={open}
         onClose={handleClose}

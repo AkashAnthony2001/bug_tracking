@@ -27,7 +27,8 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import CopyComponent from "../components/CopyComponent";
-import {store,getStoreValue,constants} from "../utils"
+import { store, getStoreValue, constants } from "../utils";
+import Tooltip from "@mui/material/Tooltip";
 export default function Bugs() {
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
@@ -39,11 +40,21 @@ export default function Bugs() {
   const [comment, setComment] = useState("");
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(getStoreValue(constants.USERS));
-  const [selectedType, setSelectedType] = useState(getStoreValue(constants.TYPES));
-  const [selectedSprint, setSelectedSprint] = useState(getStoreValue(constants.SPRINT));
-  const [selectedStatus, setSelectedStatus] = useState(getStoreValue(constants.STATUS));
-  const [selectedProject, setSelectedProject] = useState(getStoreValue(constants.PROJECTS));
+  const [selectedUser, setSelectedUser] = useState(
+    getStoreValue(constants.USERS)
+  );
+  const [selectedType, setSelectedType] = useState(
+    getStoreValue(constants.TYPES)
+  );
+  const [selectedSprint, setSelectedSprint] = useState(
+    getStoreValue(constants.SPRINT)
+  );
+  const [selectedStatus, setSelectedStatus] = useState(
+    getStoreValue(constants.STATUS)
+  );
+  const [selectedProject, setSelectedProject] = useState(
+    getStoreValue(constants.PROJECTS)
+  );
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -215,7 +226,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
-    store(constants.USERS,value === "string" ? value.split(",") : value)
+    store(constants.USERS, value === "string" ? value.split(",") : value);
     setSelectedUser(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -223,12 +234,12 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
-    store(constants.TYPES,value === "string" ? value.split(",") : value)
+    store(constants.TYPES, value === "string" ? value.split(",") : value);
     setSelectedType(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSelectedProject = (event) => {
-    store(constants.PROJECTS,event.target.value)
+    store(constants.PROJECTS, event.target.value);
     setSelectedProject(event.target.value);
   };
 
@@ -236,7 +247,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
-    store(constants.SPRINT,value === "string" ? value.split(",") : value)
+    store(constants.SPRINT, value === "string" ? value.split(",") : value);
     setSelectedSprint(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -244,11 +255,12 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
-    store(constants.STATUS,value === "string" ? value.split(",") : value)
+    store(constants.STATUS, value === "string" ? value.split(",") : value);
     setSelectedStatus(typeof value === "string" ? value.split(",") : value);
   };
 
-  const isDeveloper = localStorage.getItem("role") === "developer" ? true : false;
+  const isDeveloper =
+    localStorage.getItem("role") === "developer" ? true : false;
 
   const handleClear = () => {
     setFilteredData(bugData)
@@ -300,8 +312,8 @@ export default function Bugs() {
               onChange={(event) => handleSelectedUsers(event)}
               multiple
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => { 
-                debugger
+              renderValue={(selected) => {
+                debugger;
                 return selected && selected.join("")
                   ? selected.join(",")
                   : "All Users";
@@ -483,33 +495,50 @@ export default function Bugs() {
                           <div
                             style={{ display: "flex", flexDirection: "row" }}
                           >
-                            <Button
-                              variant="text"
-                              onClick={() =>
-                                collapseRow(index, databug?.bug_id)
-                              }
-                              style={{
-                                color: databug.bug_type==="CR"?"#398EED":"red",
-                                padding: "4px 8px",
-                                textTransform: "lowercase",
-                              }}
+                            <Tooltip
+                              title={databug.bug_type === "CR" ? "CR" : "Bug"}
+                              arrow
+                              color="success"
+                              placement="left"
                             >
-                              {databug?.bug_id}
-                            </Button>
+                              <Button
+                                variant="text"
+                                onClick={() =>
+                                  collapseRow(index, databug?.bug_id)
+                                }
+                                style={{
+                                  color:
+                                    databug.bug_type === "CR"
+                                      ? "#398EED"
+                                      : "red",
+                                  padding: "4px 8px",
+                                  textTransform: "lowercase",
+                                }}
+                              >
+                                {databug?.bug_id}
+                              </Button>
+                            </Tooltip>
+
                             <span
                               style={{
                                 display: "flex",
                                 flexDirection: "column",
                               }}
                             >
-                              <ArrowOutwardIcon
-                                sx={{ color: "#398EED" }}
-                                onClick={() => handleIconClick(databug)}
-                              />
-                              <CopyComponent id={databug?.bug_id}
-                              />
+                              <Tooltip
+                                title="Bug Details"
+                                arrow
+                                color="success"
+                                placement="top"
+                              >
+                                <ArrowOutwardIcon
+                                  sx={{ color: "#398EED" }}
+                                  onClick={() => handleIconClick(databug)}
+                                />
+                              </Tooltip>
+
+                              <CopyComponent id={databug?.bug_id} />
                             </span>
-                            
                           </div>
                         </TableCell>
                         <TableCell style={styles} sx={{ maxWidth: "400px" }}>

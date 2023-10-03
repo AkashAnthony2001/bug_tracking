@@ -24,6 +24,8 @@ import CustomizedMenus from "./CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import Tooltip from "@mui/material/Tooltip";
+import CopyComponent from "./CopyComponent";
 
 export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
   const [page, setPage] = React.useState(0);
@@ -121,14 +123,14 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
     };
     const sprintData = await apiService.editSprint(obj);
     if (!sprintData.error) {
-      
       const message = `Sprint updated to ${event.target.value}.`;
       setChangemsg({
         ...sprintData,
         message,
-      })
-      SubmitedDisplay()    }
-  }
+      });
+      SubmitedDisplay();
+    }
+  };
   const navigate = useNavigate();
   const handleIconClick = (row) => {
     navigate(`/dashboard/details/${row.bug_id}/#submitted`, { state: row });
@@ -205,39 +207,48 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
                             textAlign: "center",
                             alignItems: "center",
                             maxWidth: "220px",
-                            }}
-                          
+                          }}
                         >
                           <div
                             style={{ display: "flex", flexDirection: "row" }}
                           >
-                            <Button
-                              variant="text"
-                              onClick={() => collapseRow(index, row?.bug_id)}
-                              style={{
-                                color: "#398EED",
-                                padding: "4px 8px",
-                                textTransform: "lowercase",
-                              }}
+                            <Tooltip
+                              title={row.bug_type === "CR" ? "CR" : "Bug"}
+                              arrow
+                              color="success"
+                              placement="left"
                             >
-                              {row?.bug_id}
-                            </Button>
+                              <Button
+                                variant="text"
+                                onClick={() => collapseRow(index, row?.bug_id)}
+                                style={{
+                                  color:
+                                    row.bug_type === "CR" ? "#398EED" : "red",
+                                  padding: "4px 8px",
+                                  textTransform: "lowercase",
+                                }}
+                              >
+                                {row?.bug_id}
+                              </Button>
+                            </Tooltip>
                             <span
                               style={{
                                 display: "flex",
                                 flexDirection: "column",
                               }}
                             >
-                              <ArrowOutwardIcon
-                                sx={{ color: "#398EED" }}
-                                onClick={() => handleIconClick(row)}
-                              />
-                              <ContentCopyRoundedIcon
-                                sx={{ color: "#398EED", fontSize: "large" }}
-                                onClick={() =>
-                                  copyToClipboard(row?.bug_id, index)
-                                }
-                              />
+                              <Tooltip
+                                title="Bug Details"
+                                arrow
+                                color="success"
+                                placement="top"
+                              >
+                                <ArrowOutwardIcon
+                                  sx={{ color: "#398EED" }}
+                                  onClick={() => handleIconClick(row)}
+                                />
+                              </Tooltip>
+                              <CopyComponent id={row?.bug_id} />
                             </span>
                             {copiedStates[index] && (
                               <span
@@ -255,30 +266,30 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
                         >
                           {row?.assignedTo?.username}
                         </TableCell>
-                        
+
                         <TableCell component="th" scope="row">
-                        <FormControl sx={{ m: 2 }} size="small">
-                          <InputLabel></InputLabel>
-                          <Select
-                            value={row?.sprint}
-                            onChange={(e) => {
-                              handleChange(e, row?._id);
-                            }}
-                          >
-                            <MenuItem value="1">1</MenuItem>
-                            <MenuItem value="2">2</MenuItem>
-                            <MenuItem value="3">3</MenuItem>
-                            <MenuItem value="4">4</MenuItem>
-                            <MenuItem value="5">5</MenuItem>
-                            <MenuItem value="6">6</MenuItem>
-                            <MenuItem value="7">7</MenuItem>
-                            <MenuItem value="8">8</MenuItem>
-                            <MenuItem value="9">9</MenuItem>
-                            <MenuItem value="10">10</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                        
+                          <FormControl sx={{ m: 2 }} size="small">
+                            <InputLabel></InputLabel>
+                            <Select
+                              value={row?.sprint}
+                              onChange={(e) => {
+                                handleChange(e, row?._id);
+                              }}
+                            >
+                              <MenuItem value="1">1</MenuItem>
+                              <MenuItem value="2">2</MenuItem>
+                              <MenuItem value="3">3</MenuItem>
+                              <MenuItem value="4">4</MenuItem>
+                              <MenuItem value="5">5</MenuItem>
+                              <MenuItem value="6">6</MenuItem>
+                              <MenuItem value="7">7</MenuItem>
+                              <MenuItem value="8">8</MenuItem>
+                              <MenuItem value="9">9</MenuItem>
+                              <MenuItem value="10">10</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+
                         <TableCell
                           sx={{ textAlign: "center" }}
                           component="th"

@@ -9,11 +9,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
 import navbarItems from "./constants/navbarItems";
-import BasicDialog from "./BasicDialog";
 import { useNavigate } from "react-router-dom";
-import apiService from "../services/apiService";
 import MeyiLogo from  "../assets/logo.png"
-import { Link } from "react-router-dom";
 
 
 const drawerWidth = 190;
@@ -21,10 +18,6 @@ const drawerWidth = 190;
 const Navbar = () => {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState({ id: 0 });
-  const logout = () => {
-    apiService.logout();
-    navigate("/login");
-  };
 
   const isAdmin = localStorage.getItem("role") === "admin";
   const filterarr = !isAdmin
