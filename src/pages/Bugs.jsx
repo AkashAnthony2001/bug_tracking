@@ -262,6 +262,16 @@ export default function Bugs() {
   const isDeveloper =
     localStorage.getItem("role") === "developer" ? true : false;
 
+  const handleClear = () => {
+    setFilteredData(bugData)
+    setSelectedUser('')
+    setSelectedProject('')
+    setSelectedType('')
+    setSelectedSprint('')
+    setSelectedStatus('')
+
+  }
+
   return (
     <>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -421,6 +431,9 @@ export default function Bugs() {
               ))}
             </Select>
           </FormControl>
+          <Button variant="outlined" onClick={handleClear}>
+            Clear All
+          </Button>
           <Typography
             sx={{ mx: 1, fontWeight: "bold" }}
             variant="text"
