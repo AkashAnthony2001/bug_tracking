@@ -228,6 +228,7 @@ export default function Bugs() {
     } = event;
     store(constants.USERS, value === "string" ? value.split(",") : value);
     setSelectedUser(typeof value === "string" ? value.split(",") : value);
+    setPage(0);
   };
 
   const handleSelectedType = (event) => {
