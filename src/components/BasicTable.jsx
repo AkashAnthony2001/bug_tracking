@@ -34,7 +34,7 @@ export default function BasicTable({
   Assigneddisplay,
 }) {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [bugResponse, setBugResponse] = React.useState([]);
   const [expandedRow, setExpandedRow] = React.useState(null);
   const [filteredResponse, setFilteredResponse] = React.useState([]);
@@ -385,7 +385,7 @@ export default function BasicTable({
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
