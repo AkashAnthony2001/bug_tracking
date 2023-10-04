@@ -23,13 +23,12 @@ import StatusChangeDialog from "../components/StatusChangeDialog";
 import CustomizedMenus from "./CustomizedMenus";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
-import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import Tooltip from "@mui/material/Tooltip";
 import CopyComponent from "./CopyComponent";
 
 export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [bugResponse, setBugResponse] = React.useState([]);
   const [expandedRow, setExpandedRow] = React.useState(null);
   const [filteredResponse, setFilteredResponse] = React.useState([]);
@@ -378,7 +377,7 @@ export default function BasicTableSub({ row, headers, SubmitedDisplay }) {
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50]}
           component="div"
           count={row.length}
           rowsPerPage={rowsPerPage}
