@@ -35,5 +35,6 @@ export const constants = {
     TYPES:'types',
     PROJECTS:'projects',
     STATUS:'status',
-    SPRINT:'sprints'
+    SPRINT:'sprints',
+    CURRENT_SPRINT:'currentSprint'
 }

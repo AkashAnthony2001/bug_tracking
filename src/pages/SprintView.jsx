@@ -56,7 +56,7 @@ export default function Bugs() {
     getStoreValue(constants.TYPES)
   );
   const [selectedSprint, setSelectedSprint] = useState(
-    getStoreValue(constants.SPRINT)
+    getStoreValue(constants.CURRENT_SPRINT)
   );
   const [selectedStatus, setSelectedStatus] = useState(
     getStoreValue(constants.STATUS) ? getStoreValue(constants.STATUS) : ['Opened', 'InProgress', 'Assigned']
@@ -272,7 +272,7 @@ export default function Bugs() {
     const {
       target: { value },
     } = event;
-    store(constants.SPRINT,value);
+    store(constants.CURRENT_SPRINT,value);
     setSelectedSprint(value);
   };
 
