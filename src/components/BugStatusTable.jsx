@@ -67,7 +67,7 @@ const BugStatusTable = ({ bugStatusData, headers, load, setExpandedRow }) => {
   return (
     <>
       <TableContainer component={Paper} sx={{ width: "100%", p: 2 }}>
-        <Table>
+        <Table sx={{background:'#f9f7f5'}}>
           <TableHead>
             <TableRow>
               {headers.map((heading) => (

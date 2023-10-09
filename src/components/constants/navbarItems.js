@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PestControlIcon from '@mui/icons-material/PestControl';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
 const navbarItems = [
   {
@@ -24,26 +25,31 @@ const navbarItems = [
     text: 'Modules',
     icon: <ViewModuleIcon />,
     link: '/dashboard/module',color:"#f26139"
-  }, {
+  },{
     id: 3,
+    text: 'Users',
+    icon: <PeopleAltOutlinedIcon />,
+    link: '/dashboard/users',color:"#1B2430"
+  },{
+    id: 4,
     text: 'Assigned to me',
     icon: <AssignmentIcon />,
     link: '/dashboard/assigned',color:"#6E85B2"
   },{
-    id: 4,
+    id: 5,
     text: 'Submitted by me',
     icon: <AutoAwesomeMotionIcon />,
     link: '/dashboard/submitted',color:"#790252"
   },{
-    id: 5,
+    id: 6,
     text: 'Bugs',
     icon: <PestControlIcon />,
     link: '/dashboard/bugs',color:"#03C988"
   },{
-    id: 6,
-    text: 'Users',
-    icon: <PeopleAltOutlinedIcon />,
-    link: '/dashboard/users',color:"#1B2430"
+    id: 7,
+    text: 'Sprint View',
+    icon: <ViewListIcon />,
+    link: '/dashboard/sprintView',color:"#790252"
   }
 ];
 

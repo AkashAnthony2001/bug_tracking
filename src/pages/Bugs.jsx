@@ -27,10 +27,11 @@ import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useNavigate } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import CopyComponent from "../components/CopyComponent";
+import CircularProgress from '@mui/material/CircularProgress';
 import { store, getStoreValue, constants, removeStoreValue } from "../utils";
 import Tooltip from "@mui/material/Tooltip";
 export default function Bugs() {
-  const [bugData, setBugdata] = useState([]);
+  const [bugData, setBugdata] = useState([]); 
   const [changemsg, setChangemsg] = useState({});
   const [expandedRow, setExpandedRow] = useState(null);
   const [bugResponse, setBugResponse] = useState([]);
@@ -55,7 +56,7 @@ export default function Bugs() {
   const [selectedProject, setSelectedProject] = useState(
     getStoreValue(constants.PROJECTS)
   );
-  const [filteredData, setFilteredData] = useState(bugData);
+  const [filteredData, setFilteredData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -135,7 +136,7 @@ export default function Bugs() {
     bugStatusApi();
   }, [changemsg]);
 
-  useEffect(() => {
+  useEffect(() => {    
     const filteredItems = bugData?.filter(
       (item) =>
         (selectedUser === "" ||
@@ -152,7 +153,7 @@ export default function Bugs() {
           selectedType.join("").includes(item.bug_type)) &&
         (selectedProject === "" || item.projectId.title === selectedProject)
     );
-    setFilteredData(filteredItems);
+    setFilteredData(filteredItems); 
   }, [
     selectedUser,
     selectedProject,
@@ -164,7 +165,7 @@ export default function Bugs() {
 
   const styles = {
     textAlign: "center",
-    padding: "8px",
+    padding: "0px",
   };
   const handleStatus = async (event, id) => {
     setIsDialogOpen(true);
@@ -313,8 +314,7 @@ export default function Bugs() {
               onChange={(event) => handleSelectedUsers(event)}
               multiple
               inputProps={{ "aria-label": "Without label" }}
-              renderValue={(selected) => {
-                debugger;
+              renderValue={(selected) => { 
                 return selected && selected.join("")
                   ? selected.join(",")
                   : "All Users";
@@ -441,11 +441,13 @@ export default function Bugs() {
             variant="text"
             color="initial"
           >
-            Total :{filteredData.length}
+            Total :{filteredData && filteredData.length}
           </Typography>
         </div>
       </Box>
-      <TableContainer
+      {!filteredData? <Box sx={{ display: 'flex',justifyContent:'center',mt:4 }}>
+                  <CircularProgress />
+                </Box>:<TableContainer
         component={Paper}
         sx={{
           backgroundColor: "#F8F9FA",
@@ -462,10 +464,10 @@ export default function Bugs() {
                   </TableCell>
                 ))}
             </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {filteredData.length ? (
+          </TableHead> 
+          <TableBody>    
+               
+            {filteredData && filteredData.length  ? (
               filteredData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((databug, index) => {
@@ -483,7 +485,7 @@ export default function Bugs() {
                           cursor: "pointer",
                           backgroundColor: isEvenRow ? "#F8F9FA" : "white",
                           border: "1px solid #ccc",
-                          padding: "8px",
+                          fontSize: "12px",
                         }}
                         tabIndex={-1}
                       >
@@ -492,6 +494,7 @@ export default function Bugs() {
                             textAlign: "center",
                             alignItems: "center",
                             maxWidth: "252px",
+                            padding:0
                           }}
                         >
                           <div
@@ -513,8 +516,8 @@ export default function Bugs() {
                                     databug.bug_type === "CR"
                                       ? "#398EED"
                                       : "red",
-                                  padding: "4px 8px",
                                   textTransform: "lowercase",
+                                  fontSize:'12px'
                                 }}
                               >
                                 {databug?.bug_id}
@@ -595,7 +598,7 @@ export default function Bugs() {
                           style={{
                             ...styles,
                             color:
-                              new Date(databug?.estimate_date) <= new Date()
+                              new Date(databug?.estimate_date) <= new Date() && (databug.status ==='Assigned' || databug.status ==='Opened' || databug.status ==='InProgress')
                                 ? "red"
                                 : "black",
                           }}
@@ -662,7 +665,7 @@ export default function Bugs() {
                   <Typography variant="h6" color="initial">
                     No Records Found
                   </Typography>
-                </TableCell>
+                </TableCell> 
               </TableRow>
             )}
           </TableBody>
@@ -670,13 +673,14 @@ export default function Bugs() {
         <TablePagination
           rowsPerPageOptions={[10, 25, 50]}
           component="div"
-          count={filteredData.length}
+          count={filteredData && filteredData.length}
           page={page}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </TableContainer>
+      </TableContainer>}  
+      
       <StatusChangeDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
