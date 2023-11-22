@@ -1,13 +1,9 @@
 import {
   FormControl,
   InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
+  MenuItem, 
+  Select, 
+  TableCell, 
   TableHead,
   TableRow,
   Button,
@@ -15,8 +11,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import apiService from "../services/apiService";
-import BugsDialogue from "./BugsDialogue";
+import apiService from "../services/apiService"; 
 import CustomizedSnackbars from "../components/CustomizedSnackbars";
 import Collapse from "@mui/material/Collapse";
 import BugStatusTable from "../components/BugStatusTable";
@@ -36,7 +31,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 
 
 export default function Bugs() {
-  const [currentSprint, setCurrentSprint] = useState("4");
+  const [currentSprint, setCurrentSprint] = useState(localStorage.getItem("currentSprint")?localStorage.getItem("currentSprint"):6);
   const [sprintData, setSprintData] = useState([]);
   const [bugData, setBugdata] = useState([]);
   const [changemsg, setChangemsg] = useState({});
@@ -66,7 +61,7 @@ export default function Bugs() {
   );
   const [filteredData, setFilteredData] = useState(bugData);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleComment = async () => {
     const obj = {
@@ -295,15 +290,19 @@ export default function Bugs() {
     setSelectedSprint('')
     setSelectedStatus('')
     removeStoreValue()
+    setExpanded('')
   }
 
   const handleAccordingExpand = (value) => {
-    setExpanded(value)
+    if(value == expanded){
+      setExpanded('')  
+    }else{
+      setExpanded(value)
+    }    
   }
   return (
     <>
-      <Box style={{ display: "flex", justifyContent: "space-between" }}>
-        <BugsDialogue loadData={bugDisplay} bugStatus={bugStatusApi} />
+      <Box style={{ display: "flex", justifyContent: "flex-end" }}> 
         <div style={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{ mx: 1, fontWeight: "bold" }}
@@ -484,7 +483,7 @@ export default function Bugs() {
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                     >
-                      <Typography>{_b}</Typography>
+                      <Typography>{_b} ({sprintData[_b].length})</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <TableHead>
@@ -676,7 +675,7 @@ export default function Bugs() {
                                 />
                               </Collapse>
                             </TableCell>
-                          </TableRow>
+                          </TableRow>                          
                         </>
                       ))}
 

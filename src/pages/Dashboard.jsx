@@ -44,6 +44,7 @@ const Dashboard = () => {
   const [assignedValue, setAssignedvalue] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const token = localStorage.getItem("token");
+  const [selectedSprint, setSelectedSprint] = useState(localStorage.getItem("currentSprint") ? localStorage.getItem("currentSprint") : 6);
   const checkAuth = async () => {
     const isAuth = await apiService.isAuth();
     if (!isAuth) {
@@ -82,7 +83,7 @@ const Dashboard = () => {
         return datas.status === "InProgress";
       }).length;
     setInProcess(inProgressStaus);
-     const holdStaus =
+    const holdStaus =
       data &&
       data.filter((datas) => {
         return datas.status === "Hold";
@@ -114,7 +115,8 @@ const Dashboard = () => {
   }, []);
   const Assigneddisplay = async () => {
     const username = localStorage.getItem("username");
-    const data = await apiService.getAssignments(username);
+    let data = await apiService.getAssignments(username);
+    data = data.filter((_d) => _d.status == 'Opened' || _d.status == 'Hold' || _d.status == "Assigned" || _d.status == "InProgress")
     setAssignedvalue(data);
   };
   useEffect(() => {
@@ -143,6 +145,72 @@ const Dashboard = () => {
   const d = new Date();
 
   const formattedNewDate = formatDate(d);
+
+  const sprintOptions = [
+    {
+      label: "Sprint 1",
+
+      value: "1",
+
+    },
+
+    {
+      label: "Sprint 1",
+      value: "2"
+    },
+
+    {
+      label: "Sprint 3",
+
+      value: "3",
+    },
+
+    {
+      label: "Sprint 4",
+
+      value: "4",
+    },
+
+    {
+      label: "Sprint 5",
+
+      value: "5",
+    },
+
+    {
+      label: "Sprint 6",
+
+      value: "6",
+    },
+
+    {
+      label: "Sprint 7",
+
+      value: "7",
+    },
+
+    {
+      label: "Sprint 8",
+
+      value: "8",
+    },
+
+    {
+      label: "Sprint 9",
+
+      value: "9",
+    },
+
+    {
+      label: "Sprint 10",
+
+      value: "10",
+    }
+  ];
+  const handleSprintChange = (event) => {
+    setSelectedSprint(event.target.value);
+    localStorage.setItem("currentSprint",event.target.value)
+  };
   return (
     <div>
       <CssBaseline>
@@ -273,7 +341,7 @@ const Dashboard = () => {
                 </Grid>
                 <div className="bigCards">
                   <Grid container>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={5}>
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
@@ -286,7 +354,7 @@ const Dashboard = () => {
                               }}
                             >
                               <BugReportIcon sx={{ color: "#2F96FC" }} />
-                              <h3 style={{ marginLeft: "15px" }}> My Bugs</h3>
+                              <h3 style={{ marginLeft: "15px" }}> My Open Bugs ({assignedValue.length})</h3>
                             </div>
                             <TableContainer
                               sx={{
@@ -306,6 +374,7 @@ const Dashboard = () => {
                                   <TableRow>
                                     <TableCell>Bug</TableCell>
                                     <TableCell>Date</TableCell>
+                                    <TableCell>Status</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -321,6 +390,7 @@ const Dashboard = () => {
                                         >
                                           <TableCell>{data.bug_id}</TableCell>
                                           <TableCell>{formattedDate}</TableCell>
+                                          <TableCell>{data.status}</TableCell>
                                         </TableRow>
                                       );
                                     })
@@ -346,7 +416,7 @@ const Dashboard = () => {
                         </Card>
                       </div>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                       <div>
                         <Card style={cardStyle}>
                           <CardContent>
@@ -417,6 +487,36 @@ const Dashboard = () => {
                                 </TableBody>
                               </Table>
                             </TableContainer>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                      <div>
+                        <Card style={cardStyle}>
+                          <CardContent>
+                            <h3>
+                              {" "}
+                              Settings
+                            </h3>
+                            Current Sprint : <select value={selectedSprint} onChange={handleSprintChange}
+                              style={{
+                                padding: "8px",
+
+                                border: "1px solid #ccc",
+
+                                borderRadius: "4px",
+
+                                marginRight: "10px",
+                                marginTop: "40px"
+                              }}
+                            >
+                              {sprintOptions.map((val) => (
+                                <option key={val.value} value={val.value}>
+                                  {val.label}
+                                </option>
+                              ))}
+                            </select>
                           </CardContent>
                         </Card>
                       </div>
