@@ -38,17 +38,17 @@ export default function BugsDialogue({ loadData, bugStatus }) {
   const [date, setDate] = useState(null);
   let initialValues = {
     bug_description: "",
-    bug_type: "",
+    bug_type: "Bug",
     severity: "",
-    sprint: "",
+    sprint: localStorage.getItem("currentSprint") ? localStorage.getItem("currentSprint") : 6,
     moduleId: "",
     projectId: "",
     assignedTo: "",
     reportedBy: "",
     createdby: "",
-    status: "",
+    status: "Opened",
     estimate_date: null,
-    customerfound: "",
+    customerfound: false,
     bug_id: "",
   };
   const [bugData, setBugData] = useState(initialValues);
@@ -58,6 +58,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
     setBugData({
       ...bugData,
       createdby: userName,
+      reportedBy:userName.toLowerCase()
     });
     setOpen(true);
   };
@@ -329,7 +330,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
                   }
                 >
                   {report.map((reportby) => (
-                    <MenuItem key={reportby._id} value={reportby._id}>
+                    <MenuItem key={reportby._id} value={reportby.username}>
                       {reportby.username}
                     </MenuItem>
                   ))}
@@ -406,10 +407,10 @@ export default function BugsDialogue({ loadData, bugStatus }) {
               <FormControl fullWidth>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
+                    <DatePicker 
+                      format="DD/MM/YYYY"
                       label="Estimate Date"
-                      value={date || null}
-                      minDate={dayjs()}
+                      value={date || dayjs(new Date())} 
                       onChange={(value) => {
                         setDate(value);
                       }}
