@@ -57,8 +57,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
   const handleOpenDialog = () => {
     setBugData({
       ...bugData,
-      createdby: userName,
-      reportedBy:userName.toLowerCase()
+      createdby: userName
     });
     setOpen(true);
   };
@@ -330,7 +329,7 @@ export default function BugsDialogue({ loadData, bugStatus }) {
                   }
                 >
                   {report.map((reportby) => (
-                    <MenuItem key={reportby._id} value={reportby.username}>
+                    <MenuItem key={reportby._id} value={reportby._id}>
                       {reportby.username}
                     </MenuItem>
                   ))}
